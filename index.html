@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetCareHub - Sistema de Gestão Veterinária</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .bg-primary {
+            background-color: #4F46E5;
+        }
+        .bg-secondary {
+            background-color: #10B981;
+        }
+        .text-primary {
+            color: #4F46E5;
+        }
+        .text-secondary {
+            color: #10B981;
+        }
+        .tag-green {
+            background-color: #10B981;
+        }
+        .tag-yellow {
+            background-color: #F59E0B;
+        }
+        .tag-red {
+            background-color: #EF4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+
+    <!-- Veterinarian Dashboard -->
+    <div id="vet-dashboard" class="hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center">
+                    <i data-feather="heart" class="text-secondary mr-2"></i>
+                    <h1 class="text-xl font-bold text-secondary">VetCareHub</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="flex items-center space-x-2">
+                            <span id="vet-name" class="font-medium">Dra. Ana Souza</span>
+                            <i data-feather="chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Sidebar -->
+                <aside class="md:w-1/4">
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <div class="flex items-center space-x-4 mb-6">
+                            <div class="bg-secondary bg-opacity-10 w-12 h-12 rounded-full flex items-center justify-center">
+                                <i data-feather="activity" class="text-secondary"></i>
+                            </div>
+                            <div>
+                                <h3 id="vet-sidebar-name" class="font-bold">Dra. Ana Souza</h3>
+                                <p class="text-sm text-gray-500">Veterinária</p>
+                            </div>
+                        </div>
+                        
+                        <nav class="space-y-2">
+                            <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-secondary bg-opacity-10 text-secondary font-medium">
+                                <i data-feather="home"></i>
+                                <span>Pacientes</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+                                <i data-feather="user"></i>
+                                <span>Meu Perfil</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+                                <i data-feather="settings"></i>
+                                <span>Configurações</span>
+                            </a>
+                            <a href="#" onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+                                <i data-feather="log-out"></i>
+                                <span>Sair</span>
+                            </a>
+                        </nav>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="font-bold mb-4">Filtrar Pacientes</h3>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Status</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-secondary" checked id="filter-normal">
+                                    <span class="ml-2">Normal</span>
+                                    <span class="tag-green ml-auto w-3 h-3 rounded-full"></span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-secondary" checked id="filter-attention">
+                                    <span class="ml-2">Atenção</span>
+                                    <span class="tag-yellow ml-auto w-3 h-3 rounded-full"></span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-secondary" checked id="filter-urgent">
+                                    <span class="ml-2">Urgente</span>
+                                    <span class="tag-red ml-auto w-3 h-3 rounded-full"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Espécie</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-secondary" checked id="filter-dogs">
+                                    <span class="ml-2">Cães</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-secondary" checked id="filter-cats">
+                                    <span class="ml-2">Gatos</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button onclick="applyFilters()" class="w-full bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 mt-4">
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                </aside>
+                
+                <!-- Main Panel -->
+                <div class="md:w-3/4">
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <h2 class="text-2xl font-bold mb-6">Cadastrar Pet</h2>
+
+                        <form id="pet-form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="nome-pet" class="block text-gray-700 mb-2">Nome do Pet</label>
+                                    <input type="text" id="nome-pet" name="nome" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                </div>
+                                <div>
+                                    <label for="especie-pet" class="block text-gray-700 mb-2">Espécie</label>
+                                    <select id="especie-pet" name="especie" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                        <option value="">Selecione</option>
+                                        <option value="Cão">Cão</option>
+                                        <option value="Gato">Gato</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="raca-pet" class="block text-gray-700 mb-2">Raça</label>
+                                    <input type="text" id="raca-pet" name="raca" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                </div>
+                                <div>
+                                    <label for="idade-pet" class="block text-gray-700 mb-2">Idade</label>
+                                    <input type="text" id="idade-pet" name="idade" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="sexo-pet" class="block text-gray-700 mb-2">Sexo</label>
+                                    <select id="sexo-pet" name="sexo" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                        <option value="">Selecione</option>
+                                        <option value="Macho">Macho</option>
+                                        <option value="Fêmea">Fêmea</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="peso-pet" class="block text-gray-700 mb-2">Peso (kg)</label>
+                                    <input type="number" id="peso-pet" name="peso" step="0.1" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div>
+                                    <label for="tutor-nome" class="block text-gray-700 mb-2">Nome do Tutor</label>
+                                    <input type="text" id="tutor-nome" name="tutorNome" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                </div>
+                                <div>
+                                    <label for="tutor-cpf" class="block text-gray-700 mb-2">CPF do Tutor</label>
+                                    <input type="text" id="tutor-cpf" name="tutorCpf" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div>
+                                    <label for="tutor-telefone" class="block text-gray-700 mb-2">Telefone do Tutor</label>
+                                    <input type="text" id="tutor-telefone" name="tutorTelefone" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                </div>
+                                <div>
+                                    <label for="tutor-endereco" class="block text-gray-700 mb-2">Endereço do Tutor</label>
+                                    <input type="text" id="tutor-endereco" name="tutorEndereco" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                                Cadastrar Pet
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">Pacientes</h2>
+                            <div class="relative">
+                                <input type="text" id="search-patients" placeholder="Buscar paciente..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                <i data-feather="search" class="absolute left-3 top-2.5 text-gray-400"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Patients Table -->
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pet</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tutor</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Espécie</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Última Consulta</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="patients-table-body" class="bg-white divide-y divide-gray-200">
+                                    <!-- Patients will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="flex items-center justify-between mt-6">
+                            <div class="text-sm text-gray-700" id="pagination-info">
+                                Mostrando <span class="font-medium">0</span> a <span class="font-medium">0</span> de <span class="font-medium">0</span> resultados
+                            </div>
+                            <div class="flex space-x-2" id="pagination-controls">
+                                <!-- Pagination controls will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Patient Details Modal -->
+    <div id="patient-details-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-secondary">Ficha do Paciente - <span id="patient-name-title"></span></h3>
+                <button class="text-gray-500 hover:text-gray-700" onclick="closeModal('patient-details-modal')">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Pet Info -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-lg mb-4">Informações do Pet</h4>
+                    
+                    <div class="flex items-center mb-4">
+                        <div class="mr-4">
+                            <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center">
+                                <i data-feather="heart" class="text-gray-500 w-8 h-8"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-bold" id="modal-patient-name">Rex</h5>
+                            <p class="text-sm text-gray-600" id="modal-patient-species">Cão - Labrador</p>
+                            <p class="text-sm text-gray-600" id="modal-patient-age">5 anos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div>
+                            <span class="text-sm text-gray-500">Sexo:</span>
+                            <span class="text-sm font-medium" id="modal-patient-gender">Macho</span>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-500">Peso:</span>
+                            <span class="text-sm font-medium" id="modal-patient-weight">25kg</span>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-500">Cadastrado em:</span>
+                            <span class="text-sm font-medium" id="modal-patient-registered">15/03/2020</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tutor Info -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-lg mb-4">Informações do Tutor</h4>
+                    
+                    <div class="mb-2">
+                        <h5 class="font-bold" id="modal-tutor-name">João Silva</h5>
+                        <p class="text-sm text-gray-600" id="modal-tutor-cpf">CPF: 123.456.789-00</p>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div>
+                            <span class="text-sm text-gray-500">Telefone:</span>
+                            <span class="text-sm font-medium" id="modal-tutor-phone">(11) 98765-4321</span>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-500">Endereço:</span>
+                            <span class="text-sm font-medium" id="modal-tutor-address">Rua das Flores, 123 - São Paulo/SP</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Status -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-lg mb-4">Status</h4>
+                    
+                    <div class="mb-4">
+                        <span class="text-sm text-gray-500">Status Atual:</span>
+                        <div class="mt-1">
+                            <span id="modal-patient-status" class="tag-green text-white text-xs font-medium px-2 py-1 rounded-full">Normal</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="status-select" class="block text-sm text-gray-500 mb-1">Alterar Status:</label>
+                        <select id="status-select" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                            <option value="green">Normal</option>
+                            <option value="yellow">Atenção</option>
+                            <option value="red">Urgente</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="updatePatientStatus()" class="w-full bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 mt-4">
+                        Atualizar Status
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 mb-6">
+                <nav class="-mb-px flex space-x-8">
+                    <button id="anamnesis-tab" class="border-b-2 border-secondary text-secondary font-medium py-4 px-4">Anamnese</button>
+                    <button id="exams-tab" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium py-4 px-4">Exame Físico</button>
+                    <button id="history-tab" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium py-4 px-4">Histórico</button>
+                </nav>
+            </div>
+            
+            <!-- Anamnesis Content -->
+            <div id="anamnesis-content" class="tab-content">
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <h4 class="font-bold text-lg mb-4">Anamnese</h4>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-500 mb-1">Motivo da Consulta:</label>
+                        <p class="text-sm" id="modal-anamnesis-reason">Não preenchido</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-500 mb-1">Histórico Clínico:</label>
+                        <p class="text-sm" id="modal-anamnesis-history">Não preenchido</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-500 mb-1">Vacinas:</label>
+                        <p class="text-sm" id="modal-anamnesis-vaccines">Não preenchido</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exams Content -->
+            <div id="exams-content" class="tab-content hidden">
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <h4 class="font-bold text-lg mb-4">Exame Físico</h4>
+                    
+                    <form id="exams-form">
+                        <input type="hidden" id="exam-pet-id" value="">
+                        <div class="mb-4">
+                            <label for="exam-temperature" class="block text-sm text-gray-700 mb-1">Temperatura (°C):</label>
+                            <input type="text" id="exam-temperature" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="exam-heart-rate" class="block text-sm text-gray-700 mb-1">Frequência Cardíaca (bpm):</label>
+                            <input type="text" id="exam-heart-rate" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="exam-respiratory-rate" class="block text-sm text-gray-700 mb-1">Frequência Respiratória (mpm):</label>
+                            <input type="text" id="exam-respiratory-rate" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="exam-observations" class="block text-sm text-gray-700 mb-1">Observações:</label>
+                            <textarea id="exam-observations" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                                Salvar Exame
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- History Content -->
+            <div id="history-content" class="tab-content hidden">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-lg mb-4">Histórico de Consultas</h4>
+                    
+                    <div id="consultation-history" class="space-y-4">
+                        <!-- Consultation history will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-primary">Editar Ficha - <span id="edit-pet-name"></span></h3>
+                <button class="text-gray-500 hover:text-gray-700" onclick="closeModal('edit-modal')">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            
+            <form id="edit-form">
+                <input type="hidden" id="edit-pet-id" value="">
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-4">Dados do Pet</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="edit-pet-name-input" class="block text-sm text-gray-700 mb-1">Nome</label>
+                            <input type="text" id="edit-pet-name-input" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label for="edit-pet-breed" class="block text-sm text-gray-700 mb-1">Raça</label>
+                            <input type="text" id="edit-pet-breed" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="edit-pet-age" class="block text-sm text-gray-700 mb-1">Idade</label>
+                            <input type="text" id="edit-pet-age" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label for="edit-pet-gender" class="block text-sm text-gray-700 mb-1">Sexo</label>
+                            <select id="edit-pet-gender" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="Macho">Macho</option>
+                                <option value="Fêmea">Fêmea</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-4">Observações Médicas</h4>
+                    
+                    <div class="mb-4">
+                        <label for="edit-observations" class="block text-sm text-gray-700 mb-1">Observações</label>
+                        <textarea id="edit-observations" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="edit-status" class="block text-sm text-gray-700 mb-1">Status</label>
+                        <select id="edit-status" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="green">Normal</option>
+                            <option value="yellow">Atenção</option>
+                            <option value="red">Urgente</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeModal('edit-modal')" class="border border-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg transition duration-300">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Consultation Modal -->
+    <div id="consultation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-primary">Consultas - <span id="consultation-pet-name"></span></h3>
+                <button class="text-gray-500 hover:text-gray-700" onclick="closeModal('consultation-modal')">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+
+            <form id="consultation-form">
+                <input type="hidden" id="consultation-pet-id" value="">
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-4">Motivo da Consulta</h4>
+                    <textarea id="consultation-reason" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Descreva o motivo da consulta..."></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-4">Histórico Clínico</h4>
+                    <textarea id="consultation-history" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Histórico clínico do paciente..."></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-4">Vacinas</h4>
+                    <textarea id="consultation-vaccines" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Vacinas aplicadas..."></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-4">Consultas Passadas</h4>
+                    <div id="past-consultations" class="space-y-2">
+                        <!-- Past consultations will be loaded here -->
+                    </div>
+                    <button type="button" onclick="addPastConsultation()" class="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-300">
+                        Adicionar Consulta Passada
+                    </button>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-4">Consultas Futuras</h4>
+                    <div id="future-consultations" class="space-y-2">
+                        <!-- Future consultations will be loaded here -->
+                    </div>
+                    <button type="button" onclick="addFutureConsultation()" class="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-300">
+                        Agendar Consulta Futura
+                    </button>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeModal('consultation-modal')" class="border border-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg transition duration-300">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                        Salvar Consultas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        const API_URL = '';
+        let currentPatientId = null;
+        let allPets = [];
+        let filteredPets = [];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+
+            // Form event listeners
+            document.getElementById('pet-form').addEventListener('submit', handlePetRegistration);
+            document.getElementById('exams-form').addEventListener('submit', handleExamSave);
+            document.getElementById('edit-form').addEventListener('submit', handleEditPet);
+            document.getElementById('consultation-form').addEventListener('submit', handleConsultationSave);
+
+            // Tab switching
+            setupTabSwitching();
+
+            // Search functionality
+            document.getElementById('search-patients').addEventListener('input', handlePatientSearch);
+
+            // Show vet dashboard directly
+            showVetDashboard();
+        });
+
+        // Authentication functions removed
+
+
+
+        // Pet management functions
+        async function handlePetRegistration(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const petData = {
+                nome: formData.get('nome'),
+                especie: formData.get('especie'),
+                raca: formData.get('raca'),
+                idade: formData.get('idade'),
+                sexo: formData.get('sexo'),
+                peso: formData.get('peso'),
+                tutorCpf: formData.get('tutorCpf'),
+                tutorNome: formData.get('tutorNome'),
+                tutorTelefone: formData.get('tutorTelefone'),
+                tutorEndereco: formData.get('tutorEndereco')
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/salvar-pet`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(petData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Pet cadastrado com sucesso!');
+                    e.target.reset();
+                    loadVetPets();
+                } else {
+                    alert(result.message || 'Erro ao cadastrar pet');
+                }
+            } catch (error) {
+                console.error('Erro ao cadastrar pet:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        // Dashboard functions
+
+        function showVetDashboard() {
+            // Removed references to non-existent elements to fix errors
+            document.getElementById('vet-dashboard').classList.remove('hidden');
+
+            document.getElementById('vet-name').textContent = 'Veterinário';
+            document.getElementById('vet-sidebar-name').textContent = 'Veterinário';
+            loadVetPets();
+        }
+
+        function logout() {
+            // Do nothing
+        }
+
+        // Pet loading functions
+        async function loadTutorPets() {
+            try {
+                const response = await fetch(`${API_URL}/api/pets-tutor/${currentUser.cpf}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    displayTutorPets(result.pets);
+                } else {
+                    document.getElementById('pets-list').innerHTML = '<p class="text-gray-500">Nenhum pet cadastrado ainda.</p>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar pets:', error);
+                document.getElementById('pets-list').innerHTML = '<p class="text-red-500">Erro ao carregar pets.</p>';
+            }
+        }
+
+        function displayTutorPets(pets) {
+            const petsList = document.getElementById('pets-list');
+            
+            if (pets.length === 0) {
+                petsList.innerHTML = '<p class="text-gray-500">Nenhum pet cadastrado ainda.</p>';
+                return;
+            }
+
+            petsList.innerHTML = pets.map(pet => `
+                <div class="border rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-lg">${pet.nome}</h4>
+                            <p class="text-gray-600">${pet.especie} - ${pet.raca}</p>
+                            <p class="text-sm text-gray-500">${pet.idade} • ${pet.sexo} • ${pet.peso}kg</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="tag-${pet.tag || 'green'} text-white text-xs font-medium px-2 py-1 rounded-full">
+                                ${getStatusText(pet.tag || 'green')}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function loadVetPets() {
+            try {
+                const response = await fetch(`${API_URL}/api/pets`);
+                const result = await response.json();
+
+                if (result.success) {
+                    allPets = result.pets;
+                    filteredPets = [...allPets];
+                    displayVetPets(filteredPets);
+                } else {
+                    document.getElementById('patients-table-body').innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum paciente cadastrado.</td></tr>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar pets:', error);
+                document.getElementById('patients-table-body').innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-red-500">Erro ao carregar pacientes.</td></tr>';
+            }
+        }
+
+        function displayVetPets(pets) {
+            const tableBody = document.getElementById('patients-table-body');
+            const paginationInfo = document.getElementById('pagination-info');
+            
+            if (pets.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum paciente encontrado.</td></tr>';
+                paginationInfo.innerHTML = 'Mostrando <span class="font-medium">0</span> a <span class="font-medium">0</span> de <span class="font-medium">0</span> resultados';
+                return;
+            }
+
+            tableBody.innerHTML = pets.map(pet => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
+                                    <i data-feather="heart" class="text-gray-500 w-5 h-5"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${pet.nome}</div>
+                                <div class="text-sm text-gray-500">${pet.idade}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${pet.tutorNome}</div>
+                        <div class="text-sm text-gray-500">${pet.tutorTelefone}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${pet.especie === 'Cão' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">${pet.especie}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(pet.dataCadastro)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="tag-${pet.tag || 'green'} text-white text-xs font-medium px-2 py-1 rounded-full">${getStatusText(pet.tag || 'green')}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="showPatientDetails('${pet.id}')" class="text-secondary hover:text-emerald-700 mr-3">
+                            <i data-feather="eye"></i>
+                        </button>
+                        <button onclick="showConsultationModal('${pet.id}')" class="text-primary">
+                            <i data-feather="calendar"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Update pagination info
+            paginationInfo.innerHTML = `Mostrando <span class="font-medium">1</span> a <span class="font-medium">${pets.length}</span> de <span class="font-medium">${pets.length}</span> resultados`;
+            
+            // Re-initialize feather icons
+            feather.replace();
+        }
+
+        // Modal functions
+        function showPatientDetails(petId) {
+            const pet = allPets.find(p => p.id == petId);
+            if (!pet) return;
+
+            currentPatientId = petId;
+            
+            // Update modal content
+            document.getElementById('patient-name-title').textContent = pet.nome;
+            document.getElementById('modal-patient-name').textContent = pet.nome;
+            document.getElementById('modal-patient-species').textContent = `${pet.especie} - ${pet.raca}`;
+            document.getElementById('modal-patient-age').textContent = pet.idade;
+            document.getElementById('modal-patient-gender').textContent = pet.sexo;
+            document.getElementById('modal-patient-weight').textContent = `${pet.peso}kg`;
+            document.getElementById('modal-patient-registered').textContent = formatDate(pet.dataCadastro);
+            
+            document.getElementById('modal-tutor-name').textContent = pet.tutorNome;
+            document.getElementById('modal-tutor-cpf').textContent = `CPF: ${pet.tutorCpf}`;
+            document.getElementById('modal-tutor-phone').textContent = pet.tutorTelefone;
+            document.getElementById('modal-tutor-address').textContent = pet.tutorEndereco;
+            
+            const statusElement = document.getElementById('modal-patient-status');
+            statusElement.textContent = getStatusText(pet.tag || 'green');
+            statusElement.className = `tag-${pet.tag || 'green'} text-white text-xs font-medium px-2 py-1 rounded-full`;
+            
+            // Update anamnesis content
+            if (pet.anamnese) {
+                document.getElementById('modal-anamnesis-reason').textContent = pet.anamnese.motivo || 'Não preenchido';
+                document.getElementById('modal-anamnesis-history').textContent = pet.anamnese.historico || 'Não preenchido';
+                document.getElementById('modal-anamnesis-vaccines').textContent = pet.anamnese.vacinacao || 'Não preenchido';
+            }
+            
+            // Set form values
+            document.getElementById('exam-pet-id').value = petId;
+            document.getElementById('status-select').value = pet.tag || 'green';
+            
+            document.getElementById('patient-details-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function showConsultationModal(petId) {
+            const pet = allPets.find(p => p.id == petId);
+            if (!pet) return;
+
+            document.getElementById('consultation-pet-name').textContent = pet.nome;
+            document.getElementById('consultation-pet-id').value = petId;
+
+            // Load existing consultation data if available
+            if (pet.anamnese) {
+                document.getElementById('consultation-reason').value = pet.anamnese.motivo || '';
+                document.getElementById('consultation-history').value = pet.anamnese.historico || '';
+                document.getElementById('consultation-vaccines').value = pet.anamnese.vacinacao || '';
+            }
+
+            // Load past consultations
+            loadPastConsultations(petId);
+
+            // Load future consultations
+            loadFutureConsultations(petId);
+
+            document.getElementById('consultation-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function loadPastConsultations(petId) {
+            const pet = allPets.find(p => p.id == petId);
+            const pastConsultationsContainer = document.getElementById('past-consultations');
+
+            if (pet && pet.consultasPassadas && pet.consultasPassadas.length > 0) {
+                pastConsultationsContainer.innerHTML = pet.consultasPassadas.map((consulta, index) => `
+                    <div class="flex items-center space-x-2">
+                        <input type="date" value="${consulta.data || ''}" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Data">
+                        <input type="text" value="${consulta.descricao || ''}" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Descrição">
+                        <button type="button" onclick="removePastConsultation(${index})" class="text-red-500 hover:text-red-700">
+                            <i data-feather="trash-2"></i>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                pastConsultationsContainer.innerHTML = '';
+            }
+
+            feather.replace();
+        }
+
+        function loadFutureConsultations(petId) {
+            const pet = allPets.find(p => p.id == petId);
+            const futureConsultationsContainer = document.getElementById('future-consultations');
+
+            if (pet && pet.consultasFuturas && pet.consultasFuturas.length > 0) {
+                futureConsultationsContainer.innerHTML = pet.consultasFuturas.map((consulta, index) => `
+                    <div class="flex items-center space-x-2">
+                        <input type="date" value="${consulta.data || ''}" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Data">
+                        <input type="text" value="${consulta.descricao || ''}" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Descrição">
+                        <button type="button" onclick="removeFutureConsultation(${index})" class="text-red-500 hover:text-red-700">
+                            <i data-feather="trash-2"></i>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                futureConsultationsContainer.innerHTML = '';
+            }
+
+            feather.replace();
+        }
+
+        function addPastConsultation() {
+            const pastConsultationsContainer = document.getElementById('past-consultations');
+            const newConsultation = document.createElement('div');
+            newConsultation.className = 'flex items-center space-x-2';
+            newConsultation.innerHTML = `
+                <input type="date" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Data">
+                <input type="text" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Descrição">
+                <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700">
+                    <i data-feather="trash-2"></i>
+                </button>
+            `;
+            pastConsultationsContainer.appendChild(newConsultation);
+            feather.replace();
+        }
+
+        function addFutureConsultation() {
+            const futureConsultationsContainer = document.getElementById('future-consultations');
+            const newConsultation = document.createElement('div');
+            newConsultation.className = 'flex items-center space-x-2';
+            newConsultation.innerHTML = `
+                <input type="date" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Data">
+                <input type="text" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Descrição">
+                <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700">
+                    <i data-feather="trash-2"></i>
+                </button>
+            `;
+            futureConsultationsContainer.appendChild(newConsultation);
+            feather.replace();
+        }
+
+        function removePastConsultation(index) {
+            const pastConsultationsContainer = document.getElementById('past-consultations');
+            const consultations = pastConsultationsContainer.children;
+            if (consultations[index]) {
+                consultations[index].remove();
+            }
+        }
+
+        function removeFutureConsultation(index) {
+            const futureConsultationsContainer = document.getElementById('future-consultations');
+            const consultations = futureConsultationsContainer.children;
+            if (consultations[index]) {
+                consultations[index].remove();
+            }
+        }
+
+        async function handleConsultationSave(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const petId = formData.get('consultation-pet-id');
+
+            // Collect past consultations
+            const pastConsultations = [];
+            const pastConsultationsContainer = document.getElementById('past-consultations');
+            const pastConsultationElements = pastConsultationsContainer.querySelectorAll('.flex.items-center.space-x-2');
+            pastConsultationElements.forEach(element => {
+                const dateInput = element.querySelector('input[type="date"]');
+                const descriptionInput = element.querySelector('input[type="text"]');
+                if (dateInput && descriptionInput && dateInput.value && descriptionInput.value) {
+                    pastConsultations.push({
+                        data: dateInput.value,
+                        descricao: descriptionInput.value
+                    });
+                }
+            });
+
+            // Collect future consultations
+            const futureConsultations = [];
+            const futureConsultationsContainer = document.getElementById('future-consultations');
+            const futureConsultationElements = futureConsultationsContainer.querySelectorAll('.flex.items-center.space-x-2');
+            futureConsultationElements.forEach(element => {
+                const dateInput = element.querySelector('input[type="date"]');
+                const descriptionInput = element.querySelector('input[type="text"]');
+                if (dateInput && descriptionInput && dateInput.value && descriptionInput.value) {
+                    futureConsultations.push({
+                        data: dateInput.value,
+                        descricao: descriptionInput.value
+                    });
+                }
+            });
+
+            const consultationData = {
+                motivo: formData.get('consultation-reason'),
+                historico: formData.get('consultation-history'),
+                vacinacao: formData.get('consultation-vaccines'),
+                consultasPassadas: pastConsultations,
+                consultasFuturas: futureConsultations
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/salvar-consultas/${petId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(consultationData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Consultas salvas com sucesso!');
+                    closeModal('consultation-modal');
+                    // Reload pets to show updated data
+                    loadVetPets();
+                } else {
+                    alert(result.message || 'Erro ao salvar consultas');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar consultas:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        function showEditModal(petId) {
+            const pet = allPets.find(p => p.id == petId);
+            if (!pet) return;
+
+            document.getElementById('edit-pet-name').textContent = pet.nome;
+            document.getElementById('edit-pet-id').value = petId;
+            document.getElementById('edit-pet-name-input').value = pet.nome;
+            document.getElementById('edit-pet-breed').value = pet.raca;
+            document.getElementById('edit-pet-age').value = pet.idade;
+            document.getElementById('edit-pet-gender').value = pet.sexo;
+            document.getElementById('edit-observations').value = pet.observacoes || '';
+            document.getElementById('edit-status').value = pet.tag || 'green';
+
+            document.getElementById('edit-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Tab switching
+        function setupTabSwitching() {
+            document.getElementById('anamnesis-tab').addEventListener('click', () => switchTab('anamnesis'));
+            document.getElementById('exams-tab').addEventListener('click', () => switchTab('exams'));
+            document.getElementById('history-tab').addEventListener('click', () => switchTab('history'));
+        }
+
+        function switchTab(tabName) {
+            // Hide all content
+            document.getElementById('anamnesis-content').classList.add('hidden');
+            document.getElementById('exams-content').classList.add('hidden');
+            document.getElementById('history-content').classList.add('hidden');
+            
+            // Remove active state from all tabs
+            document.getElementById('anamnesis-tab').classList.remove('border-secondary', 'text-secondary');
+            document.getElementById('anamnesis-tab').classList.add('border-transparent', 'text-gray-500');
+            document.getElementById('exams-tab').classList.remove('border-secondary', 'text-secondary');
+            document.getElementById('exams-tab').classList.add('border-transparent', 'text-gray-500');
+            document.getElementById('history-tab').classList.remove('border-secondary', 'text-secondary');
+            document.getElementById('history-tab').classList.add('border-transparent', 'text-gray-500');
+            
+            // Show selected content and activate tab
+            document.getElementById(`${tabName}-content`).classList.remove('hidden');
+            document.getElementById(`${tabName}-tab`).classList.add('border-secondary', 'text-secondary');
+            document.getElementById(`${tabName}-tab`).classList.remove('border-transparent', 'text-gray-500');
+        }
+
+        // Form handlers
+        async function handleExamSave(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const examData = {
+                temperatura: formData.get('exam-temperature'),
+                frequenciaCardiaca: formData.get('exam-heart-rate'),
+                frequenciaRespiratoria: formData.get('exam-respiratory-rate'),
+                observacoes: formData.get('exam-observations')
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/salvar-anamnese/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(examData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Exame físico salvo com sucesso!');
+                    e.target.reset();
+                    // Reload patient details to show updated data
+                    showPatientDetails(currentPatientId);
+                } else {
+                    alert(result.message || 'Erro ao salvar exame');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar exame:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        async function handleEditPet(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const petId = formData.get('edit-pet-id');
+            const observations = formData.get('edit-observations');
+            const status = formData.get('edit-status');
+
+            try {
+                // Save observations
+                if (observations.trim()) {
+                    const obsResponse = await fetch(`${API_URL}/api/salvar-observacoes/${petId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ observacoes: observations })
+                    });
+
+                    const obsResult = await obsResponse.json();
+                    if (!obsResult.success) {
+                        alert(obsResult.message || 'Erro ao salvar observações');
+                        return;
+                    }
+                }
+
+                // Update status
+                const statusResponse = await fetch(`${API_URL}/api/alterar-tag/${petId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ tag: status })
+                });
+
+                const statusResult = await statusResponse.json();
+                if (!statusResult.success) {
+                    alert(statusResult.message || 'Erro ao alterar status');
+                    return;
+                }
+
+                alert('Alterações salvas com sucesso!');
+                closeModal('edit-modal');
+                // Reload pets to show updated data
+                loadVetPets();
+            } catch (error) {
+                console.error('Erro ao salvar alterações:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        async function updatePatientStatus() {
+            const newStatus = document.getElementById('status-select').value;
+
+            try {
+                const response = await fetch(`${API_URL}/api/alterar-tag/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ tag: newStatus })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Status atualizado com sucesso!');
+                    // Update the status display in the modal
+                    const statusElement = document.getElementById('modal-patient-status');
+                    statusElement.textContent = getStatusText(newStatus);
+                    statusElement.className = `tag-${newStatus} text-white text-xs font-medium px-2 py-1 rounded-full`;
+                    // Reload pets to show updated data
+                    loadVetPets();
+                } else {
+                    alert(result.message || 'Erro ao atualizar status');
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar status:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        // Filter and search functions
+        function applyFilters() {
+            const normalChecked = document.getElementById('filter-normal').checked;
+            const attentionChecked = document.getElementById('filter-attention').checked;
+            const urgentChecked = document.getElementById('filter-urgent').checked;
+            const dogsChecked = document.getElementById('filter-dogs').checked;
+            const catsChecked = document.getElementById('filter-cats').checked;
+            
+            filteredPets = allPets.filter(pet => {
+                const statusMatch = (
+                    (normalChecked && (pet.tag === 'green' || !pet.tag)) ||
+                    (attentionChecked && pet.tag === 'yellow') ||
+                    (urgentChecked && pet.tag === 'red')
+                );
+                
+                const speciesMatch = (
+                    (dogsChecked && pet.especie === 'Cão') ||
+                    (catsChecked && pet.especie === 'Gato')
+                );
+                
+                return statusMatch && speciesMatch;
+            });
+            
+            displayVetPets(filteredPets);
+        }
+
+        function handlePatientSearch() {
+            const searchTerm = document.getElementById('search-patients').value.toLowerCase();
+            
+            const searchResults = filteredPets.filter(pet => 
+                pet.nome.toLowerCase().includes(searchTerm) ||
+                pet.tutorNome.toLowerCase().includes(searchTerm) ||
+                pet.especie.toLowerCase().includes(searchTerm) ||
+                pet.raca.toLowerCase().includes(searchTerm)
+            );
+            
+            displayVetPets(searchResults);
+        }
+
+        // Utility functions
+        function getStatusText(tag) {
+            switch(tag) {
+                case 'green': return 'Normal';
+                case 'yellow': return 'Atenção';
+                case 'red': return 'Urgente';
+                default: return 'Normal';
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
+        }
+    </script>
+</body>
+</html>

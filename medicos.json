@@ -1,0 +1,18 @@
+[
+  {
+    "nome": "João Pedro Gershenson Costa",
+    "login": "DOC",
+    "crmv": "CRM-SP 12345",
+    "contato": "5181158530",
+    "senha": "123456",
+    "dataCadastro": "2025-09-29T20:52:03.460Z"
+  },
+  {
+    "nome": "Kiko",
+    "login": "kiko",
+    "crmv": "CRM-SP 12343",
+    "contato": "5181158530",
+    "senha": "123456",
+    "dataCadastro": "2025-09-29T21:06:20.264Z"
+  }
+]
