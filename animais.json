@@ -11,9 +11,57 @@
     "tutorNome": "Bruno",
     "tutorTelefone": "51991823420",
     "tutorEndereco": "Rua tal 3",
-    "tag": "red",
+    "tag": "yellow",
+    "anamnese": {
+      "motivo": "dada",
+      "historico": "",
+      "vacinacao": "dada",
+      "data": "29/09/2025, 22:31:27"
+    },
+    "observacoes": "reredada",
+    "dataCadastro": "2025-09-29T21:19:35.825Z",
+    "consultasPassadas": [
+      {
+        "data": "2025-09-16",
+        "descricao": "test"
+      }
+    ],
+    "consultasFuturas": [
+      {
+        "data": "2025-09-10",
+        "descricao": "da"
+      }
+    ]
+  },
+  {
+    "id": 1759195605365,
+    "nome": "Gay Filipi",
+    "especie": "Cão",
+    "raca": "cu",
+    "idade": "3",
+    "sexo": "Macho",
+    "peso": "3",
+    "tutorCpf": "03040942000",
+    "tutorNome": "KA",
+    "tutorTelefone": "51991823420",
+    "tutorEndereco": "Rua tal 33",
+    "tag": "green",
     "anamnese": null,
-    "observacoes": "",
-    "dataCadastro": "2025-09-29T21:19:35.825Z"
+    "observacoes": "dada",
+    "dataCadastro": "2025-09-30T01:26:45.365Z",
+    "examesSolicitados": [
+      {
+        "nome": "dad",
+        "descricao": "aa",
+        "dataSolicitacao": "2025-09-30"
+      }
+    ],
+    "resultadosExames": [
+      {
+        "exame": "dad",
+        "resultado": "aaaaaa",
+        "data": "2025-09-15"
+      }
+    ]
   }
 ]

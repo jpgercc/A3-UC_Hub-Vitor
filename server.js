@@ -2,7 +2,6 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const cors = require('cors');
-// const bcrypt = require('bcrypt'); // Temporarily disabled
 
 const app = express();
 const PORT = 3000;
@@ -18,24 +17,10 @@ function validateCPF(cpf) {
     return /^\d{11}$/.test(cpf);
 }
 
-function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
 function validatePhone(phone) {
     // Basic phone validation (10-11 digits)
     return /^\d{10,11}$/.test(phone);
 }
-
-// Temporarily disabled password hashing
-// async function hashPassword(password) {
-//     const saltRounds = 10;
-//     return await bcrypt.hash(password, saltRounds);
-// }
-
-// async function comparePassword(password, hash) {
-//     return await bcrypt.compare(password, hash);
-// }
 
 // Função auxiliar para ler JSON
 async function readJSON(filename) {
@@ -322,21 +307,73 @@ app.put('/api/salvar-observacoes/:id', async (req, res) => {
 app.put('/api/alterar-tag/:id', async (req, res) => {
     const { id } = req.params;
     const { tag } = req.body;
-    
+
     try {
         const animais = await readJSON('animais.json');
         const petIndex = animais.findIndex(p => p.id == id);
-        
+
         if (petIndex === -1) {
             return res.json({ success: false, message: 'Pet não encontrado' });
         }
-        
+
         animais[petIndex].tag = tag;
-        
+
         if (await writeJSON('animais.json', animais)) {
             res.json({ success: true, message: 'Tag alterada com sucesso!' });
         } else {
             res.json({ success: false, message: 'Erro ao alterar tag' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+    }
+});
+
+// Rota para salvar consultas (passadas e futuras)
+app.put('/api/salvar-consultas/:id', async (req, res) => {
+    const { id } = req.params;
+    const { consultasPassadas, consultasFuturas } = req.body;
+
+    try {
+        const animais = await readJSON('animais.json');
+        const petIndex = animais.findIndex(p => p.id == id);
+
+        if (petIndex === -1) {
+            return res.json({ success: false, message: 'Pet não encontrado' });
+        }
+
+        animais[petIndex].consultasPassadas = consultasPassadas || [];
+        animais[petIndex].consultasFuturas = consultasFuturas || [];
+
+        if (await writeJSON('animais.json', animais)) {
+            res.json({ success: true, message: 'Consultas salvas com sucesso!' });
+        } else {
+            res.json({ success: false, message: 'Erro ao salvar consultas' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+    }
+});
+
+// Rota para salvar exames
+app.put('/api/salvar-exames/:id', async (req, res) => {
+    const { id } = req.params;
+    const { examesSolicitados, resultadosExames } = req.body;
+
+    try {
+        const animais = await readJSON('animais.json');
+        const petIndex = animais.findIndex(p => p.id == id);
+
+        if (petIndex === -1) {
+            return res.json({ success: false, message: 'Pet não encontrado' });
+        }
+
+        animais[petIndex].examesSolicitados = examesSolicitados || [];
+        animais[petIndex].resultadosExames = resultadosExames || [];
+
+        if (await writeJSON('animais.json', animais)) {
+            res.json({ success: true, message: 'Exames salvos com sucesso!' });
+        } else {
+            res.json({ success: false, message: 'Erro ao salvar exames' });
         }
     } catch (error) {
         res.status(500).json({ success: false, message: 'Erro interno do servidor' });

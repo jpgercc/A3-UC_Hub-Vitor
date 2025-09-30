@@ -341,13 +341,28 @@
                     </button>
                 </div>
             </div>
-            
+
+            <!-- Doctor Observations -->
+            <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                <h4 class="font-bold text-lg mb-4">Observações do Médico</h4>
+
+                <form id="observations-form">
+                    <input type="hidden" id="observations-pet-id" name="observations-pet-id" value="">
+                    <textarea id="doctor-observations" name="doctor-observations" rows="6" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Observações adicionais do médico..."></textarea>
+                    <div class="flex justify-end mt-2">
+                        <button type="submit" class="bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                            Salvar Observações
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Tabs -->
             <div class="border-b border-gray-200 mb-6">
                 <nav class="-mb-px flex space-x-8">
-                    <button id="anamnesis-tab" class="border-b-2 border-secondary text-secondary font-medium py-4 px-4">Anamnese</button>
-                    <button id="exams-tab" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium py-4 px-4">Exame Físico</button>
-                    <button id="history-tab" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium py-4 px-4">Histórico</button>
+                    <button id="anamnesis-tab" class="tab-button border-b-2 border-secondary text-secondary font-medium py-4 px-4" data-tab="anamnesis">Anamnese</button>
+                    <button id="consultations-tab" class="tab-button text-gray-500 hover:text-gray-700 py-4 px-4" data-tab="consultations">Consultas</button>
+                    <button id="exams-tab" class="tab-button text-gray-500 hover:text-gray-700 py-4 px-4" data-tab="exams">Exames</button>
                 </nav>
             </div>
             
@@ -355,143 +370,114 @@
             <div id="anamnesis-content" class="tab-content">
                 <div class="bg-gray-50 p-4 rounded-lg mb-4">
                     <h4 class="font-bold text-lg mb-4">Anamnese</h4>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm text-gray-500 mb-1">Motivo da Consulta:</label>
-                        <p class="text-sm" id="modal-anamnesis-reason">Não preenchido</p>
+
+                    <!-- Display Anamnesis Data -->
+                    <div id="anamnesis-display" class="mb-6 p-4 bg-white rounded-lg border">
+                        <h5 class="font-semibold mb-3">Dados Salvos</h5>
+                        <div id="anamnesis-display-content">
+                            <p class="text-gray-500">Nenhuma anamnese registrada ainda.</p>
+                        </div>
                     </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm text-gray-500 mb-1">Histórico Clínico:</label>
-                        <p class="text-sm" id="modal-anamnesis-history">Não preenchido</p>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm text-gray-500 mb-1">Vacinas:</label>
-                        <p class="text-sm" id="modal-anamnesis-vaccines">Não preenchido</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Exams Content -->
-            <div id="exams-content" class="tab-content hidden">
-                <div class="bg-gray-50 p-4 rounded-lg mb-4">
-                    <h4 class="font-bold text-lg mb-4">Exame Físico</h4>
-                    
-                    <form id="exams-form">
-                        <input type="hidden" id="exam-pet-id" value="">
+
+                    <form id="anamnesis-form">
+                        <input type="hidden" id="anamnesis-pet-id" name="anamnesis-pet-id" value="">
                         <div class="mb-4">
-                            <label for="exam-temperature" class="block text-sm text-gray-700 mb-1">Temperatura (°C):</label>
-                            <input type="text" id="exam-temperature" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                            <label for="anamnesis-reason" class="block text-sm text-gray-700 mb-1">Motivo da Consulta:</label>
+                            <textarea id="anamnesis-reason" name="anamnesis-reason" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descreva o motivo da consulta..."></textarea>
                         </div>
-                        
+
                         <div class="mb-4">
-                            <label for="exam-heart-rate" class="block text-sm text-gray-700 mb-1">Frequência Cardíaca (bpm):</label>
-                            <input type="text" id="exam-heart-rate" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                            <label for="anamnesis-history" class="block text-sm text-gray-700 mb-1">Histórico Clínico:</label>
+                            <textarea id="anamnesis-history" name="anamnesis-history" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Histórico clínico do paciente..."></textarea>
                         </div>
-                        
+
                         <div class="mb-4">
-                            <label for="exam-respiratory-rate" class="block text-sm text-gray-700 mb-1">Frequência Respiratória (mpm):</label>
-                            <input type="text" id="exam-respiratory-rate" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                            <label for="anamnesis-vaccines" class="block text-sm text-gray-700 mb-1">Vacinas:</label>
+                            <textarea id="anamnesis-vaccines" name="anamnesis-vaccines" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Vacinas aplicadas..."></textarea>
                         </div>
-                        
-                        <div class="mb-4">
-                            <label for="exam-observations" class="block text-sm text-gray-700 mb-1">Observações:</label>
-                            <textarea id="exam-observations" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"></textarea>
-                        </div>
-                        
+
                         <div class="flex justify-end">
                             <button type="submit" class="bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
-                                Salvar Exame
+                                Salvar Anamnese
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-            
-            <!-- History Content -->
-            <div id="history-content" class="tab-content hidden">
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h4 class="font-bold text-lg mb-4">Histórico de Consultas</h4>
-                    
-                    <div id="consultation-history" class="space-y-4">
-                        <!-- Consultation history will be loaded here -->
+
+            <!-- Consultations Content -->
+            <div id="consultations-content" class="tab-content hidden">
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <h4 class="font-bold text-lg mb-4">Consultas</h4>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Past Consultations -->
+                        <div>
+                            <h5 class="font-semibold text-md mb-3 text-gray-700">Consultas Passadas</h5>
+                            <div id="past-consultations-list" class="space-y-3">
+                                <!-- Past consultations will be loaded here -->
+                            </div>
+                            <button type="button" onclick="addPastConsultationInline()" class="mt-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-300 text-sm">
+                                <i data-feather="plus" class="w-4 h-4 inline mr-1"></i>Adicionar Consulta
+                            </button>
+                        </div>
+
+                        <!-- Future Consultations -->
+                        <div>
+                            <h5 class="font-semibold text-md mb-3 text-gray-700">Consultas Futuras</h5>
+                            <div id="future-consultations-list" class="space-y-3">
+                                <!-- Future consultations will be loaded here -->
+                            </div>
+                            <button type="button" onclick="addFutureConsultationInline()" class="mt-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-300 text-sm">
+                                <i data-feather="plus" class="w-4 h-4 inline mr-1"></i>Agendar Consulta
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="button" onclick="saveConsultations()" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                            Salvar Consultas
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exams Content -->
+            <div id="exams-content" class="tab-content hidden">
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <h4 class="font-bold text-lg mb-4">Exames</h4>
+
+                    <div class="mb-6">
+                        <h5 class="font-semibold text-md mb-3 text-gray-700">Exames Solicitados</h5>
+                        <div id="requested-exams-list" class="space-y-3">
+                            <!-- Requested exams will be loaded here -->
+                        </div>
+                        <button type="button" onclick="addRequestedExam()" class="mt-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-300 text-sm">
+                            <i data-feather="plus" class="w-4 h-4 inline mr-1"></i>Solicitar Exame
+                        </button>
+                    </div>
+
+                    <div class="mb-6">
+                        <h5 class="font-semibold text-md mb-3 text-gray-700">Resultados de Exames</h5>
+                        <div id="exam-results-list" class="space-y-3">
+                            <!-- Exam results will be loaded here -->
+                        </div>
+                        <button type="button" onclick="addExamResult()" class="mt-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-300 text-sm">
+                            <i data-feather="plus" class="w-4 h-4 inline mr-1"></i>Adicionar Resultado
+                        </button>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="button" onclick="saveExams()" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                            Salvar Exames
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-primary">Editar Ficha - <span id="edit-pet-name"></span></h3>
-                <button class="text-gray-500 hover:text-gray-700" onclick="closeModal('edit-modal')">
-                    <i data-feather="x"></i>
-                </button>
-            </div>
-            
-            <form id="edit-form">
-                <input type="hidden" id="edit-pet-id" value="">
-                <div class="mb-6">
-                    <h4 class="font-bold text-lg mb-4">Dados do Pet</h4>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label for="edit-pet-name-input" class="block text-sm text-gray-700 mb-1">Nome</label>
-                            <input type="text" id="edit-pet-name-input" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                        </div>
-                        <div>
-                            <label for="edit-pet-breed" class="block text-sm text-gray-700 mb-1">Raça</label>
-                            <input type="text" id="edit-pet-breed" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="edit-pet-age" class="block text-sm text-gray-700 mb-1">Idade</label>
-                            <input type="text" id="edit-pet-age" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                        </div>
-                        <div>
-                            <label for="edit-pet-gender" class="block text-sm text-gray-700 mb-1">Sexo</label>
-                            <select id="edit-pet-gender" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                                <option value="Macho">Macho</option>
-                                <option value="Fêmea">Fêmea</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mb-6">
-                    <h4 class="font-bold text-lg mb-4">Observações Médicas</h4>
-                    
-                    <div class="mb-4">
-                        <label for="edit-observations" class="block text-sm text-gray-700 mb-1">Observações</label>
-                        <textarea id="edit-observations" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
-                    </div>
-                    
-                    <div>
-                        <label for="edit-status" class="block text-sm text-gray-700 mb-1">Status</label>
-                        <select id="edit-status" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                            <option value="green">Normal</option>
-                            <option value="yellow">Atenção</option>
-                            <option value="red">Urgente</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="flex justify-end space-x-4">
-                    <button type="button" onclick="closeModal('edit-modal')" class="border border-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg transition duration-300">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
-                        Salvar Alterações
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+
 
     <!-- Consultation Modal -->
     <div id="consultation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
@@ -505,21 +491,6 @@
 
             <form id="consultation-form">
                 <input type="hidden" id="consultation-pet-id" value="">
-
-                <div class="mb-6">
-                    <h4 class="font-bold text-lg mb-4">Motivo da Consulta</h4>
-                    <textarea id="consultation-reason" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Descreva o motivo da consulta..."></textarea>
-                </div>
-
-                <div class="mb-6">
-                    <h4 class="font-bold text-lg mb-4">Histórico Clínico</h4>
-                    <textarea id="consultation-history" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Histórico clínico do paciente..."></textarea>
-                </div>
-
-                <div class="mb-6">
-                    <h4 class="font-bold text-lg mb-4">Vacinas</h4>
-                    <textarea id="consultation-vaccines" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Vacinas aplicadas..."></textarea>
-                </div>
 
                 <div class="mb-6">
                     <h4 class="font-bold text-lg mb-4">Consultas Passadas</h4>
@@ -555,7 +526,8 @@
 
     <script>
         // Global variables
-        const API_URL = '';
+        // For localhost testing, change this to: const API_URL = 'http://localhost:3000';
+        const API_URL = 'http://localhost:3000';
         let currentPatientId = null;
         let allPets = [];
         let filteredPets = [];
@@ -566,8 +538,8 @@
 
             // Form event listeners
             document.getElementById('pet-form').addEventListener('submit', handlePetRegistration);
-            document.getElementById('exams-form').addEventListener('submit', handleExamSave);
-            document.getElementById('edit-form').addEventListener('submit', handleEditPet);
+            document.getElementById('anamnesis-form').addEventListener('submit', handleAnamnesisSave);
+            document.getElementById('observations-form').addEventListener('submit', handleObservationsSave);
             document.getElementById('consultation-form').addEventListener('submit', handleConsultationSave);
 
             // Tab switching
@@ -602,6 +574,12 @@
                 tutorEndereco: formData.get('tutorEndereco')
             };
 
+            // Validate required fields
+            if (!petData.nome || !petData.especie || !petData.tutorNome || !petData.tutorCpf) {
+                alert('Erro: Por favor, preencha todos os campos obrigatórios (Nome do pet, Espécie, Nome do tutor e CPF).');
+                return;
+            }
+
             try {
                 const response = await fetch(`${API_URL}/api/salvar-pet`, {
                     method: 'POST',
@@ -611,6 +589,10 @@
                     body: JSON.stringify(petData)
                 });
 
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+                }
+
                 const result = await response.json();
 
                 if (result.success) {
@@ -618,11 +600,17 @@
                     e.target.reset();
                     loadVetPets();
                 } else {
-                    alert(result.message || 'Erro ao cadastrar pet');
+                    alert(`Erro: ${result.message || 'Não foi possível cadastrar o pet. Verifique os dados e tente novamente.'}`);
                 }
             } catch (error) {
                 console.error('Erro ao cadastrar pet:', error);
-                alert('Erro de conexão. Tente novamente.');
+                if (error.message.includes('HTTP')) {
+                    alert(`Erro de servidor: ${error.message}. Verifique se o servidor está funcionando.`);
+                } else if (error.name === 'TypeError') {
+                    alert('Erro: Não foi possível conectar ao servidor. Verifique sua conexão e se o servidor está executando.');
+                } else {
+                    alert('Erro: Falha na comunicação com o servidor. Tente novamente em alguns instantes.');
+                }
             }
         }
 
@@ -672,7 +660,7 @@
                         <div>
                             <h4 class="font-bold text-lg">${pet.nome}</h4>
                             <p class="text-gray-600">${pet.especie} - ${pet.raca}</p>
-                            <p class="text-sm text-gray-500">${pet.idade} • ${pet.sexo} • ${pet.peso}kg</p>
+                            <p class="text-sm text-gray-500">Idade: ${pet.idade} anos • ${pet.sexo} • ${pet.peso}kg</p>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="tag-${pet.tag || 'green'} text-white text-xs font-medium px-2 py-1 rounded-full">
@@ -723,7 +711,7 @@
                             </div>
                             <div class="ml-4">
                                 <div class="text-sm font-medium text-gray-900">${pet.nome}</div>
-                                <div class="text-sm text-gray-500">${pet.idade}</div>
+                                <div class="text-sm text-gray-500">Idade: ${pet.idade} anos</div>
                             </div>
                         </div>
                     </td>
@@ -739,11 +727,8 @@
                         <span class="tag-${pet.tag || 'green'} text-white text-xs font-medium px-2 py-1 rounded-full">${getStatusText(pet.tag || 'green')}</span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button onclick="showPatientDetails('${pet.id}')" class="text-secondary hover:text-emerald-700 mr-3">
+                        <button onclick="showPatientDetails('${pet.id}')" class="text-secondary hover:text-emerald-700">
                             <i data-feather="eye"></i>
-                        </button>
-                        <button onclick="showConsultationModal('${pet.id}')" class="text-primary">
-                            <i data-feather="calendar"></i>
                         </button>
                     </td>
                 </tr>
@@ -767,7 +752,7 @@
             document.getElementById('patient-name-title').textContent = pet.nome;
             document.getElementById('modal-patient-name').textContent = pet.nome;
             document.getElementById('modal-patient-species').textContent = `${pet.especie} - ${pet.raca}`;
-            document.getElementById('modal-patient-age').textContent = pet.idade;
+            document.getElementById('modal-patient-age').textContent = `Idade: ${pet.idade} anos`;
             document.getElementById('modal-patient-gender').textContent = pet.sexo;
             document.getElementById('modal-patient-weight').textContent = `${pet.peso}kg`;
             document.getElementById('modal-patient-registered').textContent = formatDate(pet.dataCadastro);
@@ -781,17 +766,48 @@
             statusElement.textContent = getStatusText(pet.tag || 'green');
             statusElement.className = `tag-${pet.tag || 'green'} text-white text-xs font-medium px-2 py-1 rounded-full`;
             
-            // Update anamnesis content
+            // Load anamnesis data into form fields and display area
             if (pet.anamnese) {
-                document.getElementById('modal-anamnesis-reason').textContent = pet.anamnese.motivo || 'Não preenchido';
-                document.getElementById('modal-anamnesis-history').textContent = pet.anamnese.historico || 'Não preenchido';
-                document.getElementById('modal-anamnesis-vaccines').textContent = pet.anamnese.vacinacao || 'Não preenchido';
+                document.getElementById('anamnesis-reason').value = pet.anamnese.motivo || '';
+                document.getElementById('anamnesis-history').value = pet.anamnese.historico || '';
+                document.getElementById('anamnesis-vaccines').value = pet.anamnese.vacinacao || '';
+                
+                // Update the display area with saved data
+                const displayContent = document.getElementById('anamnesis-display-content');
+                displayContent.innerHTML = `
+                    <div class="space-y-3">
+                        <div>
+                            <h6 class="font-semibold text-sm text-gray-700">Motivo da Consulta:</h6>
+                            <p class="text-sm text-gray-600">${pet.anamnese.motivo || 'Não informado'}</p>
+                        </div>
+                        <div>
+                            <h6 class="font-semibold text-sm text-gray-700">Histórico Clínico:</h6>
+                            <p class="text-sm text-gray-600">${pet.anamnese.historico || 'Não informado'}</p>
+                        </div>
+                        <div>
+                            <h6 class="font-semibold text-sm text-gray-700">Vacinas:</h6>
+                            <p class="text-sm text-gray-600">${pet.anamnese.vacinacao || 'Não informado'}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('anamnesis-reason').value = '';
+                document.getElementById('anamnesis-history').value = '';
+                document.getElementById('anamnesis-vaccines').value = '';
+                
+                // Show default message when no data is saved
+                const displayContent = document.getElementById('anamnesis-display-content');
+                displayContent.innerHTML = '<p class="text-gray-500">Nenhuma anamnese registrada ainda.</p>';
             }
-            
+            document.getElementById('anamnesis-pet-id').value = petId;
+
             // Set form values
-            document.getElementById('exam-pet-id').value = petId;
             document.getElementById('status-select').value = pet.tag || 'green';
-            
+
+            // Load observations data into textarea directly
+            document.getElementById('doctor-observations').value = pet.observacoes || '';
+            document.getElementById('observations-pet-id').value = petId;
+
             document.getElementById('patient-details-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -802,13 +818,6 @@
 
             document.getElementById('consultation-pet-name').textContent = pet.nome;
             document.getElementById('consultation-pet-id').value = petId;
-
-            // Load existing consultation data if available
-            if (pet.anamnese) {
-                document.getElementById('consultation-reason').value = pet.anamnese.motivo || '';
-                document.getElementById('consultation-history').value = pet.anamnese.historico || '';
-                document.getElementById('consultation-vaccines').value = pet.anamnese.vacinacao || '';
-            }
 
             // Load past consultations
             loadPastConsultations(petId);
@@ -945,12 +954,14 @@
             });
 
             const consultationData = {
-                motivo: formData.get('consultation-reason'),
-                historico: formData.get('consultation-history'),
-                vacinacao: formData.get('consultation-vaccines'),
                 consultasPassadas: pastConsultations,
                 consultasFuturas: futureConsultations
             };
+
+            if (!petId) {
+                alert('Erro: Pet não identificado. Feche e abra novamente a ficha do paciente.');
+                return;
+            }
 
             try {
                 const response = await fetch(`${API_URL}/api/salvar-consultas/${petId}`, {
@@ -961,6 +972,10 @@
                     body: JSON.stringify(consultationData)
                 });
 
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+                }
+
                 const result = await response.json();
 
                 if (result.success) {
@@ -969,30 +984,21 @@
                     // Reload pets to show updated data
                     loadVetPets();
                 } else {
-                    alert(result.message || 'Erro ao salvar consultas');
+                    alert(`Erro: ${result.message || 'Pet não encontrado. Verifique os dados e tente novamente.'}`);
                 }
             } catch (error) {
                 console.error('Erro ao salvar consultas:', error);
-                alert('Erro de conexão. Tente novamente.');
+                if (error.message.includes('HTTP')) {
+                    alert(`Erro de servidor: ${error.message}. Verifique se o servidor está funcionando.`);
+                } else if (error.name === 'TypeError') {
+                    alert('Erro: Não foi possível conectar ao servidor. Verifique sua conexão e se o servidor está executando.');
+                } else {
+                    alert('Erro: Pet não encontrado. Verifique os dados e tente novamente.');
+                }
             }
         }
 
-        function showEditModal(petId) {
-            const pet = allPets.find(p => p.id == petId);
-            if (!pet) return;
 
-            document.getElementById('edit-pet-name').textContent = pet.nome;
-            document.getElementById('edit-pet-id').value = petId;
-            document.getElementById('edit-pet-name-input').value = pet.nome;
-            document.getElementById('edit-pet-breed').value = pet.raca;
-            document.getElementById('edit-pet-age').value = pet.idade;
-            document.getElementById('edit-pet-gender').value = pet.sexo;
-            document.getElementById('edit-observations').value = pet.observacoes || '';
-            document.getElementById('edit-status').value = pet.tag || 'green';
-
-            document.getElementById('edit-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.add('hidden');
@@ -1002,120 +1008,129 @@
         // Tab switching
         function setupTabSwitching() {
             document.getElementById('anamnesis-tab').addEventListener('click', () => switchTab('anamnesis'));
+            document.getElementById('consultations-tab').addEventListener('click', () => switchTab('consultations'));
             document.getElementById('exams-tab').addEventListener('click', () => switchTab('exams'));
-            document.getElementById('history-tab').addEventListener('click', () => switchTab('history'));
         }
 
         function switchTab(tabName) {
-            // Hide all content
+            // Hide all tab contents
             document.getElementById('anamnesis-content').classList.add('hidden');
+            document.getElementById('consultations-content').classList.add('hidden');
             document.getElementById('exams-content').classList.add('hidden');
-            document.getElementById('history-content').classList.add('hidden');
-            
-            // Remove active state from all tabs
-            document.getElementById('anamnesis-tab').classList.remove('border-secondary', 'text-secondary');
-            document.getElementById('anamnesis-tab').classList.add('border-transparent', 'text-gray-500');
-            document.getElementById('exams-tab').classList.remove('border-secondary', 'text-secondary');
-            document.getElementById('exams-tab').classList.add('border-transparent', 'text-gray-500');
-            document.getElementById('history-tab').classList.remove('border-secondary', 'text-secondary');
-            document.getElementById('history-tab').classList.add('border-transparent', 'text-gray-500');
-            
-            // Show selected content and activate tab
-            document.getElementById(`${tabName}-content`).classList.remove('hidden');
-            document.getElementById(`${tabName}-tab`).classList.add('border-secondary', 'text-secondary');
-            document.getElementById(`${tabName}-tab`).classList.remove('border-transparent', 'text-gray-500');
+
+            // Remove active tab styling
+            document.getElementById('anamnesis-tab').classList.remove('border-b-2', 'border-secondary', 'text-secondary');
+            document.getElementById('anamnesis-tab').classList.add('text-gray-500', 'hover:text-gray-700');
+            document.getElementById('consultations-tab').classList.remove('border-b-2', 'border-secondary', 'text-secondary');
+            document.getElementById('consultations-tab').classList.add('text-gray-500', 'hover:text-gray-700');
+            document.getElementById('exams-tab').classList.remove('border-b-2', 'border-secondary', 'text-secondary');
+            document.getElementById('exams-tab').classList.add('text-gray-500', 'hover:text-gray-700');
+
+            // Show selected tab content and update styling
+            if (tabName === 'anamnesis') {
+                document.getElementById('anamnesis-content').classList.remove('hidden');
+                document.getElementById('anamnesis-tab').classList.add('border-b-2', 'border-secondary', 'text-secondary');
+                document.getElementById('anamnesis-tab').classList.remove('text-gray-500', 'hover:text-gray-700');
+            } else if (tabName === 'consultations') {
+                document.getElementById('consultations-content').classList.remove('hidden');
+                document.getElementById('consultations-tab').classList.add('border-b-2', 'border-secondary', 'text-secondary');
+                document.getElementById('consultations-tab').classList.remove('text-gray-500', 'hover:text-gray-700');
+                loadConsultationsData(currentPatientId);
+            } else if (tabName === 'exams') {
+                document.getElementById('exams-content').classList.remove('hidden');
+                document.getElementById('exams-tab').classList.add('border-b-2', 'border-secondary', 'text-secondary');
+                document.getElementById('exams-tab').classList.remove('text-gray-500', 'hover:text-gray-700');
+                loadExamsData(currentPatientId);
+            }
         }
 
         // Form handlers
-        async function handleExamSave(e) {
+        async function handleAnamnesisSave(e) {
             e.preventDefault();
 
             const formData = new FormData(e.target);
-            const examData = {
-                temperatura: formData.get('exam-temperature'),
-                frequenciaCardiaca: formData.get('exam-heart-rate'),
-                frequenciaRespiratoria: formData.get('exam-respiratory-rate'),
-                observacoes: formData.get('exam-observations')
+            const petId = formData.get('anamnesis-pet-id');
+            
+            if (!petId) {
+                alert('Erro: Pet não identificado. Feche e abra novamente a ficha do paciente.');
+                return;
+            }
+
+            const anamnesisData = {
+                motivo: formData.get('anamnesis-reason'),
+                historico: formData.get('anamnesis-history'),
+                vacinacao: formData.get('anamnesis-vaccines')
             };
 
+            // Debug: log the data being sent
+            console.log('Pet ID:', petId);
+            console.log('Anamnesis Data:', anamnesisData);
+
             try {
-                const response = await fetch(`${API_URL}/api/salvar-anamnese/${currentPatientId}`, {
+                const response = await fetch(`${API_URL}/api/salvar-anamnese/${petId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(examData)
+                    body: JSON.stringify(anamnesisData)
                 });
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+                }
 
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('Exame físico salvo com sucesso!');
-                    e.target.reset();
-                    // Reload patient details to show updated data
-                    showPatientDetails(currentPatientId);
+                    alert('Anamnese salva com sucesso!');
+                    
+                    // Update the display area immediately with the saved data
+                    const displayContent = document.getElementById('anamnesis-display-content');
+                    displayContent.innerHTML = `
+                        <div class="space-y-3">
+                            <div>
+                                <h6 class="font-semibold text-sm text-gray-700">Motivo da Consulta:</h6>
+                                <p class="text-sm text-gray-600">${anamnesisData.motivo || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <h6 class="font-semibold text-sm text-gray-700">Histórico Clínico:</h6>
+                                <p class="text-sm text-gray-600">${anamnesisData.historico || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <h6 class="font-semibold text-sm text-gray-700">Vacinas:</h6>
+                                <p class="text-sm text-gray-600">${anamnesisData.vacinacao || 'Não informado'}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Also reload pets to update the backend data
+                    loadVetPets();
                 } else {
-                    alert(result.message || 'Erro ao salvar exame');
+                    alert(`Erro: ${result.message || 'Pet não encontrado. Verifique os dados e tente novamente.'}`);
                 }
             } catch (error) {
-                console.error('Erro ao salvar exame:', error);
-                alert('Erro de conexão. Tente novamente.');
+                console.error('Erro ao salvar anamnese:', error);
+                if (error.message.includes('HTTP')) {
+                    alert(`Erro de servidor: ${error.message}. Verifique se o servidor está funcionando.`);
+                } else if (error.name === 'TypeError') {
+                    alert('Erro: Não foi possível conectar ao servidor. Verifique sua conexão e se o servidor está executando.');
+                } else {
+                    alert('Erro: Pet não encontrado. Verifique os dados e tente novamente.');
+                }
             }
         }
 
-        async function handleEditPet(e) {
-            e.preventDefault();
 
-            const formData = new FormData(e.target);
-            const petId = formData.get('edit-pet-id');
-            const observations = formData.get('edit-observations');
-            const status = formData.get('edit-status');
 
-            try {
-                // Save observations
-                if (observations.trim()) {
-                    const obsResponse = await fetch(`${API_URL}/api/salvar-observacoes/${petId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ observacoes: observations })
-                    });
 
-                    const obsResult = await obsResponse.json();
-                    if (!obsResult.success) {
-                        alert(obsResult.message || 'Erro ao salvar observações');
-                        return;
-                    }
-                }
-
-                // Update status
-                const statusResponse = await fetch(`${API_URL}/api/alterar-tag/${petId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ tag: status })
-                });
-
-                const statusResult = await statusResponse.json();
-                if (!statusResult.success) {
-                    alert(statusResult.message || 'Erro ao alterar status');
-                    return;
-                }
-
-                alert('Alterações salvas com sucesso!');
-                closeModal('edit-modal');
-                // Reload pets to show updated data
-                loadVetPets();
-            } catch (error) {
-                console.error('Erro ao salvar alterações:', error);
-                alert('Erro de conexão. Tente novamente.');
-            }
-        }
 
         async function updatePatientStatus() {
             const newStatus = document.getElementById('status-select').value;
+
+            if (!currentPatientId) {
+                alert('Erro: Pet não identificado. Feche e abra novamente a ficha do paciente.');
+                return;
+            }
 
             try {
                 const response = await fetch(`${API_URL}/api/alterar-tag/${currentPatientId}`, {
@@ -1125,6 +1140,10 @@
                     },
                     body: JSON.stringify({ tag: newStatus })
                 });
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+                }
 
                 const result = await response.json();
 
@@ -1137,11 +1156,17 @@
                     // Reload pets to show updated data
                     loadVetPets();
                 } else {
-                    alert(result.message || 'Erro ao atualizar status');
+                    alert(`Erro: ${result.message || 'Pet não encontrado. Verifique os dados e tente novamente.'}`);
                 }
             } catch (error) {
                 console.error('Erro ao atualizar status:', error);
-                alert('Erro de conexão. Tente novamente.');
+                if (error.message.includes('HTTP')) {
+                    alert(`Erro de servidor: ${error.message}. Verifique se o servidor está funcionando.`);
+                } else if (error.name === 'TypeError') {
+                    alert('Erro: Não foi possível conectar ao servidor. Verifique sua conexão e se o servidor está executando.');
+                } else {
+                    alert('Erro: Pet não encontrado. Verifique os dados e tente novamente.');
+                }
             }
         }
 
@@ -1183,6 +1208,491 @@
             
             displayVetPets(searchResults);
         }
+
+        // Consultations functions
+        function loadConsultationsData(petId) {
+            const pet = allPets.find(p => p.id == petId);
+            if (!pet) return;
+
+            // Load past consultations
+            const pastConsultationsList = document.getElementById('past-consultations-list');
+            if (pet.consultasPassadas && pet.consultasPassadas.length > 0) {
+                pastConsultationsList.innerHTML = pet.consultasPassadas.map((consulta, index) => `
+                    <div class="bg-white p-3 rounded-lg border">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-medium">${formatDate(consulta.data)}</p>
+                                <p class="text-sm text-gray-600">${consulta.descricao}</p>
+                            </div>
+                            <button onclick="removePastConsultationInline(${index})" class="text-red-500 hover:text-red-700">
+                                <i data-feather="trash-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                pastConsultationsList.innerHTML = '<p class="text-gray-500 text-sm">Nenhuma consulta passada registrada.</p>';
+            }
+
+            // Load future consultations
+            const futureConsultationsList = document.getElementById('future-consultations-list');
+            if (pet.consultasFuturas && pet.consultasFuturas.length > 0) {
+                futureConsultationsList.innerHTML = pet.consultasFuturas.map((consulta, index) => `
+                    <div class="bg-white p-3 rounded-lg border">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-medium">${formatDate(consulta.data)}</p>
+                                <p class="text-sm text-gray-600">${consulta.descricao}</p>
+                            </div>
+                            <button onclick="removeFutureConsultationInline(${index})" class="text-red-500 hover:text-red-700">
+                                <i data-feather="trash-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                futureConsultationsList.innerHTML = '<p class="text-gray-500 text-sm">Nenhuma consulta futura agendada.</p>';
+            }
+
+            feather.replace();
+        }
+
+        function addPastConsultationInline() {
+            const pastConsultationsList = document.getElementById('past-consultations-list');
+            const newConsultation = document.createElement('div');
+            newConsultation.className = 'bg-white p-3 rounded-lg border';
+            newConsultation.innerHTML = `
+                <div class="space-y-2">
+                    <input type="date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Data">
+                    <textarea rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descrição da consulta"></textarea>
+                    <div class="flex justify-end space-x-2">
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-gray-700 text-sm">Cancelar</button>
+                        <button onclick="savePastConsultationInline(this)" class="bg-secondary hover:bg-emerald-700 text-white text-sm px-3 py-1 rounded-lg">Salvar</button>
+                    </div>
+                </div>
+            `;
+            pastConsultationsList.appendChild(newConsultation);
+        }
+
+        function addFutureConsultationInline() {
+            const futureConsultationsList = document.getElementById('future-consultations-list');
+            const newConsultation = document.createElement('div');
+            newConsultation.className = 'bg-white p-3 rounded-lg border';
+            newConsultation.innerHTML = `
+                <div class="space-y-2">
+                    <input type="date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Data">
+                    <textarea rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descrição da consulta"></textarea>
+                    <div class="flex justify-end space-x-2">
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-gray-700 text-sm">Cancelar</button>
+                        <button onclick="saveFutureConsultationInline(this)" class="bg-secondary hover:bg-emerald-700 text-white text-sm px-3 py-1 rounded-lg">Salvar</button>
+                    </div>
+                </div>
+            `;
+            futureConsultationsList.appendChild(newConsultation);
+        }
+
+        function savePastConsultationInline(button) {
+            const container = button.parentElement.parentElement;
+            const dateInput = container.querySelector('input[type="date"]');
+            const descriptionInput = container.querySelector('textarea');
+
+            if (!dateInput.value || !descriptionInput.value) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Update the container with saved data
+            container.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-medium">${formatDate(dateInput.value)}</p>
+                        <p class="text-sm text-gray-600">${descriptionInput.value}</p>
+                    </div>
+                    <button onclick="removePastConsultationInline(this.parentElement.parentElement)" class="text-red-500 hover:text-red-700">
+                        <i data-feather="trash-2"></i>
+                    </button>
+                </div>
+            `;
+
+            feather.replace();
+        }
+
+        function saveFutureConsultationInline(button) {
+            const container = button.parentElement.parentElement;
+            const dateInput = container.querySelector('input[type="date"]');
+            const descriptionInput = container.querySelector('textarea');
+
+            if (!dateInput.value || !descriptionInput.value) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Update the container with saved data
+            container.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-medium">${formatDate(dateInput.value)}</p>
+                        <p class="text-sm text-gray-600">${descriptionInput.value}</p>
+                    </div>
+                    <button onclick="removeFutureConsultationInline(this.parentElement.parentElement)" class="text-red-500 hover:text-red-700">
+                        <i data-feather="trash-2"></i>
+                    </button>
+                </div>
+            `;
+
+            feather.replace();
+        }
+
+        function removePastConsultationInline(index) {
+            if (typeof index === 'number') {
+                // Remove from data array (would need to be implemented with backend)
+                console.log('Remove past consultation at index:', index);
+            } else {
+                // Remove from DOM
+                index.remove();
+            }
+        }
+
+        function removeFutureConsultationInline(index) {
+            if (typeof index === 'number') {
+                // Remove from data array (would need to be implemented with backend)
+                console.log('Remove future consultation at index:', index);
+            } else {
+                // Remove from DOM
+                index.remove();
+            }
+        }
+
+        async function saveConsultations() {
+            // Collect all consultations from the DOM
+            const pastConsultations = [];
+            const futureConsultations = [];
+
+            // Collect past consultations
+            const pastContainers = document.querySelectorAll('#past-consultations-list > div');
+            pastContainers.forEach(container => {
+                const dateElement = container.querySelector('p.font-medium');
+                const descElement = container.querySelector('p.text-sm');
+                if (dateElement && descElement) {
+                    const dateText = dateElement.textContent;
+                    const descText = descElement.textContent;
+                    // Convert formatted date back to ISO (simplified)
+                    const date = new Date(dateText.split('/').reverse().join('-')).toISOString().split('T')[0];
+                    pastConsultations.push({ data: date, descricao: descText });
+                }
+            });
+
+            // Collect future consultations
+            const futureContainers = document.querySelectorAll('#future-consultations-list > div');
+            futureContainers.forEach(container => {
+                const dateElement = container.querySelector('p.font-medium');
+                const descElement = container.querySelector('p.text-sm');
+                if (dateElement && descElement) {
+                    const dateText = dateElement.textContent;
+                    const descText = descElement.textContent;
+                    // Convert formatted date back to ISO (simplified)
+                    const date = new Date(dateText.split('/').reverse().join('-')).toISOString().split('T')[0];
+                    futureConsultations.push({ data: date, descricao: descText });
+                }
+            });
+
+            const consultationData = {
+                consultasPassadas: pastConsultations,
+                consultasFuturas: futureConsultations
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/salvar-consultas/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(consultationData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Consultas salvas com sucesso!');
+                    loadConsultationsData(currentPatientId);
+                } else {
+                    alert(result.message || 'Erro ao salvar consultas');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar consultas:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        // Exams functions
+        function loadExamsData(petId) {
+            const pet = allPets.find(p => p.id == petId);
+            if (!pet) return;
+
+            // Load requested exams
+            const requestedExamsList = document.getElementById('requested-exams-list');
+            if (pet.examesSolicitados && pet.examesSolicitados.length > 0) {
+                requestedExamsList.innerHTML = pet.examesSolicitados.map((exam, index) => `
+                    <div class="bg-white p-3 rounded-lg border">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-medium">${exam.nome}</p>
+                                <p class="text-sm text-gray-600">${exam.descricao}</p>
+                                <p class="text-xs text-gray-500">Solicitado em: ${formatDate(exam.dataSolicitacao)}</p>
+                            </div>
+                            <button onclick="removeRequestedExam(${index})" class="text-red-500 hover:text-red-700">
+                                <i data-feather="trash-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                requestedExamsList.innerHTML = '<p class="text-gray-500 text-sm">Nenhum exame solicitado.</p>';
+            }
+
+            // Load exam results
+            const examResultsList = document.getElementById('exam-results-list');
+            if (pet.resultadosExames && pet.resultadosExames.length > 0) {
+                examResultsList.innerHTML = pet.resultadosExames.map((result, index) => `
+                    <div class="bg-white p-3 rounded-lg border">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-medium">${result.exame}</p>
+                                <p class="text-sm text-gray-600">${result.resultado}</p>
+                                <p class="text-xs text-gray-500">Realizado em: ${formatDate(result.data)}</p>
+                            </div>
+                            <button onclick="removeExamResult(${index})" class="text-red-500 hover:text-red-700">
+                                <i data-feather="trash-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                examResultsList.innerHTML = '<p class="text-gray-500 text-sm">Nenhum resultado de exame disponível.</p>';
+            }
+
+            feather.replace();
+        }
+
+        function addRequestedExam() {
+            const requestedExamsList = document.getElementById('requested-exams-list');
+            const newExam = document.createElement('div');
+            newExam.className = 'bg-white p-3 rounded-lg border';
+            newExam.innerHTML = `
+                <div class="space-y-2">
+                    <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Nome do exame">
+                    <textarea rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descrição/Observações"></textarea>
+                    <div class="flex justify-end space-x-2">
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-gray-700 text-sm">Cancelar</button>
+                        <button onclick="saveRequestedExam(this)" class="bg-secondary hover:bg-emerald-700 text-white text-sm px-3 py-1 rounded-lg">Salvar</button>
+                    </div>
+                </div>
+            `;
+            requestedExamsList.appendChild(newExam);
+        }
+
+        function addExamResult() {
+            const examResultsList = document.getElementById('exam-results-list');
+            const newResult = document.createElement('div');
+            newResult.className = 'bg-white p-3 rounded-lg border';
+            newResult.innerHTML = `
+                <div class="space-y-2">
+                    <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Nome do exame">
+                    <input type="date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Data do exame">
+                    <textarea rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Resultado do exame"></textarea>
+                    <div class="flex justify-end space-x-2">
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-gray-700 text-sm">Cancelar</button>
+                        <button onclick="saveExamResult(this)" class="bg-secondary hover:bg-emerald-700 text-white text-sm px-3 py-1 rounded-lg">Salvar</button>
+                    </div>
+                </div>
+            `;
+            examResultsList.appendChild(newResult);
+        }
+
+        function saveRequestedExam(button) {
+            const container = button.parentElement.parentElement;
+            const nameInput = container.querySelector('input[type="text"]');
+            const descriptionInput = container.querySelector('textarea');
+
+            if (!nameInput.value || !descriptionInput.value) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Update the container with saved data
+            container.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-medium">${nameInput.value}</p>
+                        <p class="text-sm text-gray-600">${descriptionInput.value}</p>
+                        <p class="text-xs text-gray-500">Solicitado em: ${formatDate(new Date().toISOString().split('T')[0])}</p>
+                    </div>
+                    <button onclick="removeRequestedExam(this.parentElement.parentElement)" class="text-red-500 hover:text-red-700">
+                        <i data-feather="trash-2"></i>
+                    </button>
+                </div>
+            `;
+
+            feather.replace();
+        }
+
+        function saveExamResult(button) {
+            const container = button.parentElement.parentElement;
+            const nameInput = container.querySelector('input[type="text"]');
+            const dateInput = container.querySelector('input[type="date"]');
+            const resultInput = container.querySelector('textarea');
+
+            if (!nameInput.value || !dateInput.value || !resultInput.value) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Update the container with saved data
+            container.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-medium">${nameInput.value}</p>
+                        <p class="text-sm text-gray-600">${resultInput.value}</p>
+                        <p class="text-xs text-gray-500">Realizado em: ${formatDate(dateInput.value)}</p>
+                    </div>
+                    <button onclick="removeExamResult(this.parentElement.parentElement)" class="text-red-500 hover:text-red-700">
+                        <i data-feather="trash-2"></i>
+                    </button>
+                </div>
+            `;
+
+            feather.replace();
+        }
+
+        function removeRequestedExam(index) {
+            if (typeof index === 'number') {
+                console.log('Remove requested exam at index:', index);
+            } else {
+                index.remove();
+            }
+        }
+
+        function removeExamResult(index) {
+            if (typeof index === 'number') {
+                console.log('Remove exam result at index:', index);
+            } else {
+                index.remove();
+            }
+        }
+
+        async function saveExams() {
+            // Collect all exams from the DOM
+            const requestedExams = [];
+            const examResults = [];
+
+            // Collect requested exams
+            const requestedContainers = document.querySelectorAll('#requested-exams-list > div');
+            requestedContainers.forEach(container => {
+                const nameElement = container.querySelector('p.font-medium');
+                const descElement = container.querySelector('p.text-sm');
+                if (nameElement && descElement) {
+                    const nameText = nameElement.textContent;
+                    const descText = descElement.textContent;
+                    requestedExams.push({
+                        nome: nameText,
+                        descricao: descText,
+                        dataSolicitacao: new Date().toISOString().split('T')[0]
+                    });
+                }
+            });
+
+            // Collect exam results
+            const resultContainers = document.querySelectorAll('#exam-results-list > div');
+            resultContainers.forEach(container => {
+                const nameElement = container.querySelector('p.font-medium');
+                const resultElement = container.querySelector('p.text-sm');
+                const dateText = container.querySelector('p.text-xs').textContent.match(/(\d{2}\/\d{2}\/\d{4})/);
+                if (nameElement && resultElement && dateText) {
+                    const date = new Date(dateText[1].split('/').reverse().join('-')).toISOString().split('T')[0];
+                    examResults.push({
+                        exame: nameElement.textContent,
+                        resultado: resultElement.textContent,
+                        data: date
+                    });
+                }
+            });
+
+            const examData = {
+                examesSolicitados: requestedExams,
+                resultadosExames: examResults
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/salvar-exames/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(examData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Exames salvos com sucesso!');
+                    loadExamsData(currentPatientId);
+                } else {
+                    alert(result.message || 'Erro ao salvar exames');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar exames:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        // Observations form handler
+        async function handleObservationsSave(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const petId = formData.get('observations-pet-id');
+            const observations = formData.get('doctor-observations');
+
+            if (!petId) {
+                alert('Erro: Pet não identificado. Feche e abra novamente a ficha do paciente.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/salvar-observacoes/${petId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ observacoes: observations })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Observações salvas com sucesso!');
+                    // Reload patient details to show updated data
+                    showPatientDetails(petId);
+                } else {
+                    alert(`Erro: ${result.message || 'Pet não encontrado. Verifique os dados e tente novamente.'}`);
+                }
+            } catch (error) {
+                console.error('Erro ao salvar observações:', error);
+                if (error.message.includes('HTTP')) {
+                    alert(`Erro de servidor: ${error.message}. Verifique se o servidor está funcionando.`);
+                } else if (error.name === 'TypeError') {
+                    alert('Erro: Não foi possível conectar ao servidor. Verifique sua conexão e se o servidor está executando.');
+                } else {
+                    alert('Erro: Pet não encontrado. Verifique os dados e tente novamente.');
+                }
+            }
+        }
+
+
 
         // Utility functions
         function getStatusText(tag) {
