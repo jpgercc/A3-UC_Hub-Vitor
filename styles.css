@@ -1,0 +1,63 @@
+/* Navigation Styles */
+
+/* Navigation container with proper spacing */
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* space-y-2 equivalent */
+}
+
+/* Base navigation item styles */
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* space-x-3 equivalent */
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    color: #374151; /* text-gray-700 */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Icon styles within nav items */
+.nav-item i {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+
+/* Span text styles within nav items */
+.nav-item span {
+    color: inherit;
+}
+
+/* Hover effect for navigation items */
+.nav-item:hover {
+    background-color: #f3f4f6; /* hover:bg-gray-100 */
+    color: #374151;
+    transform: translateX(2px);
+}
+
+/* Active navigation item styles */
+.nav-item-active {
+    background-color: rgba(16, 185, 129, 0.1); /* bg-secondary bg-opacity-10 */
+    color: #10b981; /* text-secondary */
+    font-weight: 500;
+}
+
+.nav-item-active span {
+    color: #000000;
+}
+
+/* Active item hover - slightly different effect */
+.nav-item-active:hover {
+    background-color: rgba(16, 185, 129, 0.15);
+    transform: translateX(2px);
+}
+
+/* Specific hover effects for different nav items */
+.nav-item:not(.nav-item-active):hover i {
+    color: #10b981;
+}
