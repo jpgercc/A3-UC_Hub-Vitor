@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VetCareHub - Sistema de Gestão Veterinária</title>
+    <title>Bichinho Feliz - Sistema de Gestão Veterinária</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="styles.css">
@@ -41,7 +41,7 @@
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center">
                     <i data-feather="heart" class="text-secondary mr-2"></i>
-                    <h1 class="text-xl font-bold text-secondary">VetCareHub</h1>
+                    <h1 class="text-xl font-bold text-secondary">Bichinho Feliz</h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="relative">
@@ -370,7 +370,7 @@
             <!-- Anamnesis Content -->
             <div id="anamnesis-content" class="tab-content">
                 <div class="bg-gray-50 p-4 rounded-lg mb-4">
-                    <h4 class="font-bold text-lg mb-4">Anamnese</h4>
+                    <h4 class="font-bold text-lg mb-4 text-center">Ficha de anamnese</h4>
 
                     <!-- Display Anamnesis Data -->
                     <div id="anamnesis-display" class="mb-6 p-4 bg-white rounded-lg border">
@@ -380,26 +380,422 @@
                         </div>
                     </div>
 
-                    <form id="anamnesis-form">
+                    <form id="anamnesis-form" class="space-y-6">
                         <input type="hidden" id="anamnesis-pet-id" name="anamnesis-pet-id" value="">
-                        <div class="mb-4">
-                            <label for="anamnesis-reason" class="block text-sm text-gray-700 mb-1">Motivo da Consulta:</label>
-                            <textarea id="anamnesis-reason" name="anamnesis-reason" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descreva o motivo da consulta..."></textarea>
+                        
+                        <!-- Queixa Principal -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Queixa principal</h5>
+                            <label class="block text-sm text-gray-700 mb-2">(Motivo da consulta, Início, duração, frequência, evolução)</label>
+                            <textarea id="queixa-principal" name="queixaPrincipal" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="anamnesis-history" class="block text-sm text-gray-700 mb-1">Histórico Clínico:</label>
-                            <textarea id="anamnesis-history" name="anamnesis-history" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Histórico clínico do paciente..."></textarea>
+                        <!-- Histórico Familiar -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Desde quando está com a família?</label>
+                                    <input type="text" id="desde-quando-familia" name="desdeQuandoNaFamilia" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Motivo da aquisição?</label>
+                                    <input type="text" id="motivo-aquisicao" name="motivoAquisicao" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="anamnesis-vaccines" class="block text-sm text-gray-700 mb-1">Vacinas:</label>
-                            <textarea id="anamnesis-vaccines" name="anamnesis-vaccines" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Vacinas aplicadas..."></textarea>
+                        <!-- Imunização -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Imunização</h5>
+                            <label class="block text-sm text-gray-700 mb-2">(Quais vacinas? Feita por médico veterinário?)</label>
+                            <textarea id="imunizacao" name="imunizacao" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300 mb-4"></textarea>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Data da última dose:</label>
+                                <input type="date" id="data-ultima-dose-vacina" name="dataUltimaDoseVacina" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                            </div>
+                        </div>
+
+                        <!-- Desverminação -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Desverminação</h5>
+                            <label class="block text-sm text-gray-700 mb-2">(Qual medicamento? Frequência?)</label>
+                            <textarea id="desverminacao" name="desverminacao" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300 mb-4"></textarea>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Data da última dose:</label>
+                                <input type="date" id="data-ultima-dose-vermifugo" name="dataUltimaDoseVermifugo" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                            </div>
+                        </div>
+
+                        <!-- Ambiente e Passeios -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Ambiente e Passeios</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Casa? Apartamento? Sítio? Rua? Tem acesso à rua?</label>
+                                    <input type="text" id="ambiente" name="ambiente" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Passeios - Frequência:</label>
+                                    <div class="flex flex-wrap gap-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="frequenciaPasseios" value="diarios-1x" class="mr-2">
+                                            Diários (1 vez)
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="frequenciaPasseios" value="diarios-2x+" class="mr-2">
+                                            Diários (2 vezes ou mais)
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="frequenciaPasseios" value="semanais" class="mr-2">
+                                            Semanais
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Duração do passeio:</label>
+                                    <div class="flex flex-wrap gap-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="duracaoPasseio" value="ate-15min" class="mr-2">
+                                            Até 15 min
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="duracaoPasseio" value="15-30min" class="mr-2">
+                                            15 à 30 min
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="duracaoPasseio" value="30min+" class="mr-2">
+                                            30 ou mais
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de piso?</label>
+                                    <input type="text" id="tipo-piso" name="tipoPiso" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Exposições -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Exposições</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Exposição a poeira/fumaça (fumante, incenso, reformas)?</label>
+                                    <input type="text" id="exposicao-poeira" name="exposicaoPoeira" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Exposição a produtos químicos / venenos / medicações controladas?</label>
+                                    <input type="text" id="exposicao-quimicos" name="exposicaoQuimicos" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Presença de ratos?</label>
+                                    <input type="text" id="presenca-ratos" name="presencaRatos" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Presença de plantas ornamentais?</label>
+                                    <input type="text" id="presenca-plantas" name="presencaPlantas" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Animais Contactantes -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Animais contactantes</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Sim [ ] Não [ ] Se sim, estão apresentando alterações? Quais?</label>
+                                    <textarea id="animais-contactantes" name="animaisContactantes" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Convivência com outros animais - Quais?</label>
+                                    <textarea id="convivencia-outros-animais" name="convivenciaOutrosAnimais" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                    <div class="flex flex-wrap gap-4 mt-2">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="tipoConvivencia" value="residem-juntos" class="mr-2">
+                                            Residem juntos
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="tipoConvivencia" value="contato-frequente" class="mr-2">
+                                            Contato frequente
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="tipoConvivencia" value="contato-raro" class="mr-2">
+                                            Contato raro ou ausente
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sistema Digestório -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Digestório</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Apetite:</label>
+                                    <div class="flex flex-wrap gap-4">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="normal" class="mr-2">
+                                            Normal
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="diminuido" class="mr-2">
+                                            Diminuído
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="aumentado" class="mr-2">
+                                            Aumentado
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="disfagia" class="mr-2">
+                                            Disfagia
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="parorexia" class="mr-2">
+                                            Parorexia
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="coprofagia" class="mr-2">
+                                            Coprofagia
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Qual o alimento? Quantas vezes ao dia? Qual a quantidade?</label>
+                                    <textarea id="alimentacao" name="alimentacao" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Peso está se mantendo nos últimos meses?</label>
+                                    <input type="text" id="manutencao-peso" name="manutencaoPeso" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Ingestão de água - Quantos mL/24h?</label>
+                                    <div class="flex flex-wrap gap-4 mb-2">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="ingestaoAgua" value="normal" class="mr-2">
+                                            Normal
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="ingestaoAgua" value="diminuido" class="mr-2">
+                                            Diminuído
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="ingestaoAgua" value="aumentado" class="mr-2">
+                                            Aumentado
+                                        </label>
+                                    </div>
+                                    <input type="text" id="quantidade-agua" name="quantidadeAgua" placeholder="mL/24h" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Defecação - Frequência? Cor? Odor? Volume? Disquesia?</label>
+                                    <textarea id="defecacao" name="defecacao" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Vômitos e Regurgitação</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <div class="flex gap-4 mb-2">
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="vomitos" value="sim" class="mr-2">
+                                                    Vômitos: Sim
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="vomitos" value="nao" class="mr-2">
+                                                    Não
+                                                </label>
+                                            </div>
+                                            <input type="text" name="aspectoVomitos" placeholder="Aspecto:" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300 mb-2">
+                                            <input type="text" name="frequenciaVomitos" placeholder="Frequência:" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                        </div>
+                                        <div>
+                                            <div class="flex gap-4 mb-2">
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="regurgitacao" value="sim" class="mr-2">
+                                                    Regurgitação: Sim
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="regurgitacao" value="nao" class="mr-2">
+                                                    Não
+                                                </label>
+                                            </div>
+                                            <input type="text" name="frequenciaRegurgitacao" placeholder="Frequência:" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Outros Sistemas -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Cardiorrespiratório</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Tosse? Dificuldade respiratória? Secreção nasal? Síncope? Cansaço fácil? Outros sinais:</label>
+                            <textarea id="sistema-cardiorrespiratorio" name="sistemaCardiorrespiratorio" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Geniturinário</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Urina (cor, volume, odor, disúria, local)? Castração? Quando? Gestações? Mamas?</label>
+                            <textarea id="sistema-geniturinario" name="sistemaGeniturinario" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Neurológico e Locomotor</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Convulsões? Claudicação? Perda de movimento? Alterações comportamentais? Sensoriais?</label>
+                            <textarea id="sistema-neurologico-locomotor" name="sistemaNeurologicoLocomotor" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Tegumentar</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Prurido? Lesões de pele? Áreas de alopecia? Secreção nos ouvidos? Banhos? Ectoparasitas?</label>
+                            <textarea id="sistema-tegumentar" name="sistemaTegumentar" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Histórico médico e medicamentoso</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Doenças, cirurgias, tratamentos, medicações, exames anteriores, alergias, histórico familiar</label>
+                            <textarea id="historico-medico-medicamentoso" name="historicoMedicoMedicamentoso" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <!-- Exame Físico Geral -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Exame Físico Geral</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nível de consciência:</label>
+                                    <input type="text" id="nivel-consciencia" name="nivelConsciencia" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Postura:</label>
+                                    <input type="text" id="postura" name="postura" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Escore corporal:</label>
+                                    <input type="text" id="escore-corporal" name="escoreCorporal" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Avaliação cabeça:</label>
+                                    <input type="text" id="avaliacao-cabeca" name="avaliacaoCabeca" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Mucosas:</label>
+                                <div class="flex flex-wrap gap-4">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="normocoradas" class="mr-2">
+                                        Normocoradas
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="palidas" class="mr-2">
+                                        Pálidas
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="congestas" class="mr-2">
+                                        Congestas
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="ictericas" class="mr-2">
+                                        Ictéricas
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="cianoticas" class="mr-2">
+                                        Cianóticas
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Linfonodos:</label>
+                                <div class="flex gap-4 mb-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="linfonodos" value="normais" class="mr-2">
+                                        Normais
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="linfonodos" value="anormais" class="mr-2">
+                                        Anormais
+                                    </label>
+                                </div>
+                                <input type="text" name="quaisLinfonodos" placeholder="Quais?" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Ausculta Pulmonar:</label>
+                                    <input type="text" id="ausculta-pulmonar" name="auscultaPulmonar" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Ausculta Cardíaca:</label>
+                                    <input type="text" id="ausculta-cardiaca" name="auscultaCardiaca" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">FR:</label>
+                                    <input type="text" id="fr" name="fr" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">FC:</label>
+                                    <input type="text" id="fc" name="fc" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Palpação abdominal:</label>
+                                    <input type="text" id="palpacao-abdominal" name="palpacaoAbdominal" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pulso arterial:</label>
+                                    <input type="text" id="pulso-arterial" name="pulsoArterial" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Sistema reprodutor:</label>
+                                    <textarea id="sistema-reprodutor" name="sistemaReprodutor" rows="2" placeholder="Avaliação glândulas mamárias, vulva, testículo, prepúcio, pênis" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Temperatura:</label>
+                                    <input type="text" id="temperatura" name="temperatura" placeholder="°C" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Outros achados / Observações comportamentais:</label>
+                                <textarea id="outros-achados" name="outrosAchados" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Conclusões -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Conclusões e Tratamento</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Suspeita clínica:</label>
+                                    <textarea id="suspeita-clinica" name="suspeitaClinica" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Exames complementares:</label>
+                                    <textarea id="exames-complementares" name="examesComplementares" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Diagnóstico definitivo:</label>
+                                    <textarea id="diagnostico-definitivo" name="diagnosticoDefinitivo" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tratamento:</label>
+                                    <textarea id="tratamento" name="tratamento" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Indicação de avaliação comportamental?</label>
+                                    <textarea id="avaliacao-comportamental" name="avaliacaoComportamental" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="flex justify-end">
-                            <button type="submit" class="bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
-                                Salvar Anamnese
+                            <button type="submit" class="bg-secondary hover:bg-emerald-700 text-white font-medium py-3 px-8 rounded-lg transition duration-300">
+                                Salvar Anamnese Completa
                             </button>
                         </div>
                     </form>
@@ -447,6 +843,48 @@
             <div id="exams-content" class="tab-content hidden">
                 <div class="bg-gray-50 p-4 rounded-lg mb-4">
                     <h4 class="font-bold text-lg mb-4">Exames</h4>
+
+                    <!-- Histórico Clínico -->
+                    <div class="mb-6 bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-md mb-3 text-blue-800">Histórico Clínico</h5>
+                        <div id="clinical-history-display" class="mb-4 p-3 bg-gray-50 rounded-lg">
+                            <p class="text-gray-500">Nenhum histórico clínico registrado ainda.</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Histórico Clínico do Paciente:</label>
+                            <textarea id="clinical-history-input" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descreva o histórico clínico do paciente, doenças anteriores, cirurgias, tratamentos realizados..."></textarea>
+                        </div>
+                        <button type="button" onclick="saveClinicalHistory()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 text-sm">
+                            <i data-feather="save" class="w-4 h-4 inline mr-1"></i>Salvar Histórico
+                        </button>
+                    </div>
+
+                    <!-- Vacinação -->
+                    <div class="mb-6 bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-md mb-3 text-blue-800">Vacinação</h5>
+                        <div id="vaccination-display" class="mb-4 p-3 bg-gray-50 rounded-lg">
+                            <p class="text-gray-500">Nenhuma vacinação registrada ainda.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Vacinas Aplicadas:</label>
+                                <textarea id="vaccination-input" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Ex: V10, V8, Antirrábica, etc..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Data da Última Vacinação:</label>
+                                <input type="date" id="last-vaccination-date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 mt-2">Próxima Vacinação:</label>
+                                <input type="date" id="next-vaccination-date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Observações sobre Vacinação:</label>
+                            <textarea id="vaccination-notes" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Reações, observações especiais, fabricante..."></textarea>
+                        </div>
+                        <button type="button" onclick="saveVaccination()" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 text-sm">
+                            <i data-feather="shield" class="w-4 h-4 inline mr-1"></i>Salvar Vacinação
+                        </button>
+                    </div>
 
                     <div class="mb-6">
                         <h5 class="font-semibold text-md mb-3 text-gray-700">Exames Solicitados</h5>
@@ -769,36 +1207,73 @@
             
             // Load anamnesis data into form fields and display area
             if (pet.anamnese) {
-                document.getElementById('anamnesis-reason').value = pet.anamnese.motivo || '';
-                document.getElementById('anamnesis-history').value = pet.anamnese.historico || '';
-                document.getElementById('anamnesis-vaccines').value = pet.anamnese.vacinacao || '';
+                // Load form fields with saved data
+                const formFields = [
+                    'queixa-principal', 'desde-quando-familia', 'motivo-aquisicao', 'imunizacao',
+                    'data-ultima-dose-vacina', 'desverminacao', 'data-ultima-dose-vermifugo',
+                    'ambiente', 'tipo-piso', 'exposicao-poeira', 'exposicao-quimicos',
+                    'presenca-ratos', 'presenca-plantas', 'animais-contactantes',
+                    'convivencia-outros-animais', 'alimentacao', 'manutencao-peso',
+                    'quantidade-agua', 'defecacao', 'aspectoVomitos', 'frequenciaVomitos',
+                    'frequenciaRegurgitacao', 'sistema-cardiorrespiratorio', 'sistema-geniturinario',
+                    'sistema-neurologico-locomotor', 'sistema-tegumentar', 'historico-medico-medicamentoso',
+                    'nivel-consciencia', 'postura', 'escore-corporal', 'avaliacao-cabeca',
+                    'quaisLinfonodos', 'ausculta-pulmonar', 'ausculta-cardiaca', 'fr', 'fc',
+                    'palpacao-abdominal', 'pulso-arterial', 'sistema-reprodutor', 'temperatura',
+                    'outros-achados', 'suspeita-clinica', 'exames-complementares',
+                    'diagnostico-definitivo', 'tratamento', 'avaliacao-comportamental'
+                ];
                 
-                // Update the display area with saved data
-                const displayContent = document.getElementById('anamnesis-display-content');
-                displayContent.innerHTML = `
-                    <div class="space-y-3">
-                        <div>
-                            <h6 class="font-semibold text-sm text-gray-700">Motivo da Consulta:</h6>
-                            <p class="text-sm text-gray-600">${pet.anamnese.motivo || 'Não informado'}</p>
-                        </div>
-                        <div>
-                            <h6 class="font-semibold text-sm text-gray-700">Histórico Clínico:</h6>
-                            <p class="text-sm text-gray-600">${pet.anamnese.historico || 'Não informado'}</p>
-                        </div>
-                        <div>
-                            <h6 class="font-semibold text-sm text-gray-700">Vacinas:</h6>
-                            <p class="text-sm text-gray-600">${pet.anamnese.vacinacao || 'Não informado'}</p>
-                        </div>
-                    </div>
-                `;
+                formFields.forEach(fieldId => {
+                    const element = document.getElementById(fieldId);
+                    if (element && pet.anamnese[fieldId.replace(/-/g, '')]) {
+                        element.value = pet.anamnese[fieldId.replace(/-/g, '')];
+                    }
+                });
+                
+                // Load radio buttons
+                if (pet.anamnese.frequenciaPasseios) {
+                    const radio = document.querySelector(`input[name="frequenciaPasseios"][value="${pet.anamnese.frequenciaPasseios}"]`);
+                    if (radio) radio.checked = true;
+                }
+                
+                if (pet.anamnese.duracaoPasseio) {
+                    const radio = document.querySelector(`input[name="duracaoPasseio"][value="${pet.anamnese.duracaoPasseio}"]`);
+                    if (radio) radio.checked = true;
+                }
+                
+                // Update the display area with saved data summary
+                updateAnamnesisDisplay(pet.anamnese);
             } else {
-                document.getElementById('anamnesis-reason').value = '';
-                document.getElementById('anamnesis-history').value = '';
-                document.getElementById('anamnesis-vaccines').value = '';
-                
                 // Show default message when no data is saved
                 const displayContent = document.getElementById('anamnesis-display-content');
                 displayContent.innerHTML = '<p class="text-gray-500">Nenhuma anamnese registrada ainda.</p>';
+            }
+            
+            // Load clinical history and vaccination data for Exams tab
+            if (pet.exames) {
+                if (pet.exames.historicoClinico) {
+                    document.getElementById('clinical-history-display').innerHTML = `
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-blue-800 mb-2">Histórico Clínico:</h6>
+                            <p class="text-sm text-gray-700">${pet.exames.historicoClinico}</p>
+                            <p class="text-xs text-gray-500 mt-2">Salvo em: ${pet.exames.dataHistorico || 'Data não disponível'}</p>
+                        </div>
+                    `;
+                }
+                
+                if (pet.exames.vacinacao) {
+                    document.getElementById('vaccination-display').innerHTML = `
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-green-800 mb-2">Vacinação:</h6>
+                            <p class="text-sm text-gray-700 mb-2">${pet.exames.vacinacao}</p>
+                            ${pet.exames.dataUltimaVacinacao ? `<p class="text-xs text-gray-600">Última vacinação: ${formatDate(pet.exames.dataUltimaVacinacao)}</p>` : ''}
+                            ${pet.exames.proximaVacinacao ? `<p class="text-xs text-gray-600">Próxima vacinação: ${formatDate(pet.exames.proximaVacinacao)}</p>` : ''}
+                            ${pet.exames.observacoesVacinacao ? `<p class="text-xs text-gray-600 mt-1">Observações: ${pet.exames.observacoesVacinacao}</p>` : ''}
+                            <p class="text-xs text-gray-500 mt-2">Salvo em: ${pet.exames.dataVacinacao || 'Data não disponível'}</p>
+                        </div>
+                    `;
+                }
             }
             document.getElementById('anamnesis-pet-id').value = petId;
 
@@ -1057,15 +1532,70 @@
                 return;
             }
 
+            // Collect all form data for the complete anamnesis
             const anamnesisData = {
-                motivo: formData.get('anamnesis-reason'),
-                historico: formData.get('anamnesis-history'),
-                vacinacao: formData.get('anamnesis-vaccines')
+                queixaPrincipal: formData.get('queixaPrincipal') || '',
+                desdeQuandoNaFamilia: formData.get('desdeQuandoNaFamilia') || '',
+                motivoAquisicao: formData.get('motivoAquisicao') || '',
+                imunizacao: formData.get('imunizacao') || '',
+                dataUltimaDoseVacina: formData.get('dataUltimaDoseVacina') || '',
+                desverminacao: formData.get('desverminacao') || '',
+                dataUltimaDoseVermifugo: formData.get('dataUltimaDoseVermifugo') || '',
+                ambiente: formData.get('ambiente') || '',
+                frequenciaPasseios: formData.get('frequenciaPasseios') || '',
+                duracaoPasseio: formData.get('duracaoPasseio') || '',
+                tipoPiso: formData.get('tipoPiso') || '',
+                exposicaoPoeira: formData.get('exposicaoPoeira') || '',
+                exposicaoQuimicos: formData.get('exposicaoQuimicos') || '',
+                presencaRatos: formData.get('presencaRatos') || '',
+                presencaPlantas: formData.get('presencaPlantas') || '',
+                animaisContactantes: formData.get('animaisContactantes') || '',
+                convivenciaOutrosAnimais: formData.get('convivenciaOutrosAnimais') || '',
+                tipoConvivencia: formData.get('tipoConvivencia') || '',
+                alimentacao: formData.get('alimentacao') || '',
+                manutencaoPeso: formData.get('manutencaoPeso') || '',
+                quantidadeAgua: formData.get('quantidadeAgua') || '',
+                defecacao: formData.get('defecacao') || '',
+                aspectoVomitos: formData.get('aspectoVomitos') || '',
+                frequenciaVomitos: formData.get('frequenciaVomitos') || '',
+                frequenciaRegurgitacao: formData.get('frequenciaRegurgitacao') || '',
+                sistemaCardiorrespiratorio: formData.get('sistemaCardiorrespiratorio') || '',
+                sistemaGeniturinario: formData.get('sistemaGeniturinario') || '',
+                sistemaNeurologicoLocomotor: formData.get('sistemaNeurologicoLocomotor') || '',
+                sistemaTegumentar: formData.get('sistemaTegumentar') || '',
+                historicoMedicoMedicamentoso: formData.get('historicoMedicoMedicamentoso') || '',
+                nivelConsciencia: formData.get('nivelConsciencia') || '',
+                postura: formData.get('postura') || '',
+                escoreCorporal: formData.get('escoreCorporal') || '',
+                avaliacaoCabeca: formData.get('avaliacaoCabeca') || '',
+                quaisLinfonodos: formData.get('quaisLinfonodos') || '',
+                auscultaPulmonar: formData.get('auscultaPulmonar') || '',
+                auscultaCardiaca: formData.get('auscultaCardiaca') || '',
+                fr: formData.get('fr') || '',
+                fc: formData.get('fc') || '',
+                palpacaoAbdominal: formData.get('palpacaoAbdominal') || '',
+                pulsoArterial: formData.get('pulsoArterial') || '',
+                sistemaReprodutor: formData.get('sistemaReprodutor') || '',
+                temperatura: formData.get('temperatura') || '',
+                outrosAchados: formData.get('outrosAchados') || '',
+                suspeitaClinica: formData.get('suspeitaClinica') || '',
+                examesComplementares: formData.get('examesComplementares') || '',
+                diagnosticoDefinitivo: formData.get('diagnosticoDefinitivo') || '',
+                tratamento: formData.get('tratamento') || '',
+                avaliacaoComportamental: formData.get('avaliacaoComportamental') || ''
             };
 
-            // Debug: log the data being sent
-            console.log('Pet ID:', petId);
-            console.log('Anamnesis Data:', anamnesisData);
+            // Collect checkbox values
+            const apetiteValues = Array.from(document.querySelectorAll('input[name="apetite"]:checked')).map(cb => cb.value);
+            const ingestaoAguaValues = Array.from(document.querySelectorAll('input[name="ingestaoAgua"]:checked')).map(cb => cb.value);
+            const mucosasValues = Array.from(document.querySelectorAll('input[name="mucosas"]:checked')).map(cb => cb.value);
+            
+            anamnesisData.apetite = apetiteValues.join(', ');
+            anamnesisData.ingestaoAgua = ingestaoAguaValues.join(', ');
+            anamnesisData.mucosas = mucosasValues.join(', ');
+            anamnesisData.vomitos = formData.get('vomitos') || '';
+            anamnesisData.regurgitacao = formData.get('regurgitacao') || '';
+            anamnesisData.linfonodos = formData.get('linfonodos') || '';
 
             try {
                 const response = await fetch(`${API_URL}/api/salvar-anamnese/${petId}`, {
@@ -1085,24 +1615,8 @@
                 if (result.success) {
                     alert('Anamnese salva com sucesso!');
                     
-                    // Update the display area immediately with the saved data
-                    const displayContent = document.getElementById('anamnesis-display-content');
-                    displayContent.innerHTML = `
-                        <div class="space-y-3">
-                            <div>
-                                <h6 class="font-semibold text-sm text-gray-700">Motivo da Consulta:</h6>
-                                <p class="text-sm text-gray-600">${anamnesisData.motivo || 'Não informado'}</p>
-                            </div>
-                            <div>
-                                <h6 class="font-semibold text-sm text-gray-700">Histórico Clínico:</h6>
-                                <p class="text-sm text-gray-600">${anamnesisData.historico || 'Não informado'}</p>
-                            </div>
-                            <div>
-                                <h6 class="font-semibold text-sm text-gray-700">Vacinas:</h6>
-                                <p class="text-sm text-gray-600">${anamnesisData.vacinacao || 'Não informado'}</p>
-                            </div>
-                        </div>
-                    `;
+                    // Update the display area with summary of saved data
+                    updateAnamnesisDisplay(anamnesisData);
                     
                     // Also reload pets to update the backend data
                     loadVetPets();
@@ -1118,6 +1632,389 @@
                 } else {
                     alert('Erro: Pet não encontrado. Verifique os dados e tente novamente.');
                 }
+            }
+        }
+
+        function updateAnamnesisDisplay(data) {
+            const displayContent = document.getElementById('anamnesis-display-content');
+            displayContent.innerHTML = `
+                <div class="space-y-4 max-h-96 overflow-y-auto">
+                    <!-- Queixa Principal -->
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-400">
+                        <h6 class="font-semibold text-sm text-blue-800 mb-1">Queixa Principal</h6>
+                        <p class="text-sm text-gray-700">${data.queixaPrincipal || 'Não informado'}</p>
+                    </div>
+
+                    <!-- Histórico Familiar -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-xs text-gray-700 mb-1">Desde quando está com a família:</h6>
+                            <p class="text-sm text-gray-600">${data.desdeQuandoNaFamilia || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-xs text-gray-700 mb-1">Motivo da aquisição:</h6>
+                            <p class="text-sm text-gray-600">${data.motivoAquisicao || 'Não informado'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Imunização -->
+                    <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-400">
+                        <h6 class="font-semibold text-sm text-green-800 mb-2">Imunização</h6>
+                        <p class="text-sm text-gray-700 mb-2">${data.imunizacao || 'Não informado'}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Última dose:</span>
+                                <span class="text-xs text-gray-700">${data.dataUltimaDoseVacina ? formatDate(data.dataUltimaDoseVacina) : 'Não informado'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desverminação -->
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400">
+                        <h6 class="font-semibold text-sm text-yellow-800 mb-2">Desverminação</h6>
+                        <p class="text-sm text-gray-700 mb-2">${data.desverminacao || 'Não informado'}</p>
+                        <div>
+                            <span class="text-xs font-medium text-gray-600">Última dose:</span>
+                            <span class="text-xs text-gray-700">${data.dataUltimaDoseVermifugo ? formatDate(data.dataUltimaDoseVermifugo) : 'Não informado'}</span>
+                        </div>
+                    </div>
+
+                    <!-- Ambiente e Passeios -->
+                    <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-400">
+                        <h6 class="font-semibold text-sm text-purple-800 mb-2">Ambiente e Passeios</h6>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Ambiente:</span>
+                                <p class="text-sm text-gray-700">${data.ambiente || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Tipo de piso:</span>
+                                <p class="text-sm text-gray-700">${data.tipoPiso || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Frequência passeios:</span>
+                                <p class="text-sm text-gray-700">${data.frequenciaPasseios ? data.frequenciaPasseios.replace('diarios-1x', 'Diários (1x)').replace('diarios-2x+', 'Diários (2x ou +)').replace('semanais', 'Semanais') : 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Duração passeios:</span>
+                                <p class="text-sm text-gray-700">${data.duracaoPasseio ? data.duracaoPasseio.replace('ate-15min', 'Até 15min').replace('15-30min', '15 a 30min').replace('30min+', '30min ou +') : 'Não informado'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exposições -->
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-400">
+                        <h6 class="font-semibold text-sm text-red-800 mb-2">Exposições</h6>
+                        <div class="space-y-2">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Poeira/fumaça:</span>
+                                <p class="text-sm text-gray-700">${data.exposicaoPoeira || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Produtos químicos:</span>
+                                <p class="text-sm text-gray-700">${data.exposicaoQuimicos || 'Não informado'}</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                <div>
+                                    <span class="text-xs font-medium text-gray-600">Presença de ratos:</span>
+                                    <p class="text-sm text-gray-700">${data.presencaRatos || 'Não informado'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-gray-600">Plantas ornamentais:</span>
+                                    <p class="text-sm text-gray-700">${data.presencaPlantas || 'Não informado'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Animais Contactantes -->
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <h6 class="font-semibold text-sm text-gray-800 mb-2">Animais Contactantes</h6>
+                        <div class="space-y-2">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Animais contactantes:</span>
+                                <p class="text-sm text-gray-700">${data.animaisContactantes || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Convivência com outros animais:</span>
+                                <p class="text-sm text-gray-700">${data.convivenciaOutrosAnimais || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Tipo de convivência:</span>
+                                <p class="text-sm text-gray-700">${data.tipoConvivencia ? data.tipoConvivencia.replace('residem-juntos', 'Residem juntos').replace('contato-frequente', 'Contato frequente').replace('contato-raro', 'Contato raro') : 'Não informado'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sistema Digestório -->
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-400">
+                        <h6 class="font-semibold text-sm text-blue-800 mb-2">Sistema Digestório</h6>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Apetite:</span>
+                                <p class="text-sm text-gray-700">${data.apetite || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Ingestão de água:</span>
+                                <p class="text-sm text-gray-700">${data.ingestaoAgua || 'Não informado'}</p>
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="text-xs font-medium text-gray-600">Alimentação:</span>
+                                <p class="text-sm text-gray-700">${data.alimentacao || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Manutenção do peso:</span>
+                                <p class="text-sm text-gray-700">${data.manutencaoPeso || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Quantidade água (mL/24h):</span>
+                                <p class="text-sm text-gray-700">${data.quantidadeAgua || 'Não informado'}</p>
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="text-xs font-medium text-gray-600">Defecação:</span>
+                                <p class="text-sm text-gray-700">${data.defecacao || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Vômitos:</span>
+                                <p class="text-sm text-gray-700">${data.vomitos || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Regurgitação:</span>
+                                <p class="text-sm text-gray-700">${data.regurgitacao || 'Não informado'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outros Sistemas -->
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Sistema Cardiorrespiratório</h6>
+                            <p class="text-sm text-gray-700">${data.sistemaCardiorrespiratorio || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Sistema Geniturinário</h6>
+                            <p class="text-sm text-gray-700">${data.sistemaGeniturinario || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Sistema Neurológico e Locomotor</h6>
+                            <p class="text-sm text-gray-700">${data.sistemaNeurologicoLocomotor || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Sistema Tegumentar</h6>
+                            <p class="text-sm text-gray-700">${data.sistemaTegumentar || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Histórico Médico e Medicamentoso</h6>
+                            <p class="text-sm text-gray-700">${data.historicoMedicoMedicamentoso || 'Não informado'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Exame Físico Geral -->
+                    <div class="bg-indigo-50 p-3 rounded-lg border-l-4 border-indigo-400">
+                        <h6 class="font-semibold text-sm text-indigo-800 mb-2">Exame Físico Geral</h6>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Nível de consciência:</span>
+                                <p class="text-sm text-gray-700">${data.nivelConsciencia || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Postura:</span>
+                                <p class="text-sm text-gray-700">${data.postura || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Escore corporal:</span>
+                                <p class="text-sm text-gray-700">${data.escoreCorporal || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Avaliação cabeça:</span>
+                                <p class="text-sm text-gray-700">${data.avaliacaoCabeca || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Mucosas:</span>
+                                <p class="text-sm text-gray-700">${data.mucosas || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Linfonodos:</span>
+                                <p class="text-sm text-gray-700">${data.linfonodos || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Ausculta Pulmonar:</span>
+                                <p class="text-sm text-gray-700">${data.auscultaPulmonar || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Ausculta Cardíaca:</span>
+                                <p class="text-sm text-gray-700">${data.auscultaCardiaca || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">FR:</span>
+                                <p class="text-sm text-gray-700">${data.fr || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">FC:</span>
+                                <p class="text-sm text-gray-700">${data.fc || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Palpação abdominal:</span>
+                                <p class="text-sm text-gray-700">${data.palpacaoAbdominal || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Pulso arterial:</span>
+                                <p class="text-sm text-gray-700">${data.pulsoArterial || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Sistema reprodutor:</span>
+                                <p class="text-sm text-gray-700">${data.sistemaReprodutor || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Temperatura:</span>
+                                <p class="text-sm text-gray-700 font-medium">${data.temperatura || 'Não informado'}</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-xs font-medium text-gray-600">Outros achados / Observações comportamentais:</span>
+                            <p class="text-sm text-gray-700">${data.outrosAchados || 'Não informado'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Conclusões -->
+                    <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-400">
+                        <h6 class="font-semibold text-sm text-green-800 mb-2">Conclusões e Tratamento</h6>
+                        <div class="space-y-2">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Suspeita clínica:</span>
+                                <p class="text-sm text-gray-700 font-medium">${data.suspeitaClinica || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Exames complementares:</span>
+                                <p class="text-sm text-gray-700">${data.examesComplementares || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Diagnóstico definitivo:</span>
+                                <p class="text-sm text-gray-700 font-medium">${data.diagnosticoDefinitivo || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Tratamento:</span>
+                                <p class="text-sm text-gray-700 font-medium">${data.tratamento || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Avaliação comportamental:</span>
+                                <p class="text-sm text-gray-700">${data.avaliacaoComportamental || 'Não informado'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4 p-3 bg-blue-100 rounded-lg">
+                        <p class="text-xs text-blue-800 font-medium">Anamnese Completa Salva</p>
+                        <p class="text-xs text-blue-600">Última atualização: ${data.data || new Date().toLocaleString('pt-BR')}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Functions for Exams tab - Clinical History and Vaccination
+        async function saveClinicalHistory() {
+            const clinicalHistory = document.getElementById('clinical-history-input').value;
+            
+            if (!currentPatientId) {
+                alert('Erro: Pet não identificado.');
+                return;
+            }
+
+            if (!clinicalHistory.trim()) {
+                alert('Por favor, preencha o histórico clínico.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/salvar-historico-clinico/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ historicoClinico: clinicalHistory })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Histórico clínico salvo com sucesso!');
+                    // Update display
+                    document.getElementById('clinical-history-display').innerHTML = `
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-blue-800 mb-2">Histórico Clínico:</h6>
+                            <p class="text-sm text-gray-700">${clinicalHistory}</p>
+                            <p class="text-xs text-gray-500 mt-2">Salvo em: ${new Date().toLocaleString('pt-BR')}</p>
+                        </div>
+                    `;
+                    // Clear input
+                    document.getElementById('clinical-history-input').value = '';
+                } else {
+                    alert(result.message || 'Erro ao salvar histórico clínico');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar histórico clínico:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        async function saveVaccination() {
+            const vaccination = document.getElementById('vaccination-input').value;
+            const lastDate = document.getElementById('last-vaccination-date').value;
+            const nextDate = document.getElementById('next-vaccination-date').value;
+            const notes = document.getElementById('vaccination-notes').value;
+            
+            if (!currentPatientId) {
+                alert('Erro: Pet não identificado.');
+                return;
+            }
+
+            if (!vaccination.trim()) {
+                alert('Por favor, preencha as vacinas aplicadas.');
+                return;
+            }
+
+            const vaccinationData = {
+                vacinacao: vaccination,
+                dataUltimaVacinacao: lastDate,
+                proximaVacinacao: nextDate,
+                observacoesVacinacao: notes
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/salvar-vacinacao/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(vaccinationData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Vacinação salva com sucesso!');
+                    // Update display
+                    document.getElementById('vaccination-display').innerHTML = `
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-green-800 mb-2">Vacinação:</h6>
+                            <p class="text-sm text-gray-700 mb-2">${vaccination}</p>
+                            ${lastDate ? `<p class="text-xs text-gray-600">Última vacinação: ${formatDate(lastDate)}</p>` : ''}
+                            ${nextDate ? `<p class="text-xs text-gray-600">Próxima vacinação: ${formatDate(nextDate)}</p>` : ''}
+                            ${notes ? `<p class="text-xs text-gray-600 mt-1">Observações: ${notes}</p>` : ''}
+                            <p class="text-xs text-gray-500 mt-2">Salvo em: ${new Date().toLocaleString('pt-BR')}</p>
+                        </div>
+                    `;
+                    // Clear inputs
+                    document.getElementById('vaccination-input').value = '';
+                    document.getElementById('last-vaccination-date').value = '';
+                    document.getElementById('next-vaccination-date').value = '';
+                    document.getElementById('vaccination-notes').value = '';
+                } else {
+                    alert(result.message || 'Erro ao salvar vacinação');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar vacinação:', error);
+                alert('Erro de conexão. Tente novamente.');
             }
         }
 

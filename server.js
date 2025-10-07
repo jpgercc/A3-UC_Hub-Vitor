@@ -278,6 +278,161 @@ app.put('/api/salvar-anamnese/:id', async (req, res) => {
     }
 });
 
+// Rota para salvar histórico clínico
+app.put('/api/salvar-historico-clinico/:id', async (req, res) => {
+    const { id } = req.params;
+    const { historicoClinico } = req.body;
+    
+    try {
+        const animais = await readJSON('animais.json');
+        const petIndex = animais.findIndex(p => p.id == id);
+        
+        if (petIndex === -1) {
+            return res.json({ success: false, message: 'Pet não encontrado' });
+        }
+        
+        if (!animais[petIndex].exames) {
+            animais[petIndex].exames = {};
+        }
+        
+        animais[petIndex].exames.historicoClinico = historicoClinico;
+        animais[petIndex].exames.dataHistorico = new Date().toLocaleString('pt-BR');
+        
+        if (await writeJSON('animais.json', animais)) {
+            res.json({ success: true, message: 'Histórico clínico salvo com sucesso!' });
+        } else {
+            res.json({ success: false, message: 'Erro ao salvar histórico clínico' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+    }
+});
+
+// Rota para salvar vacinação
+app.put('/api/salvar-vacinacao/:id', async (req, res) => {
+    const { id } = req.params;
+    const vacinacaoData = req.body;
+    
+    try {
+        const animais = await readJSON('animais.json');
+        const petIndex = animais.findIndex(p => p.id == id);
+        
+        if (petIndex === -1) {
+            return res.json({ success: false, message: 'Pet não encontrado' });
+        }
+        
+        if (!animais[petIndex].exames) {
+            animais[petIndex].exames = {};
+        }
+        
+        animais[petIndex].exames = {
+            ...animais[petIndex].exames,
+            ...vacinacaoData,
+            dataVacinacao: new Date().toLocaleString('pt-BR')
+        };
+        
+        if (await writeJSON('animais.json', animais)) {
+            res.json({ success: true, message: 'Vacinação salva com sucesso!' });
+        } else {
+            res.json({ success: false, message: 'Erro ao salvar vacinação' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+    }
+});
+
+// Rota para salvar consultas
+app.put('/api/salvar-consultas/:id', async (req, res) => {
+    const { id } = req.params;
+    const consultasData = req.body;
+    
+    try {
+        const animais = await readJSON('animais.json');
+        const petIndex = animais.findIndex(p => p.id == id);
+        
+        if (petIndex === -1) {
+            return res.json({ success: false, message: 'Pet não encontrado' });
+        }
+        
+        if (!animais[petIndex].consultas) {
+            animais[petIndex].consultas = {};
+        }
+        
+        animais[petIndex].consultas = {
+            ...animais[petIndex].consultas,
+            ...consultasData,
+            dataAtualizacao: new Date().toLocaleString('pt-BR')
+        };
+        
+        if (await writeJSON('animais.json', animais)) {
+            res.json({ success: true, message: 'Consultas salvas com sucesso!' });
+        } else {
+            res.json({ success: false, message: 'Erro ao salvar consultas' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+    }
+});
+
+// Rota para salvar exames
+app.put('/api/salvar-exames/:id', async (req, res) => {
+    const { id } = req.params;
+    const examesData = req.body;
+    
+    try {
+        const animais = await readJSON('animais.json');
+        const petIndex = animais.findIndex(p => p.id == id);
+        
+        if (petIndex === -1) {
+            return res.json({ success: false, message: 'Pet não encontrado' });
+        }
+        
+        if (!animais[petIndex].exames) {
+            animais[petIndex].exames = {};
+        }
+        
+        animais[petIndex].exames = {
+            ...animais[petIndex].exames,
+            ...examesData,
+            dataExames: new Date().toLocaleString('pt-BR')
+        };
+        
+        if (await writeJSON('animais.json', animais)) {
+            res.json({ success: true, message: 'Exames salvos com sucesso!' });
+        } else {
+            res.json({ success: false, message: 'Erro ao salvar exames' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+    }
+});
+
+// Rota para salvar observações
+app.put('/api/salvar-observacoes/:id', async (req, res) => {
+    const { id } = req.params;
+    const { observacoes } = req.body;
+    
+    try {
+        const animais = await readJSON('animais.json');
+        const petIndex = animais.findIndex(p => p.id == id);
+        
+        if (petIndex === -1) {
+            return res.json({ success: false, message: 'Pet não encontrado' });
+        }
+        
+        animais[petIndex].observacoes = observacoes;
+        animais[petIndex].dataObservacoes = new Date().toLocaleString('pt-BR');
+        
+        if (await writeJSON('animais.json', animais)) {
+            res.json({ success: true, message: 'Observações salvas com sucesso!' });
+        } else {
+            res.json({ success: false, message: 'Erro ao salvar observações' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+    }
+});
+
 // Rota para salvar observações médicas
 app.put('/api/salvar-observacoes/:id', async (req, res) => {
     const { id } = req.params;

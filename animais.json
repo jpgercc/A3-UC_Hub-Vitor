@@ -1,67 +1,106 @@
 [
   {
-    "id": 1759180775825,
-    "nome": "dog",
+    "id": 1635789012345,
+    "nome": "Max",
     "especie": "Cão",
-    "raca": "SRD",
-    "idade": "2",
-    "sexo": "Macho",
-    "peso": "10",
-    "tutorCpf": "03040942000",
-    "tutorNome": "Bruno",
-    "tutorTelefone": "51991823420",
-    "tutorEndereco": "Rua tal 3",
-    "tag": "yellow",
-    "anamnese": {
-      "motivo": "dada",
-      "historico": "",
-      "vacinacao": "dada",
-      "data": "29/09/2025, 22:31:27"
-    },
-    "observacoes": "reredada",
-    "dataCadastro": "2025-09-29T21:19:35.825Z",
-    "consultasPassadas": [
-      {
-        "data": "2025-09-16",
-        "descricao": "test"
-      }
-    ],
-    "consultasFuturas": [
-      {
-        "data": "2025-09-10",
-        "descricao": "da"
-      }
-    ]
-  },
-  {
-    "id": 1759195605365,
-    "nome": "Gay Filipi",
-    "especie": "Cão",
-    "raca": "cu",
+    "raca": "Labrador",
     "idade": "3",
+    "peso": "28",
     "sexo": "Macho",
-    "peso": "3",
-    "tutorCpf": "03040942000",
-    "tutorNome": "KA",
-    "tutorTelefone": "51991823420",
-    "tutorEndereco": "Rua tal 33",
-    "tag": "green",
-    "anamnese": null,
-    "observacoes": "dada",
-    "dataCadastro": "2025-09-30T01:26:45.365Z",
-    "examesSolicitados": [
-      {
-        "nome": "dad",
-        "descricao": "aa",
-        "dataSolicitacao": "2025-09-30"
-      }
-    ],
-    "resultadosExames": [
-      {
-        "exame": "dad",
-        "resultado": "aaaaaa",
-        "data": "2025-09-15"
-      }
-    ]
+    "tutorNome": "João Silva",
+    "tutorCpf": "123.456.789-00",
+    "tutorTelefone": "(11) 99999-9999",
+    "tag": "yellow",
+    "observacoes": "",
+    "dataCadastro": "2023-10-01T10:00:00.000Z",
+    "anamnese": {
+      "queixaPrincipal": "",
+      "desdeQuandoNaFamilia": "2017",
+      "motivoAquisicao": "",
+      "imunizacao": "V10 feita na nossa clínica Bichinho Feliz.",
+      "dataUltimaDoseVacina": "",
+      "desverminacao": "Ivermectina, 6 meses, 250mg.",
+      "dataUltimaDoseVermifugo": "",
+      "ambiente": "Casa",
+      "frequenciaPasseios": "diarios-2x+",
+      "duracaoPasseio": "ate-15min",
+      "tipoPiso": "",
+      "exposicaoPoeira": "",
+      "exposicaoQuimicos": "",
+      "presencaRatos": "",
+      "presencaPlantas": "",
+      "animaisContactantes": "",
+      "convivenciaOutrosAnimais": "",
+      "tipoConvivencia": "",
+      "alimentacao": "Ração seca, Premier Seniors, 2x ao dia, 3 scoops, aprox. 300g por refeição.",
+      "manutencaoPeso": "",
+      "quantidadeAgua": "",
+      "defecacao": "Cerca de 2x ao dia. Escura e firme, odor caramelizado, tons barrosos. Sem disquesia.",
+      "aspectoVomitos": "",
+      "frequenciaVomitos": "",
+      "frequenciaRegurgitacao": "",
+      "sistemaCardiorrespiratorio": "",
+      "sistemaGeniturinario": "",
+      "sistemaNeurologicoLocomotor": "",
+      "sistemaTegumentar": "",
+      "historicoMedicoMedicamentoso": "",
+      "nivelConsciencia": "",
+      "postura": "Decúbito esternal",
+      "escoreCorporal": "",
+      "avaliacaoCabeca": "",
+      "quaisLinfonodos": "",
+      "auscultaPulmonar": "",
+      "auscultaCardiaca": "",
+      "fr": "24 mpm",
+      "fc": "110 bpm ",
+      "palpacaoAbdominal": "",
+      "pulsoArterial": "",
+      "sistemaReprodutor": "",
+      "temperatura": "38,5 °C",
+      "outrosAchados": "",
+      "suspeitaClinica": "",
+      "examesComplementares": "",
+      "diagnosticoDefinitivo": "",
+      "tratamento": "Anti-inflamatório e analgésico Meloxicam 2x ao dia.",
+      "avaliacaoComportamental": "",
+      "apetite": "",
+      "ingestaoAgua": "",
+      "mucosas": "",
+      "vomitos": "",
+      "regurgitacao": "",
+      "linfonodos": "",
+      "data": "07/10/2025, 17:13:40"
+    },
+    "consultas": {
+      "passadas": [
+        {
+          "data": "2023-09-15",
+          "motivo": "Consulta de rotina e vacinação",
+          "veterinario": "Dra. Ana Souza",
+          "observacoes": "Animal em bom estado geral"
+        }
+      ],
+      "futuras": [
+        {
+          "data": "2023-12-15",
+          "motivo": "Consulta de retorno",
+          "veterinario": "Dra. Ana Souza",
+          "observacoes": "Acompanhamento pós-vacinação"
+        }
+      ]
+    },
+    "exames": {
+      "solicitados": [
+        {
+          "tipo": "Hemograma completo",
+          "data": "2023-10-01",
+          "veterinario": "Dra. Ana Souza",
+          "status": "Pendente"
+        }
+      ],
+      "resultados": [],
+      "historicoClinico": "Animal apresentou episódios de vômito na semana passada",
+      "vacinacao": "V10 aplicada em 15/09/2023. Próxima dose em dezembro."
+    }
   }
 ]
