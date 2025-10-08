@@ -11,11 +11,11 @@
     "tutorCpf": "123.456.789-00",
     "tutorTelefone": "(11) 99999-9999",
     "tag": "yellow",
-    "observacoes": "",
+    "observacoes": "Uee",
     "dataCadastro": "2023-10-01T10:00:00.000Z",
     "anamnese": {
       "queixaPrincipal": "",
-      "desdeQuandoNaFamilia": "2017",
+      "desdeQuandoNaFamilia": "",
       "motivoAquisicao": "",
       "imunizacao": "V10 feita na nossa clínica Bichinho Feliz.",
       "dataUltimaDoseVacina": "",
@@ -63,13 +63,13 @@
       "diagnosticoDefinitivo": "",
       "tratamento": "Anti-inflamatório e analgésico Meloxicam 2x ao dia.",
       "avaliacaoComportamental": "",
-      "apetite": "",
+      "apetite": "diminuido",
       "ingestaoAgua": "",
       "mucosas": "",
       "vomitos": "",
       "regurgitacao": "",
       "linfonodos": "",
-      "data": "07/10/2025, 17:13:40"
+      "data": "07/10/2025, 21:13:16"
     },
     "consultas": {
       "passadas": [
@@ -99,8 +99,13 @@
         }
       ],
       "resultados": [],
-      "historicoClinico": "Animal apresentou episódios de vômito na semana passada",
-      "vacinacao": "V10 aplicada em 15/09/2023. Próxima dose em dezembro."
-    }
+      "historicoClinico": "Teste",
+      "vacinacao": "V10 aplicada em 15/09/2023. Próxima dose em dezembro.",
+      "dataHistorico": "07/10/2025, 21:33:06",
+      "examesSolicitados": [],
+      "resultadosExames": [],
+      "dataExames": "07/10/2025, 21:36:45"
+    },
+    "dataObservacoes": "07/10/2025, 21:42:08"
   }
 ]

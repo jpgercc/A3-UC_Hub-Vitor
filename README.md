@@ -2,6 +2,14 @@
 
 Sistema de gestão veterinária com persistência em JSON para gerenciamento de usuários, médicos veterinários e animais.
 
+## Fazer
+- [ ] Limpar e melhorar o código e lógica
+- [ ] As senhas são armazenadas sem criptografia
+- [ ] Falta de middleware de validação
+- [ ] Alguns campos obrigatórios não são validados
+- [ ] Alguns endpoints não validam adequadamente os dados
+- [ ] Não há controle de sessão
+
 ## Como rodar o programa pela primeira vez
 
 ### Pré-requisitos
@@ -16,6 +24,12 @@ Sistema de gestão veterinária com persistência em JSON para gerenciamento de 
    ```
 
 2. **Inicie o servidor:**
+   
+   ⚠️ Importante: Para que o sistema funcione, inicie o servidor executando:
+   ```bash
+   node server.js
+   ```
+
    ```bash
    npm start
    ```
