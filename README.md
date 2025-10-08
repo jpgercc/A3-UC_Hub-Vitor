@@ -17,10 +17,6 @@ Sistema de gestão veterinária com persistência em JSON para gerenciamento de 
 
 2. **Inicie o servidor:**
 
-   ```bash
-   node server.js
-   ```
-
    Ou se tiver lendo foruns de dev e tendo dor de cabeça:
    ```bash
    npm start
