@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VetCareHub - Sistema de Gestão Veterinária</title>
+    <title>Bichinho Feliz - Sistema de Gestão Veterinária</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="styles.css">
@@ -34,6 +34,27 @@
 <body class="bg-gray-50">
 
 
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-white rounded-xl p-6 shadow-lg">
+            <h2 class="text-2xl font-bold mb-4 text-center">Bichinho Feliz - Acesso</h2>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-700 mb-1">Login</label>
+                    <input name="login" class="w-full px-3 py-2 border rounded-lg" />
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-700 mb-1">Senha</label>
+                    <input name="senha" type="password" class="w-full px-3 py-2 border rounded-lg" />
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-secondary text-white px-4 py-2 rounded-lg">Entrar</button>
+                    <button type="button" onclick="openCreateAccountModal()" class="text-sm text-gray-600 underline">Criar nova conta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Veterinarian Dashboard -->
     <div id="vet-dashboard" class="hidden">
         <!-- Header -->
@@ -41,7 +62,7 @@
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center">
                     <i data-feather="heart" class="text-secondary mr-2"></i>
-                    <h1 class="text-xl font-bold text-secondary">VetCareHub</h1>
+                    <h1 class="text-xl font-bold text-secondary">Bichinho Feliz</h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="relative">
@@ -49,6 +70,9 @@
                             <span id="vet-name" class="font-medium">Dra. Ana Souza</span>
                             <i data-feather="chevron-down"></i>
                         </button>
+                    </div>
+                    <div>
+                        <button id="create-account-btn" onclick="openCreateAccountModal()" class="bg-primary text-white px-3 py-2 rounded-lg text-sm">Criar Conta</button>
                     </div>
                 </div>
             </div>
@@ -66,7 +90,7 @@
                             </div>
                             <div>
                                 <h3 id="vet-sidebar-name" class="font-bold">Dra. Ana Souza</h3>
-                                <p class="text-sm text-gray-500">Veterinária</p>
+                                <p id="vet-role-desc" class="text-sm text-gray-500">Veterinário</p>
                             </div>
                         </div>
                         
@@ -75,7 +99,7 @@
                                 <i data-feather="home"></i>
                                 <span>Pacientes</span>
                             </a>
-                            <a href="#" class="nav-item">
+                            <a href="#" class="nav-item" onclick="openProfileModal()">
                                 <i data-feather="user"></i>
                                 <span>Meu Perfil</span>
                             </a>
@@ -179,6 +203,16 @@
                                     <label for="peso-pet" class="block text-gray-700 mb-2">Peso (kg)</label>
                                     <input type="number" id="peso-pet" name="peso" step="0.1" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
                                 </div>
+                                <div>
+                                    <label for="localizacao-pet" class="block text-gray-700 mb-2">Localização</label>
+                                    <select id="localizacao-pet" name="localizacao" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                        <option value="">Selecione</option>
+                                        <option value="Recepção">Recepção</option>
+                                        <option value="Box internação">Box internação</option>
+                                        <option value="Canil">Canil</option>
+                                        <option value="Gatil">Gatil</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -226,6 +260,7 @@
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pet</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tutor</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Espécie</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Localização</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Última Consulta</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
@@ -293,6 +328,64 @@
                             <span class="text-sm text-gray-500">Cadastrado em:</span>
                             <span class="text-sm font-medium" id="modal-patient-registered">15/03/2020</span>
                         </div>
+                        <div>
+                            <label class="block text-sm text-gray-500">Localização atual</label>
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-medium" id="modal-patient-location">-</span>
+                                <select id="modal-localizacao-select" class="px-2 py-1 border rounded-lg hidden">
+                                    <option value="">Selecione</option>
+                                    <option value="Recepção">Recepção</option>
+                                    <option value="Box internação">Box internação</option>
+                                    <option value="Canil">Canil</option>
+                                    <option value="Gatil">Gatil</option>
+                                </select>
+                                <button id="modal-edit-localizacao-btn" type="button" class="text-sm text-blue-600 underline" onclick="enableLocationEdit()">Editar</button>
+                                <button id="modal-save-localizacao-btn" type="button" class="text-sm text-white bg-secondary px-3 py-1 rounded-lg hidden" onclick="savePatientLocation()">Salvar</button>
+                                <button id="modal-edit-patient-btn" type="button" class="text-sm text-blue-600 underline" onclick="enablePatientEdit()">Editar Paciente</button>
+                            </div>
+                        </div>
+                    
+                    <!-- Editable patient basic info (hidden) -->
+                    <div id="patient-edit-block" class="bg-gray-50 p-4 rounded-lg hidden mt-4">
+                        <h4 class="font-bold text-lg mb-3">Editar Informações do Pet</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">Nome</label>
+                                <input id="input-patient-name" class="w-full px-3 py-2 border rounded-lg" />
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">Espécie</label>
+                                <select id="input-patient-specie" class="w-full px-3 py-2 border rounded-lg">
+                                    <option value="">Selecione</option>
+                                    <option value="Cão">Cão</option>
+                                    <option value="Gato">Gato</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">Raça</label>
+                                <input id="input-patient-breed" class="w-full px-3 py-2 border rounded-lg" />
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">Idade</label>
+                                <input id="input-patient-age" class="w-full px-3 py-2 border rounded-lg" />
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">Sexo</label>
+                                <select id="input-patient-sex" class="w-full px-3 py-2 border rounded-lg">
+                                    <option value="Macho">Macho</option>
+                                    <option value="Fêmea">Fêmea</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-700 mb-1">Peso (kg)</label>
+                                <input id="input-patient-weight" type="number" step="0.1" class="w-full px-3 py-2 border rounded-lg" />
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2 mt-3">
+                            <button type="button" onclick="cancelPatientEdit()" class="border px-3 py-1 rounded-lg">Cancelar</button>
+                            <button type="button" onclick="savePatientEdit()" class="bg-secondary text-white px-3 py-1 rounded-lg">Salvar</button>
+                        </div>
+                    </div>
                     </div>
                 </div>
                 
@@ -305,7 +398,7 @@
                         <p class="text-sm text-gray-600" id="modal-tutor-cpf">CPF: 123.456.789-00</p>
                     </div>
                     
-                    <div class="space-y-2">
+                    <div class="space-y-2" id="tutor-display-block">
                         <div>
                             <span class="text-sm text-gray-500">Telefone:</span>
                             <span class="text-sm font-medium" id="modal-tutor-phone">(11) 98765-4321</span>
@@ -314,6 +407,34 @@
                             <span class="text-sm text-gray-500">Endereço:</span>
                             <span class="text-sm font-medium" id="modal-tutor-address">Rua das Flores, 123 - São Paulo/SP</span>
                         </div>
+                    </div>
+                    
+                    <!-- Editable tutor form (hidden by default) -->
+                    <div class="space-y-2 hidden" id="tutor-edit-block">
+                        <div>
+                            <label class="text-sm text-gray-500">Telefone:</label>
+                            <input id="input-tutor-phone" class="w-full px-3 py-2 border rounded-lg mt-1" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">Endereço:</label>
+                            <input id="input-tutor-address" class="w-full px-3 py-2 border rounded-lg mt-1" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">Nome do Tutor:</label>
+                            <input id="input-tutor-name" class="w-full px-3 py-2 border rounded-lg mt-1" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">CPF do Tutor:</label>
+                            <input id="input-tutor-cpf" class="w-full px-3 py-2 border rounded-lg mt-1" />
+                        </div>
+                        <div class="flex justify-end gap-2 mt-2">
+                            <button type="button" class="border px-3 py-1 rounded-lg" onclick="cancelTutorEdit()">Cancelar</button>
+                            <button type="button" class="bg-secondary text-white px-3 py-1 rounded-lg" onclick="saveTutorEdit()">Salvar</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <button id="btn-edit-tutor" class="text-sm text-blue-600 underline" type="button" onclick="enableTutorEdit()">Editar Tutor</button>
                     </div>
                 </div>
                 
@@ -370,7 +491,7 @@
             <!-- Anamnesis Content -->
             <div id="anamnesis-content" class="tab-content">
                 <div class="bg-gray-50 p-4 rounded-lg mb-4">
-                    <h4 class="font-bold text-lg mb-4">Anamnese</h4>
+                    <h4 class="font-bold text-lg mb-4 text-center">Ficha de anamnese</h4>
 
                     <!-- Display Anamnesis Data -->
                     <div id="anamnesis-display" class="mb-6 p-4 bg-white rounded-lg border">
@@ -380,26 +501,422 @@
                         </div>
                     </div>
 
-                    <form id="anamnesis-form">
+                    <form id="anamnesis-form" class="space-y-6">
                         <input type="hidden" id="anamnesis-pet-id" name="anamnesis-pet-id" value="">
-                        <div class="mb-4">
-                            <label for="anamnesis-reason" class="block text-sm text-gray-700 mb-1">Motivo da Consulta:</label>
-                            <textarea id="anamnesis-reason" name="anamnesis-reason" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descreva o motivo da consulta..."></textarea>
+                        
+                        <!-- Queixa Principal -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Queixa principal</h5>
+                            <label class="block text-sm text-gray-700 mb-2">(Motivo da consulta, Início, duração, frequência, evolução)</label>
+                            <textarea id="queixa-principal" name="queixaPrincipal" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="anamnesis-history" class="block text-sm text-gray-700 mb-1">Histórico Clínico:</label>
-                            <textarea id="anamnesis-history" name="anamnesis-history" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Histórico clínico do paciente..."></textarea>
+                        <!-- Histórico Familiar -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Desde quando está com a família?</label>
+                                    <input type="text" id="desde-quando-familia" name="desdeQuandoNaFamilia" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Motivo da aquisição?</label>
+                                    <input type="text" id="motivo-aquisicao" name="motivoAquisicao" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="anamnesis-vaccines" class="block text-sm text-gray-700 mb-1">Vacinas:</label>
-                            <textarea id="anamnesis-vaccines" name="anamnesis-vaccines" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Vacinas aplicadas..."></textarea>
+                        <!-- Imunização -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Imunização</h5>
+                            <label class="block text-sm text-gray-700 mb-2">(Quais vacinas? Feita por médico veterinário?)</label>
+                            <textarea id="imunizacao" name="imunizacao" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300 mb-4"></textarea>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Data da última dose:</label>
+                                <input type="date" id="data-ultima-dose-vacina" name="dataUltimaDoseVacina" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                            </div>
+                        </div>
+
+                        <!-- Desverminação -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Desverminação</h5>
+                            <label class="block text-sm text-gray-700 mb-2">(Qual medicamento? Frequência?)</label>
+                            <textarea id="desverminacao" name="desverminacao" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300 mb-4"></textarea>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Data da última dose:</label>
+                                <input type="date" id="data-ultima-dose-vermifugo" name="dataUltimaDoseVermifugo" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                            </div>
+                        </div>
+
+                        <!-- Ambiente e Passeios -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Ambiente e Passeios</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Casa? Apartamento? Sítio? Rua? Tem acesso à rua?</label>
+                                    <input type="text" id="ambiente" name="ambiente" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Passeios - Frequência:</label>
+                                    <div class="flex flex-wrap gap-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="frequenciaPasseios" value="diarios-1x" class="mr-2">
+                                            Diários (1 vez)
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="frequenciaPasseios" value="diarios-2x+" class="mr-2">
+                                            Diários (2 vezes ou mais)
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="frequenciaPasseios" value="semanais" class="mr-2">
+                                            Semanais
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Duração do passeio:</label>
+                                    <div class="flex flex-wrap gap-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="duracaoPasseio" value="ate-15min" class="mr-2">
+                                            Até 15 min
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="duracaoPasseio" value="15-30min" class="mr-2">
+                                            15 à 30 min
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="duracaoPasseio" value="30min+" class="mr-2">
+                                            30 ou mais
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de piso?</label>
+                                    <input type="text" id="tipo-piso" name="tipoPiso" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Exposições -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Exposições</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Exposição a poeira/fumaça (fumante, incenso, reformas)?</label>
+                                    <input type="text" id="exposicao-poeira" name="exposicaoPoeira" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Exposição a produtos químicos / venenos / medicações controladas?</label>
+                                    <input type="text" id="exposicao-quimicos" name="exposicaoQuimicos" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Presença de ratos?</label>
+                                    <input type="text" id="presenca-ratos" name="presencaRatos" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Presença de plantas ornamentais?</label>
+                                    <input type="text" id="presenca-plantas" name="presencaPlantas" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Animais Contactantes -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Animais contactantes</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Sim [ ] Não [ ] Se sim, estão apresentando alterações? Quais?</label>
+                                    <textarea id="animais-contactantes" name="animaisContactantes" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Convivência com outros animais - Quais?</label>
+                                    <textarea id="convivencia-outros-animais" name="convivenciaOutrosAnimais" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                    <div class="flex flex-wrap gap-4 mt-2">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="tipoConvivencia" value="residem-juntos" class="mr-2">
+                                            Residem juntos
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="tipoConvivencia" value="contato-frequente" class="mr-2">
+                                            Contato frequente
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="tipoConvivencia" value="contato-raro" class="mr-2">
+                                            Contato raro ou ausente
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sistema Digestório -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Digestório</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Apetite:</label>
+                                    <div class="flex flex-wrap gap-4">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="normal" class="mr-2">
+                                            Normal
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="diminuido" class="mr-2">
+                                            Diminuído
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="aumentado" class="mr-2">
+                                            Aumentado
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="disfagia" class="mr-2">
+                                            Disfagia
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="parorexia" class="mr-2">
+                                            Parorexia
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="apetite" value="coprofagia" class="mr-2">
+                                            Coprofagia
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Qual o alimento? Quantas vezes ao dia? Qual a quantidade?</label>
+                                    <textarea id="alimentacao" name="alimentacao" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Peso está se mantendo nos últimos meses?</label>
+                                    <input type="text" id="manutencao-peso" name="manutencaoPeso" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Ingestão de água - Quantos mL/24h?</label>
+                                    <div class="flex flex-wrap gap-4 mb-2">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="ingestaoAgua" value="normal" class="mr-2">
+                                            Normal
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="ingestaoAgua" value="diminuido" class="mr-2">
+                                            Diminuído
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="ingestaoAgua" value="aumentado" class="mr-2">
+                                            Aumentado
+                                        </label>
+                                    </div>
+                                    <input type="text" id="quantidade-agua" name="quantidadeAgua" placeholder="mL/24h" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Defecação - Frequência? Cor? Odor? Volume? Disquesia?</label>
+                                    <textarea id="defecacao" name="defecacao" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Vômitos e Regurgitação</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <div class="flex gap-4 mb-2">
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="vomitos" value="sim" class="mr-2">
+                                                    Vômitos: Sim
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="vomitos" value="nao" class="mr-2">
+                                                    Não
+                                                </label>
+                                            </div>
+                                            <input type="text" name="aspectoVomitos" placeholder="Aspecto:" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300 mb-2">
+                                            <input type="text" name="frequenciaVomitos" placeholder="Frequência:" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                        </div>
+                                        <div>
+                                            <div class="flex gap-4 mb-2">
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="regurgitacao" value="sim" class="mr-2">
+                                                    Regurgitação: Sim
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="regurgitacao" value="nao" class="mr-2">
+                                                    Não
+                                                </label>
+                                            </div>
+                                            <input type="text" name="frequenciaRegurgitacao" placeholder="Frequência:" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Outros Sistemas -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Cardiorrespiratório</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Tosse? Dificuldade respiratória? Secreção nasal? Síncope? Cansaço fácil? Outros sinais:</label>
+                            <textarea id="sistema-cardiorrespiratorio" name="sistemaCardiorrespiratorio" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Geniturinário</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Urina (cor, volume, odor, disúria, local)? Castração? Quando? Gestações? Mamas?</label>
+                            <textarea id="sistema-geniturinario" name="sistemaGeniturinario" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Neurológico e Locomotor</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Convulsões? Claudicação? Perda de movimento? Alterações comportamentais? Sensoriais?</label>
+                            <textarea id="sistema-neurologico-locomotor" name="sistemaNeurologicoLocomotor" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Sistema Tegumentar</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Prurido? Lesões de pele? Áreas de alopecia? Secreção nos ouvidos? Banhos? Ectoparasitas?</label>
+                            <textarea id="sistema-tegumentar" name="sistemaTegumentar" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Histórico médico e medicamentoso</h5>
+                            <label class="block text-sm text-gray-700 mb-2">Doenças, cirurgias, tratamentos, medicações, exames anteriores, alergias, histórico familiar</label>
+                            <textarea id="historico-medico-medicamentoso" name="historicoMedicoMedicamentoso" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                        </div>
+
+                        <!-- Exame Físico Geral -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Exame Físico Geral</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nível de consciência:</label>
+                                    <input type="text" id="nivel-consciencia" name="nivelConsciencia" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Postura:</label>
+                                    <input type="text" id="postura" name="postura" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Escore corporal:</label>
+                                    <input type="text" id="escore-corporal" name="escoreCorporal" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Avaliação cabeça:</label>
+                                    <input type="text" id="avaliacao-cabeca" name="avaliacaoCabeca" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Mucosas:</label>
+                                <div class="flex flex-wrap gap-4">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="normocoradas" class="mr-2">
+                                        Normocoradas
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="palidas" class="mr-2">
+                                        Pálidas
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="congestas" class="mr-2">
+                                        Congestas
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="ictericas" class="mr-2">
+                                        Ictéricas
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="mucosas" value="cianoticas" class="mr-2">
+                                        Cianóticas
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Linfonodos:</label>
+                                <div class="flex gap-4 mb-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="linfonodos" value="normais" class="mr-2">
+                                        Normais
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="linfonodos" value="anormais" class="mr-2">
+                                        Anormais
+                                    </label>
+                                </div>
+                                <input type="text" name="quaisLinfonodos" placeholder="Quais?" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Ausculta Pulmonar:</label>
+                                    <input type="text" id="ausculta-pulmonar" name="auscultaPulmonar" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Ausculta Cardíaca:</label>
+                                    <input type="text" id="ausculta-cardiaca" name="auscultaCardiaca" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">FR:</label>
+                                    <input type="text" id="fr" name="fr" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">FC:</label>
+                                    <input type="text" id="fc" name="fc" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Palpação abdominal:</label>
+                                    <input type="text" id="palpacao-abdominal" name="palpacaoAbdominal" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pulso arterial:</label>
+                                    <input type="text" id="pulso-arterial" name="pulsoArterial" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Sistema reprodutor:</label>
+                                    <textarea id="sistema-reprodutor" name="sistemaReprodutor" rows="2" placeholder="Avaliação glândulas mamárias, vulva, testículo, prepúcio, pênis" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Temperatura:</label>
+                                    <input type="text" id="temperatura" name="temperatura" placeholder="°C" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300">
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Outros achados / Observações comportamentais:</label>
+                                <textarea id="outros-achados" name="outrosAchados" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Conclusões -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h5 class="font-semibold mb-3 text-blue-800">Conclusões e Tratamento</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Suspeita clínica:</label>
+                                    <textarea id="suspeita-clinica" name="suspeitaClinica" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Exames complementares:</label>
+                                    <textarea id="exames-complementares" name="examesComplementares" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Diagnóstico definitivo:</label>
+                                    <textarea id="diagnostico-definitivo" name="diagnosticoDefinitivo" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tratamento:</label>
+                                    <textarea id="tratamento" name="tratamento" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Indicação de avaliação comportamental?</label>
+                                    <textarea id="avaliacao-comportamental" name="avaliacaoComportamental" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary border-b-2 border-gray-300"></textarea>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="flex justify-end">
-                            <button type="submit" class="bg-secondary hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
-                                Salvar Anamnese
+                            <button type="submit" class="bg-secondary hover:bg-emerald-700 text-white font-medium py-3 px-8 rounded-lg transition duration-300">
+                                Salvar Anamnese Completa
                             </button>
                         </div>
                     </form>
@@ -447,6 +964,48 @@
             <div id="exams-content" class="tab-content hidden">
                 <div class="bg-gray-50 p-4 rounded-lg mb-4">
                     <h4 class="font-bold text-lg mb-4">Exames</h4>
+
+                    <!-- Histórico Clínico -->
+                    <div class="mb-6 bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-md mb-3 text-blue-800">Histórico Clínico</h5>
+                        <div id="clinical-history-display" class="mb-4 p-3 bg-gray-50 rounded-lg">
+                            <p class="text-gray-500">Nenhum histórico clínico registrado ainda.</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Histórico Clínico do Paciente:</label>
+                            <textarea id="clinical-history-input" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descreva o histórico clínico do paciente, doenças anteriores, cirurgias, tratamentos realizados..."></textarea>
+                        </div>
+                        <button type="button" onclick="saveClinicalHistory()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 text-sm">
+                            <i data-feather="save" class="w-4 h-4 inline mr-1"></i>Salvar Histórico
+                        </button>
+                    </div>
+
+                    <!-- Vacinação -->
+                    <div class="mb-6 bg-white p-4 rounded-lg border">
+                        <h5 class="font-semibold text-md mb-3 text-blue-800">Vacinação</h5>
+                        <div id="vaccination-display" class="mb-4 p-3 bg-gray-50 rounded-lg">
+                            <p class="text-gray-500">Nenhuma vacinação registrada ainda.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Vacinas Aplicadas:</label>
+                                <textarea id="vaccination-input" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Ex: V10, V8, Antirrábica, etc..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Data da Última Vacinação:</label>
+                                <input type="date" id="last-vaccination-date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 mt-2">Próxima Vacinação:</label>
+                                <input type="date" id="next-vaccination-date" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Observações sobre Vacinação:</label>
+                            <textarea id="vaccination-notes" rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Reações, observações especiais, fabricante..."></textarea>
+                        </div>
+                        <button type="button" onclick="saveVaccination()" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 text-sm">
+                            <i data-feather="shield" class="w-4 h-4 inline mr-1"></i>Salvar Vacinação
+                        </button>
+                    </div>
 
                     <div class="mb-6">
                         <h5 class="font-semibold text-md mb-3 text-gray-700">Exames Solicitados</h5>
@@ -529,6 +1088,39 @@
         // Global variables
         // For localhost testing, change this to: const API_URL = 'http://localhost:3000';
         const API_URL = 'http://localhost:3000';
+        // Small fetch wrapper with timeout and improved error messages
+        async function apiFetch(input, init = {}, timeout = 8000) {
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            try {
+                const response = await fetch(input, { signal: controller.signal, ...init });
+                clearTimeout(id);
+
+                // Try to parse JSON safely
+                let data;
+                try {
+                    data = await response.json();
+                } catch (err) {
+                    throw new Error(`Resposta inválida do servidor (não JSON). Código: ${response.status}`);
+                }
+
+                if (!response.ok) {
+                    const msg = data && data.message ? data.message : `HTTP ${response.status}`;
+                    throw new Error(msg);
+                }
+
+                return data;
+            } catch (err) {
+                if (err.name === 'AbortError') {
+                    throw new Error('Tempo de conexão esgotado. Verifique se o servidor está executando e tente novamente.');
+                }
+                // Network errors (e.g., server down) usually show up as TypeError
+                if (err instanceof TypeError) {
+                    throw new Error(`Não foi possível conectar ao servidor em ${API_URL}. Verifique se o servidor está executando.`);
+                }
+                throw err;
+            }
+        }
         let currentPatientId = null;
         let allPets = [];
         let filteredPets = [];
@@ -537,7 +1129,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             feather.replace();
 
-            // Form event listeners
+            // Form event listeners (register handlers after elements exist)
             document.getElementById('pet-form').addEventListener('submit', handlePetRegistration);
             document.getElementById('anamnesis-form').addEventListener('submit', handleAnamnesisSave);
             document.getElementById('observations-form').addEventListener('submit', handleObservationsSave);
@@ -549,9 +1141,167 @@
             // Search functionality
             document.getElementById('search-patients').addEventListener('input', handlePatientSearch);
 
-            // Show vet dashboard directly
-            showVetDashboard();
+            // Show login screen first
+            showLoginScreen();
+
+            // Attach species -> location dynamic behavior
+            const speciesSelect = document.getElementById('especie-pet');
+            const locationSelect = document.getElementById('localizacao-pet');
+            if (speciesSelect && locationSelect) {
+                speciesSelect.addEventListener('change', updateLocationOptions);
+                // initialize
+                updateLocationOptions();
+            }
         });
+
+        function updateLocationOptions() {
+            const species = document.getElementById('especie-pet') ? document.getElementById('especie-pet').value : '';
+            const select = document.getElementById('localizacao-pet');
+            if (!select) return;
+            // Preserve current value if still valid
+            const current = select.value;
+            // Clear options
+            select.innerHTML = '';
+            const addOption = (val, text) => {
+                const opt = document.createElement('option');
+                opt.value = val;
+                opt.textContent = text;
+                select.appendChild(opt);
+            };
+
+            addOption('', 'Selecione');
+            addOption('Recepção', 'Recepção');
+            addOption('Box internação', 'Box internação');
+            if (species === 'Cão') addOption('Canil', 'Canil');
+            if (species === 'Gato') addOption('Gatil', 'Gatil');
+
+            // restore if still present
+            if (current) {
+                const exists = Array.from(select.options).some(o => o.value === current);
+                if (exists) select.value = current;
+            }
+        }
+
+        // Enable location editing in patient modal
+        function enableLocationEdit() {
+            const select = document.getElementById('modal-localizacao-select');
+            const span = document.getElementById('modal-patient-location');
+            const saveBtn = document.getElementById('modal-save-localizacao-btn');
+            const editBtn = document.getElementById('modal-edit-localizacao-btn');
+            if (!select || !span) return;
+
+            // Prefill select with current value and show
+            const current = span.textContent && span.textContent !== '-' ? span.textContent : '';
+            // Build options; if species info available, limit options
+            const pet = allPets.find(p => p.id == currentPatientId);
+            // reuse updateLocationOptions logic but on modal select
+            select.innerHTML = '';
+            const addOpt = (v, t) => { const o = document.createElement('option'); o.value = v; o.textContent = t; select.appendChild(o); };
+            addOpt('', 'Selecione'); addOpt('Recepção','Recepção'); addOpt('Box internação','Box internação');
+            if (pet && pet.especie === 'Cão') addOpt('Canil','Canil');
+            if (pet && pet.especie === 'Gato') addOpt('Gatil','Gatil');
+
+            if (current) {
+                const exists = Array.from(select.options).some(o => o.value === current);
+                if (exists) select.value = current; else select.value = '';
+            }
+
+            select.classList.remove('hidden');
+            saveBtn.classList.remove('hidden');
+            editBtn.classList.add('hidden');
+        }
+
+        async function savePatientLocation() {
+            const select = document.getElementById('modal-localizacao-select');
+            const span = document.getElementById('modal-patient-location');
+            const saveBtn = document.getElementById('modal-save-localizacao-btn');
+            const editBtn = document.getElementById('modal-edit-localizacao-btn');
+            if (!select || !span || !currentPatientId) return;
+
+            const newLoc = select.value || '';
+
+            try {
+                const result = await apiFetch(`${API_URL}/api/atualizar-pet/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ localizacao: newLoc })
+                });
+
+                if (result && result.success) {
+                    // Update local state
+                    const petIndex = allPets.findIndex(p => p.id == currentPatientId);
+                    if (petIndex !== -1) {
+                        allPets[petIndex].localizacao = newLoc;
+                    }
+                    // Update UI
+                    span.textContent = newLoc || '-';
+                    select.classList.add('hidden');
+                    saveBtn.classList.add('hidden');
+                    editBtn.classList.remove('hidden');
+                    // Refresh table listing
+                    displayVetPets(filteredPets.length ? filteredPets : allPets);
+                    alert('Localização atualizada com sucesso!');
+                } else {
+                    alert((result && result.message) ? result.message : 'Erro ao atualizar localização');
+                }
+            } catch (err) {
+                console.error('Erro ao atualizar localização:', err);
+                alert(err.message || 'Erro ao atualizar localização');
+            }
+        }
+
+        // Login flow
+        let currentUser = null;
+        function showLoginScreen() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('vet-dashboard').classList.add('hidden');
+        }
+
+        function showVetDashboardAfterLogin(user) {
+            currentUser = user;
+            document.getElementById('vet-dashboard').classList.remove('hidden');
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('vet-name').textContent = user.nome || 'Veterinário';
+            document.getElementById('vet-sidebar-name').textContent = user.nome || 'Veterinário';
+            // set role description
+            const roleDescEl = document.getElementById('vet-role-desc');
+            if (roleDescEl) roleDescEl.textContent = roleToLabel(user.role || '');
+            // Load pets and employees
+            loadVetPets();
+            loadEmployees();
+            // Hide create account button when logged in
+            const createBtn = document.getElementById('create-account-btn');
+            if (createBtn) createBtn.style.display = 'none';
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const form = e.target;
+            const login = form['login'].value.trim();
+            const senha = form['senha'].value;
+
+            if (!login || !senha) {
+                alert('Preencha login e senha');
+                return;
+            }
+
+            try {
+                const result = await apiFetch(`${API_URL}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ login, senha })
+                });
+
+                if (result && result.success && result.user) {
+                    showVetDashboardAfterLogin(result.user);
+                } else {
+                    alert(result.message || 'Credenciais inválidas');
+                }
+            } catch (err) {
+                console.error('Erro ao efetuar login:', err);
+                alert(err.message || 'Erro ao efetuar login');
+            }
+        }
 
         // Authentication functions removed
 
@@ -569,6 +1319,7 @@
                 idade: formData.get('idade'),
                 sexo: formData.get('sexo'),
                 peso: formData.get('peso'),
+                localizacao: formData.get('localizacao') || '',
                 tutorCpf: formData.get('tutorCpf'),
                 tutorNome: formData.get('tutorNome'),
                 tutorTelefone: formData.get('tutorTelefone'),
@@ -627,7 +1378,30 @@
         }
 
         function logout() {
-            // Do nothing
+            // Clear session state
+            currentUser = null;
+            currentPatientId = null;
+            allPets = [];
+            filteredPets = [];
+
+            // Hide dashboard and show login screen
+            document.getElementById('vet-dashboard').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+
+            // Reset vet name
+            document.getElementById('vet-name').textContent = '';
+            document.getElementById('vet-sidebar-name').textContent = '';
+
+            // Ensure create account button is visible on login screen
+            const createBtn = document.getElementById('create-account-btn');
+            if (createBtn) createBtn.style.display = '';
+
+            // Optionally reset forms
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) loginForm.reset();
+
+            // Scroll to top
+            window.scrollTo(0, 0);
         }
 
         // Pet loading functions
@@ -723,6 +1497,9 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${pet.especie === 'Cão' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">${pet.especie}</span>
                     </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        ${pet.localizacao || '—'}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(pet.dataCadastro)}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="tag-${pet.tag || 'green'} text-white text-xs font-medium px-2 py-1 rounded-full">${getStatusText(pet.tag || 'green')}</span>
@@ -757,6 +1534,7 @@
             document.getElementById('modal-patient-gender').textContent = pet.sexo;
             document.getElementById('modal-patient-weight').textContent = `${pet.peso}kg`;
             document.getElementById('modal-patient-registered').textContent = formatDate(pet.dataCadastro);
+            document.getElementById('modal-patient-location').textContent = pet.localizacao || '-';
             
             document.getElementById('modal-tutor-name').textContent = pet.tutorNome;
             document.getElementById('modal-tutor-cpf').textContent = `CPF: ${pet.tutorCpf}`;
@@ -769,36 +1547,73 @@
             
             // Load anamnesis data into form fields and display area
             if (pet.anamnese) {
-                document.getElementById('anamnesis-reason').value = pet.anamnese.motivo || '';
-                document.getElementById('anamnesis-history').value = pet.anamnese.historico || '';
-                document.getElementById('anamnesis-vaccines').value = pet.anamnese.vacinacao || '';
+                // Load form fields with saved data
+                const formFields = [
+                    'queixa-principal', 'desde-quando-familia', 'motivo-aquisicao', 'imunizacao',
+                    'data-ultima-dose-vacina', 'desverminacao', 'data-ultima-dose-vermifugo',
+                    'ambiente', 'tipo-piso', 'exposicao-poeira', 'exposicao-quimicos',
+                    'presenca-ratos', 'presenca-plantas', 'animais-contactantes',
+                    'convivencia-outros-animais', 'alimentacao', 'manutencao-peso',
+                    'quantidade-agua', 'defecacao', 'aspectoVomitos', 'frequenciaVomitos',
+                    'frequenciaRegurgitacao', 'sistema-cardiorrespiratorio', 'sistema-geniturinario',
+                    'sistema-neurologico-locomotor', 'sistema-tegumentar', 'historico-medico-medicamentoso',
+                    'nivel-consciencia', 'postura', 'escore-corporal', 'avaliacao-cabeca',
+                    'quaisLinfonodos', 'ausculta-pulmonar', 'ausculta-cardiaca', 'fr', 'fc',
+                    'palpacao-abdominal', 'pulso-arterial', 'sistema-reprodutor', 'temperatura',
+                    'outros-achados', 'suspeita-clinica', 'exames-complementares',
+                    'diagnostico-definitivo', 'tratamento', 'avaliacao-comportamental'
+                ];
                 
-                // Update the display area with saved data
-                const displayContent = document.getElementById('anamnesis-display-content');
-                displayContent.innerHTML = `
-                    <div class="space-y-3">
-                        <div>
-                            <h6 class="font-semibold text-sm text-gray-700">Motivo da Consulta:</h6>
-                            <p class="text-sm text-gray-600">${pet.anamnese.motivo || 'Não informado'}</p>
-                        </div>
-                        <div>
-                            <h6 class="font-semibold text-sm text-gray-700">Histórico Clínico:</h6>
-                            <p class="text-sm text-gray-600">${pet.anamnese.historico || 'Não informado'}</p>
-                        </div>
-                        <div>
-                            <h6 class="font-semibold text-sm text-gray-700">Vacinas:</h6>
-                            <p class="text-sm text-gray-600">${pet.anamnese.vacinacao || 'Não informado'}</p>
-                        </div>
-                    </div>
-                `;
+                formFields.forEach(fieldId => {
+                    const element = document.getElementById(fieldId);
+                    if (element && pet.anamnese[fieldId.replace(/-/g, '')]) {
+                        element.value = pet.anamnese[fieldId.replace(/-/g, '')];
+                    }
+                });
+                
+                // Load radio buttons
+                if (pet.anamnese.frequenciaPasseios) {
+                    const radio = document.querySelector(`input[name="frequenciaPasseios"][value="${pet.anamnese.frequenciaPasseios}"]`);
+                    if (radio) radio.checked = true;
+                }
+                
+                if (pet.anamnese.duracaoPasseio) {
+                    const radio = document.querySelector(`input[name="duracaoPasseio"][value="${pet.anamnese.duracaoPasseio}"]`);
+                    if (radio) radio.checked = true;
+                }
+                
+                // Update the display area with saved data summary
+                updateAnamnesisDisplay(pet.anamnese);
             } else {
-                document.getElementById('anamnesis-reason').value = '';
-                document.getElementById('anamnesis-history').value = '';
-                document.getElementById('anamnesis-vaccines').value = '';
-                
                 // Show default message when no data is saved
                 const displayContent = document.getElementById('anamnesis-display-content');
                 displayContent.innerHTML = '<p class="text-gray-500">Nenhuma anamnese registrada ainda.</p>';
+            }
+            
+            // Load clinical history and vaccination data for Exams tab
+            if (pet.exames) {
+                if (pet.exames.historicoClinico) {
+                    document.getElementById('clinical-history-display').innerHTML = `
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-blue-800 mb-2">Histórico Clínico:</h6>
+                            <p class="text-sm text-gray-700">${pet.exames.historicoClinico}</p>
+                            <p class="text-xs text-gray-500 mt-2">Salvo em: ${pet.exames.dataHistorico || 'Data não disponível'}</p>
+                        </div>
+                    `;
+                }
+                
+                if (pet.exames.vacinacao) {
+                    document.getElementById('vaccination-display').innerHTML = `
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-green-800 mb-2">Vacinação:</h6>
+                            <p class="text-sm text-gray-700 mb-2">${pet.exames.vacinacao}</p>
+                            ${pet.exames.dataUltimaVacinacao ? `<p class="text-xs text-gray-600">Última vacinação: ${formatDate(pet.exames.dataUltimaVacinacao)}</p>` : ''}
+                            ${pet.exames.proximaVacinacao ? `<p class="text-xs text-gray-600">Próxima vacinação: ${formatDate(pet.exames.proximaVacinacao)}</p>` : ''}
+                            ${pet.exames.observacoesVacinacao ? `<p class="text-xs text-gray-600 mt-1">Observações: ${pet.exames.observacoesVacinacao}</p>` : ''}
+                            <p class="text-xs text-gray-500 mt-2">Salvo em: ${pet.exames.dataVacinacao || 'Data não disponível'}</p>
+                        </div>
+                    `;
+                }
             }
             document.getElementById('anamnesis-pet-id').value = petId;
 
@@ -811,6 +1626,143 @@
 
             document.getElementById('patient-details-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+        }
+
+        // Tutor edit handlers
+        function enableTutorEdit() {
+            const display = document.getElementById('tutor-display-block');
+            const edit = document.getElementById('tutor-edit-block');
+            if (!display || !edit) return;
+            // populate inputs from current spans
+            document.getElementById('input-tutor-name').value = document.getElementById('modal-tutor-name').textContent || '';
+            const cpfText = document.getElementById('modal-tutor-cpf').textContent || '';
+            document.getElementById('input-tutor-cpf').value = cpfText.replace('CPF:','').trim();
+            document.getElementById('input-tutor-phone').value = document.getElementById('modal-tutor-phone').textContent || '';
+            document.getElementById('input-tutor-address').value = document.getElementById('modal-tutor-address').textContent || '';
+            display.classList.add('hidden');
+            edit.classList.remove('hidden');
+        }
+
+        function cancelTutorEdit() {
+            const display = document.getElementById('tutor-display-block');
+            const edit = document.getElementById('tutor-edit-block');
+            if (!display || !edit) return;
+            edit.classList.add('hidden');
+            display.classList.remove('hidden');
+        }
+
+        async function saveTutorEdit() {
+            const name = document.getElementById('input-tutor-name').value.trim();
+            const cpf = document.getElementById('input-tutor-cpf').value.trim();
+            const phone = document.getElementById('input-tutor-phone').value.trim();
+            const address = document.getElementById('input-tutor-address').value.trim();
+            if (!currentPatientId) return alert('Paciente inválido');
+            // Basic validation
+            if (!name || !cpf) return alert('Nome e CPF do tutor são obrigatórios');
+
+            try {
+                const payload = { tutorNome: name, tutorCpf: cpf, tutorTelefone: phone, tutorEndereco: address };
+                const result = await apiFetch(`${API_URL}/api/atualizar-pet/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (result && result.success) {
+                    // update local state
+                    const idx = allPets.findIndex(p => p.id == currentPatientId);
+                    if (idx !== -1) {
+                        allPets[idx] = { ...allPets[idx], ...payload };
+                    }
+                    // update UI
+                    document.getElementById('modal-tutor-name').textContent = name;
+                    document.getElementById('modal-tutor-cpf').textContent = `CPF: ${cpf}`;
+                    document.getElementById('modal-tutor-phone').textContent = phone;
+                    document.getElementById('modal-tutor-address').textContent = address;
+
+                    cancelTutorEdit();
+                    // refresh pets table
+                    displayVetPets(filteredPets.length ? filteredPets : allPets);
+                    alert('Dados do tutor atualizados com sucesso');
+                } else {
+                    alert((result && result.message) ? result.message : 'Erro ao salvar dados do tutor');
+                }
+            } catch (err) {
+                console.error('Erro ao salvar tutor:', err);
+                alert(err.message || 'Erro ao salvar dados do tutor');
+            }
+        }
+
+        // Patient edit handlers
+        function enablePatientEdit() {
+            const pet = allPets.find(p => p.id == currentPatientId);
+            if (!pet) return alert('Paciente inválido');
+
+            // populate inputs
+            document.getElementById('input-patient-name').value = pet.nome || '';
+            document.getElementById('input-patient-specie').value = pet.especie || '';
+            document.getElementById('input-patient-breed').value = pet.raca || '';
+            document.getElementById('input-patient-age').value = pet.idade || '';
+            document.getElementById('input-patient-sex').value = pet.sexo || 'Macho';
+            document.getElementById('input-patient-weight').value = pet.peso || '';
+
+            // show edit block
+            document.getElementById('patient-edit-block').classList.remove('hidden');
+            // scroll into view
+            document.getElementById('patient-edit-block').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function cancelPatientEdit() {
+            const block = document.getElementById('patient-edit-block');
+            if (!block) return;
+            block.classList.add('hidden');
+        }
+
+        async function savePatientEdit() {
+            if (!currentPatientId) return alert('Paciente inválido');
+            const nome = document.getElementById('input-patient-name').value.trim();
+            const especie = document.getElementById('input-patient-specie').value;
+            const raca = document.getElementById('input-patient-breed').value.trim();
+            const idade = document.getElementById('input-patient-age').value.trim();
+            const sexo = document.getElementById('input-patient-sex').value;
+            const peso = document.getElementById('input-patient-weight').value;
+
+            if (!nome || !especie) return alert('Nome e espécie são obrigatórios.');
+
+            const payload = { nome, especie, raca, idade, sexo, peso };
+
+            try {
+                const res = await apiFetch(`${API_URL}/api/atualizar-pet/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res && res.success) {
+                    // update local state
+                    const idx = allPets.findIndex(p => p.id == currentPatientId);
+                    if (idx !== -1) {
+                        allPets[idx] = { ...allPets[idx], ...payload };
+                    }
+
+                    // update modal UI
+                    document.getElementById('modal-patient-name').textContent = nome;
+                    document.getElementById('modal-patient-species').textContent = `${especie} - ${raca}`;
+                    document.getElementById('modal-patient-age').textContent = `Idade: ${idade} anos`;
+                    document.getElementById('modal-patient-gender').textContent = sexo;
+                    document.getElementById('modal-patient-weight').textContent = `${peso}kg`;
+
+                    // hide edit block and refresh list
+                    cancelPatientEdit();
+                    displayVetPets(filteredPets.length ? filteredPets : allPets);
+                    alert('Informações do paciente atualizadas com sucesso.');
+                } else {
+                    alert((res && res.message) ? res.message : 'Erro ao salvar informações do paciente');
+                }
+            } catch (err) {
+                console.error('Erro ao salvar paciente:', err);
+                alert(err.message || 'Erro de conexão. Tente novamente.');
+            }
         }
 
         function showConsultationModal(petId) {
@@ -1057,15 +2009,70 @@
                 return;
             }
 
+            // Collect all form data for the complete anamnesis
             const anamnesisData = {
-                motivo: formData.get('anamnesis-reason'),
-                historico: formData.get('anamnesis-history'),
-                vacinacao: formData.get('anamnesis-vaccines')
+                queixaPrincipal: formData.get('queixaPrincipal') || '',
+                desdeQuandoNaFamilia: formData.get('desdeQuandoNaFamilia') || '',
+                motivoAquisicao: formData.get('motivoAquisicao') || '',
+                imunizacao: formData.get('imunizacao') || '',
+                dataUltimaDoseVacina: formData.get('dataUltimaDoseVacina') || '',
+                desverminacao: formData.get('desverminacao') || '',
+                dataUltimaDoseVermifugo: formData.get('dataUltimaDoseVermifugo') || '',
+                ambiente: formData.get('ambiente') || '',
+                frequenciaPasseios: formData.get('frequenciaPasseios') || '',
+                duracaoPasseio: formData.get('duracaoPasseio') || '',
+                tipoPiso: formData.get('tipoPiso') || '',
+                exposicaoPoeira: formData.get('exposicaoPoeira') || '',
+                exposicaoQuimicos: formData.get('exposicaoQuimicos') || '',
+                presencaRatos: formData.get('presencaRatos') || '',
+                presencaPlantas: formData.get('presencaPlantas') || '',
+                animaisContactantes: formData.get('animaisContactantes') || '',
+                convivenciaOutrosAnimais: formData.get('convivenciaOutrosAnimais') || '',
+                tipoConvivencia: formData.get('tipoConvivencia') || '',
+                alimentacao: formData.get('alimentacao') || '',
+                manutencaoPeso: formData.get('manutencaoPeso') || '',
+                quantidadeAgua: formData.get('quantidadeAgua') || '',
+                defecacao: formData.get('defecacao') || '',
+                aspectoVomitos: formData.get('aspectoVomitos') || '',
+                frequenciaVomitos: formData.get('frequenciaVomitos') || '',
+                frequenciaRegurgitacao: formData.get('frequenciaRegurgitacao') || '',
+                sistemaCardiorrespiratorio: formData.get('sistemaCardiorrespiratorio') || '',
+                sistemaGeniturinario: formData.get('sistemaGeniturinario') || '',
+                sistemaNeurologicoLocomotor: formData.get('sistemaNeurologicoLocomotor') || '',
+                sistemaTegumentar: formData.get('sistemaTegumentar') || '',
+                historicoMedicoMedicamentoso: formData.get('historicoMedicoMedicamentoso') || '',
+                nivelConsciencia: formData.get('nivelConsciencia') || '',
+                postura: formData.get('postura') || '',
+                escoreCorporal: formData.get('escoreCorporal') || '',
+                avaliacaoCabeca: formData.get('avaliacaoCabeca') || '',
+                quaisLinfonodos: formData.get('quaisLinfonodos') || '',
+                auscultaPulmonar: formData.get('auscultaPulmonar') || '',
+                auscultaCardiaca: formData.get('auscultaCardiaca') || '',
+                fr: formData.get('fr') || '',
+                fc: formData.get('fc') || '',
+                palpacaoAbdominal: formData.get('palpacaoAbdominal') || '',
+                pulsoArterial: formData.get('pulsoArterial') || '',
+                sistemaReprodutor: formData.get('sistemaReprodutor') || '',
+                temperatura: formData.get('temperatura') || '',
+                outrosAchados: formData.get('outrosAchados') || '',
+                suspeitaClinica: formData.get('suspeitaClinica') || '',
+                examesComplementares: formData.get('examesComplementares') || '',
+                diagnosticoDefinitivo: formData.get('diagnosticoDefinitivo') || '',
+                tratamento: formData.get('tratamento') || '',
+                avaliacaoComportamental: formData.get('avaliacaoComportamental') || ''
             };
 
-            // Debug: log the data being sent
-            console.log('Pet ID:', petId);
-            console.log('Anamnesis Data:', anamnesisData);
+            // Collect checkbox values
+            const apetiteValues = Array.from(document.querySelectorAll('input[name="apetite"]:checked')).map(cb => cb.value);
+            const ingestaoAguaValues = Array.from(document.querySelectorAll('input[name="ingestaoAgua"]:checked')).map(cb => cb.value);
+            const mucosasValues = Array.from(document.querySelectorAll('input[name="mucosas"]:checked')).map(cb => cb.value);
+            
+            anamnesisData.apetite = apetiteValues.join(', ');
+            anamnesisData.ingestaoAgua = ingestaoAguaValues.join(', ');
+            anamnesisData.mucosas = mucosasValues.join(', ');
+            anamnesisData.vomitos = formData.get('vomitos') || '';
+            anamnesisData.regurgitacao = formData.get('regurgitacao') || '';
+            anamnesisData.linfonodos = formData.get('linfonodos') || '';
 
             try {
                 const response = await fetch(`${API_URL}/api/salvar-anamnese/${petId}`, {
@@ -1085,24 +2092,8 @@
                 if (result.success) {
                     alert('Anamnese salva com sucesso!');
                     
-                    // Update the display area immediately with the saved data
-                    const displayContent = document.getElementById('anamnesis-display-content');
-                    displayContent.innerHTML = `
-                        <div class="space-y-3">
-                            <div>
-                                <h6 class="font-semibold text-sm text-gray-700">Motivo da Consulta:</h6>
-                                <p class="text-sm text-gray-600">${anamnesisData.motivo || 'Não informado'}</p>
-                            </div>
-                            <div>
-                                <h6 class="font-semibold text-sm text-gray-700">Histórico Clínico:</h6>
-                                <p class="text-sm text-gray-600">${anamnesisData.historico || 'Não informado'}</p>
-                            </div>
-                            <div>
-                                <h6 class="font-semibold text-sm text-gray-700">Vacinas:</h6>
-                                <p class="text-sm text-gray-600">${anamnesisData.vacinacao || 'Não informado'}</p>
-                            </div>
-                        </div>
-                    `;
+                    // Update the display area with summary of saved data
+                    updateAnamnesisDisplay(anamnesisData);
                     
                     // Also reload pets to update the backend data
                     loadVetPets();
@@ -1118,6 +2109,454 @@
                 } else {
                     alert('Erro: Pet não encontrado. Verifique os dados e tente novamente.');
                 }
+            }
+        }
+
+        function updateAnamnesisDisplay(data) {
+            const displayContent = document.getElementById('anamnesis-display-content');
+            displayContent.innerHTML = `
+                <div class="space-y-4 max-h-96 overflow-y-auto">
+                    <!-- Queixa Principal -->
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-400">
+                        <h6 class="font-semibold text-sm text-blue-800 mb-1">Queixa Principal</h6>
+                        <p class="text-sm text-gray-700">${data.queixaPrincipal || 'Não informado'}</p>
+                    </div>
+
+                    <!-- Histórico Familiar -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-xs text-gray-700 mb-1">Desde quando está com a família:</h6>
+                            <p class="text-sm text-gray-600">${data.desdeQuandoNaFamilia || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-xs text-gray-700 mb-1">Motivo da aquisição:</h6>
+                            <p class="text-sm text-gray-600">${data.motivoAquisicao || 'Não informado'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Imunização -->
+                    <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-400">
+                        <h6 class="font-semibold text-sm text-green-800 mb-2">Imunização</h6>
+                        <p class="text-sm text-gray-700 mb-2">${data.imunizacao || 'Não informado'}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Última dose:</span>
+                                <span class="text-xs text-gray-700">${data.dataUltimaDoseVacina ? formatDate(data.dataUltimaDoseVacina) : 'Não informado'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desverminação -->
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400">
+                        <h6 class="font-semibold text-sm text-yellow-800 mb-2">Desverminação</h6>
+                        <p class="text-sm text-gray-700 mb-2">${data.desverminacao || 'Não informado'}</p>
+                        <div>
+                            <span class="text-xs font-medium text-gray-600">Última dose:</span>
+                            <span class="text-xs text-gray-700">${data.dataUltimaDoseVermifugo ? formatDate(data.dataUltimaDoseVermifugo) : 'Não informado'}</span>
+                        </div>
+                    </div>
+
+                    <!-- Ambiente e Passeios -->
+                    <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-400">
+                        <h6 class="font-semibold text-sm text-purple-800 mb-2">Ambiente e Passeios</h6>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Ambiente:</span>
+                                <p class="text-sm text-gray-700">${data.ambiente || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Tipo de piso:</span>
+                                <p class="text-sm text-gray-700">${data.tipoPiso || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Frequência passeios:</span>
+                                <p class="text-sm text-gray-700">${data.frequenciaPasseios ? data.frequenciaPasseios.replace('diarios-1x', 'Diários (1x)').replace('diarios-2x+', 'Diários (2x ou +)').replace('semanais', 'Semanais') : 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Duração passeios:</span>
+                                <p class="text-sm text-gray-700">${data.duracaoPasseio ? data.duracaoPasseio.replace('ate-15min', 'Até 15min').replace('15-30min', '15 a 30min').replace('30min+', '30min ou +') : 'Não informado'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exposições -->
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-400">
+                        <h6 class="font-semibold text-sm text-red-800 mb-2">Exposições</h6>
+                        <div class="space-y-2">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Poeira/fumaça:</span>
+                                <p class="text-sm text-gray-700">${data.exposicaoPoeira || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Produtos químicos:</span>
+                                <p class="text-sm text-gray-700">${data.exposicaoQuimicos || 'Não informado'}</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                <div>
+                                    <span class="text-xs font-medium text-gray-600">Presença de ratos:</span>
+                                    <p class="text-sm text-gray-700">${data.presencaRatos || 'Não informado'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-gray-600">Plantas ornamentais:</span>
+                                    <p class="text-sm text-gray-700">${data.presencaPlantas || 'Não informado'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Animais Contactantes -->
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <h6 class="font-semibold text-sm text-gray-800 mb-2">Animais Contactantes</h6>
+                        <div class="space-y-2">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Animais contactantes:</span>
+                                <p class="text-sm text-gray-700">${data.animaisContactantes || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Convivência com outros animais:</span>
+                                <p class="text-sm text-gray-700">${data.convivenciaOutrosAnimais || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Tipo de convivência:</span>
+                                <p class="text-sm text-gray-700">${data.tipoConvivencia ? data.tipoConvivencia.replace('residem-juntos', 'Residem juntos').replace('contato-frequente', 'Contato frequente').replace('contato-raro', 'Contato raro') : 'Não informado'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sistema Digestório -->
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-400">
+                        <h6 class="font-semibold text-sm text-blue-800 mb-2">Sistema Digestório</h6>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Apetite:</span>
+                                <p class="text-sm text-gray-700">${data.apetite || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Ingestão de água:</span>
+                                <p class="text-sm text-gray-700">${data.ingestaoAgua || 'Não informado'}</p>
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="text-xs font-medium text-gray-600">Alimentação:</span>
+                                <p class="text-sm text-gray-700">${data.alimentacao || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Manutenção do peso:</span>
+                                <p class="text-sm text-gray-700">${data.manutencaoPeso || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Quantidade água (mL/24h):</span>
+                                <p class="text-sm text-gray-700">${data.quantidadeAgua || 'Não informado'}</p>
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="text-xs font-medium text-gray-600">Defecação:</span>
+                                <p class="text-sm text-gray-700">${data.defecacao || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Vômitos:</span>
+                                <p class="text-sm text-gray-700">${data.vomitos || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Regurgitação:</span>
+                                <p class="text-sm text-gray-700">${data.regurgitacao || 'Não informado'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outros Sistemas -->
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Sistema Cardiorrespiratório</h6>
+                            <p class="text-sm text-gray-700">${data.sistemaCardiorrespiratorio || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Sistema Geniturinário</h6>
+                            <p class="text-sm text-gray-700">${data.sistemaGeniturinario || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Sistema Neurológico e Locomotor</h6>
+                            <p class="text-sm text-gray-700">${data.sistemaNeurologicoLocomotor || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Sistema Tegumentar</h6>
+                            <p class="text-sm text-gray-700">${data.sistemaTegumentar || 'Não informado'}</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-gray-800 mb-1">Histórico Médico e Medicamentoso</h6>
+                            <p class="text-sm text-gray-700">${data.historicoMedicoMedicamentoso || 'Não informado'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Exame Físico Geral -->
+                    <div class="bg-indigo-50 p-3 rounded-lg border-l-4 border-indigo-400">
+                        <h6 class="font-semibold text-sm text-indigo-800 mb-2">Exame Físico Geral</h6>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Nível de consciência:</span>
+                                <p class="text-sm text-gray-700">${data.nivelConsciencia || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Postura:</span>
+                                <p class="text-sm text-gray-700">${data.postura || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Escore corporal:</span>
+                                <p class="text-sm text-gray-700">${data.escoreCorporal || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Avaliação cabeça:</span>
+                                <p class="text-sm text-gray-700">${data.avaliacaoCabeca || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Mucosas:</span>
+                                <p class="text-sm text-gray-700">${data.mucosas || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Linfonodos:</span>
+                                <p class="text-sm text-gray-700">${data.linfonodos || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Ausculta Pulmonar:</span>
+                                <p class="text-sm text-gray-700">${data.auscultaPulmonar || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Ausculta Cardíaca:</span>
+                                <p class="text-sm text-gray-700">${data.auscultaCardiaca || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">FR:</span>
+                                <p class="text-sm text-gray-700">${data.fr || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">FC:</span>
+                                <p class="text-sm text-gray-700">${data.fc || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Palpação abdominal:</span>
+                                <p class="text-sm text-gray-700">${data.palpacaoAbdominal || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Pulso arterial:</span>
+                                <p class="text-sm text-gray-700">${data.pulsoArterial || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Sistema reprodutor:</span>
+                                <p class="text-sm text-gray-700">${data.sistemaReprodutor || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Temperatura:</span>
+                                <p class="text-sm text-gray-700 font-medium">${data.temperatura || 'Não informado'}</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-xs font-medium text-gray-600">Outros achados / Observações comportamentais:</span>
+                            <p class="text-sm text-gray-700">${data.outrosAchados || 'Não informado'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Conclusões -->
+                    <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-400">
+                        <h6 class="font-semibold text-sm text-green-800 mb-2">Conclusões e Tratamento</h6>
+                        <div class="space-y-2">
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Suspeita clínica:</span>
+                                <p class="text-sm text-gray-700 font-medium">${data.suspeitaClinica || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Exames complementares:</span>
+                                <p class="text-sm text-gray-700">${data.examesComplementares || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Diagnóstico definitivo:</span>
+                                <p class="text-sm text-gray-700 font-medium">${data.diagnosticoDefinitivo || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Tratamento:</span>
+                                <p class="text-sm text-gray-700 font-medium">${data.tratamento || 'Não informado'}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-600">Avaliação comportamental:</span>
+                                <p class="text-sm text-gray-700">${data.avaliacaoComportamental || 'Não informado'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4 p-3 bg-blue-100 rounded-lg">
+                        <p class="text-xs text-blue-800 font-medium">Anamnese Completa Salva</p>
+                        <p class="text-xs text-blue-600">Última atualização: ${data.data || new Date().toLocaleString('pt-BR')}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Functions for Exams tab - Clinical History and Vaccination
+        async function saveClinicalHistory() {
+            const clinicalHistory = document.getElementById('clinical-history-input').value;
+            
+            if (!currentPatientId) {
+                alert('Erro: Pet não identificado.');
+                return;
+            }
+
+            if (!clinicalHistory.trim()) {
+                alert('Por favor, preencha o histórico clínico.');
+                return;
+            }
+
+            try {
+                const result = await apiFetch(`${API_URL}/api/salvar-historico-clinico/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ historicoClinico: clinicalHistory })
+                });
+
+                if (result && result.success) {
+                    alert('Histórico clínico salvo com sucesso!');
+                    // Update display
+                    document.getElementById('clinical-history-display').innerHTML = `
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-blue-800 mb-2">Histórico Clínico:</h6>
+                            <p class="text-sm text-gray-700">${clinicalHistory}</p>
+                            <p class="text-xs text-gray-500 mt-2">Salvo em: ${new Date().toLocaleString('pt-BR')}</p>
+                        </div>
+                    `;
+                    // Clear input
+                    document.getElementById('clinical-history-input').value = '';
+                } else {
+                    alert((result && result.message) ? result.message : 'Erro ao salvar histórico clínico');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar histórico clínico:', error);
+                alert(error.message || 'Erro de conexão. Tente novamente.');
+            }
+        }
+
+        // Employees (funcionários) utilities
+        window.employeesList = [];
+        async function loadEmployees() {
+            try {
+                const data = await apiFetch(`${API_URL}/api/funcionarios`);
+                if (data && Array.isArray(data.funcionarios)) {
+                    window.employeesList = data.funcionarios;
+                } else if (Array.isArray(data)) {
+                    window.employeesList = data;
+                } else {
+                    window.employeesList = [];
+                }
+            } catch (err) {
+                console.warn('Não foi possível carregar funcionários:', err.message || err);
+                window.employeesList = [];
+            }
+        }
+
+        function openCreateAccountModal() {
+            const modal = document.getElementById('create-account-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeCreateAccountModal() {
+            const modal = document.getElementById('create-account-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        async function createEmployee(e) {
+            e.preventDefault();
+            const form = e.target;
+            const nome = form['employee-nome'].value.trim();
+            const login = form['employee-login'].value.trim();
+            const contato = form['employee-contato'].value.trim();
+            const senha = form['employee-senha'].value;
+            const role = form['employee-role'].value;
+            const crmv = form['employee-crmv'].value.trim();
+
+            if (!nome || !login || !contato || !senha) {
+                alert('Por favor, preencha todos os campos obrigatórios (Nome, Login, Contato, Senha).');
+                return;
+            }
+
+            try {
+                const payload = { nome, login, contato, senha, role };
+                if (crmv) payload.crmv = crmv;
+
+                const result = await apiFetch(`${API_URL}/api/cadastrar-funcionario`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (result && result.success) {
+                    alert('Conta criada com sucesso!');
+                    form.reset();
+                    closeCreateAccountModal();
+                    await loadEmployees();
+                } else {
+                    alert((result && result.message) ? result.message : 'Erro ao criar conta');
+                }
+            } catch (err) {
+                console.error('Erro ao criar funcionário:', err);
+                alert(err.message || 'Erro ao criar conta. Tente novamente.');
+            }
+        }
+
+        async function saveVaccination() {
+            const vaccination = document.getElementById('vaccination-input').value;
+            const lastDate = document.getElementById('last-vaccination-date').value;
+            const nextDate = document.getElementById('next-vaccination-date').value;
+            const notes = document.getElementById('vaccination-notes').value;
+            
+            if (!currentPatientId) {
+                alert('Erro: Pet não identificado.');
+                return;
+            }
+
+            if (!vaccination.trim()) {
+                alert('Por favor, preencha as vacinas aplicadas.');
+                return;
+            }
+
+            const vaccinationData = {
+                vacinacao: vaccination,
+                dataUltimaVacinacao: lastDate,
+                proximaVacinacao: nextDate,
+                observacoesVacinacao: notes
+            };
+
+            try {
+                const result = await apiFetch(`${API_URL}/api/salvar-vacinacao/${currentPatientId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(vaccinationData)
+                });
+
+                if (result && result.success) {
+                    alert('Vacinação salva com sucesso!');
+                    // Update display
+                    document.getElementById('vaccination-display').innerHTML = `
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <h6 class="font-semibold text-sm text-green-800 mb-2">Vacinação:</h6>
+                            <p class="text-sm text-gray-700 mb-2">${vaccination}</p>
+                            ${lastDate ? `<p class="text-xs text-gray-600">Última vacinação: ${formatDate(lastDate)}</p>` : ''}
+                            ${nextDate ? `<p class="text-xs text-gray-600">Próxima vacinação: ${formatDate(nextDate)}</p>` : ''}
+                            ${notes ? `<p class="text-xs text-gray-600 mt-1">Observações: ${notes}</p>` : ''}
+                            <p class="text-xs text-gray-500 mt-2">Salvo em: ${new Date().toLocaleString('pt-BR')}</p>
+                        </div>
+                    `;
+                    // Clear inputs
+                    document.getElementById('vaccination-input').value = '';
+                    document.getElementById('last-vaccination-date').value = '';
+                    document.getElementById('next-vaccination-date').value = '';
+                    document.getElementById('vaccination-notes').value = '';
+                } else {
+                    alert((result && result.message) ? result.message : 'Erro ao salvar vacinação');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar vacinação:', error);
+                alert(error.message || 'Erro de conexão. Tente novamente.');
             }
         }
 
@@ -1430,10 +2869,11 @@
             const pet = allPets.find(p => p.id == petId);
             if (!pet) return;
 
-            // Load requested exams
+            // Prefer exams stored under pet.exames (server-side shape), fall back to legacy top-level fields
             const requestedExamsList = document.getElementById('requested-exams-list');
-            if (pet.examesSolicitados && pet.examesSolicitados.length > 0) {
-                requestedExamsList.innerHTML = pet.examesSolicitados.map((exam, index) => `
+            const requested = (pet.examesSolicitados && pet.examesSolicitados.length) ? pet.examesSolicitados : (pet.exames && pet.exames.examesSolicitados && pet.exames.examesSolicitados.length) ? pet.exames.examesSolicitados : [];
+            if (requested && requested.length > 0) {
+                requestedExamsList.innerHTML = requested.map((exam, index) => `
                     <div class="bg-white p-3 rounded-lg border">
                         <div class="flex justify-between items-start">
                             <div>
@@ -1453,8 +2893,9 @@
 
             // Load exam results
             const examResultsList = document.getElementById('exam-results-list');
-            if (pet.resultadosExames && pet.resultadosExames.length > 0) {
-                examResultsList.innerHTML = pet.resultadosExames.map((result, index) => `
+            const results = (pet.resultadosExames && pet.resultadosExames.length) ? pet.resultadosExames : (pet.exames && pet.exames.resultadosExames && pet.exames.resultadosExames.length) ? pet.exames.resultadosExames : [];
+            if (results && results.length > 0) {
+                examResultsList.innerHTML = results.map((result, index) => `
                     <div class="bg-white p-3 rounded-lg border">
                         <div class="flex justify-between items-start">
                             <div>
@@ -1483,6 +2924,10 @@
                 <div class="space-y-2">
                     <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Nome do exame">
                     <textarea rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary" placeholder="Descrição/Observações"></textarea>
+                    <label class="block text-sm text-gray-600">Solicitado por:</label>
+                    <select class="w-full px-3 py-2 border rounded-lg" data-employee-select>
+                        <option value="">-- Selecionar funcionário --</option>
+                    </select>
                     <div class="flex justify-end space-x-2">
                         <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-gray-700 text-sm">Cancelar</button>
                         <button onclick="saveRequestedExam(this)" class="bg-secondary hover:bg-emerald-700 text-white text-sm px-3 py-1 rounded-lg">Salvar</button>
@@ -1490,6 +2935,21 @@
                 </div>
             `;
             requestedExamsList.appendChild(newExam);
+
+            // Populate employee select dynamically
+            const select = newExam.querySelector('[data-employee-select]');
+            if (select) {
+                try {
+                    (window.employeesList || []).forEach(emp => {
+                        const opt = document.createElement('option');
+                        opt.value = emp.login || emp.nome;
+                        opt.textContent = `${emp.nome}${emp.role ? ' (' + emp.role + ')' : ''}`;
+                        select.appendChild(opt);
+                    });
+                } catch (err) {
+                    console.warn('Erro ao popular select de funcionários:', err);
+                }
+            }
         }
 
         function addExamResult() {
@@ -1514,11 +2974,14 @@
             const container = button.parentElement.parentElement;
             const nameInput = container.querySelector('input[type="text"]');
             const descriptionInput = container.querySelector('textarea');
+            const employeeSelect = container.querySelector('[data-employee-select]');
 
             if (!nameInput.value || !descriptionInput.value) {
                 alert('Por favor, preencha todos os campos.');
                 return;
             }
+
+            const solicitante = employeeSelect ? employeeSelect.value : '';
 
             // Update the container with saved data
             container.innerHTML = `
@@ -1526,7 +2989,7 @@
                     <div>
                         <p class="font-medium">${nameInput.value}</p>
                         <p class="text-sm text-gray-600">${descriptionInput.value}</p>
-                        <p class="text-xs text-gray-500">Solicitado em: ${formatDate(new Date().toISOString().split('T')[0])}</p>
+                        <p class="text-xs text-gray-500">Solicitado em: ${formatDate(new Date().toISOString().split('T')[0])}${solicitante ? ' • Solicitado por: ' + solicitante : ''}</p>
                     </div>
                     <button onclick="removeRequestedExam(this.parentElement.parentElement)" class="text-red-500 hover:text-red-700">
                         <i data-feather="trash-2"></i>
@@ -1591,13 +3054,28 @@
             requestedContainers.forEach(container => {
                 const nameElement = container.querySelector('p.font-medium');
                 const descElement = container.querySelector('p.text-sm');
+                const xsElement = container.querySelector('p.text-xs');
                 if (nameElement && descElement) {
                     const nameText = nameElement.textContent;
                     const descText = descElement.textContent;
+                    // Try to extract date and solicitante from the small text if present
+                    let dateIso = new Date().toISOString().split('T')[0];
+                    let solicitante = '';
+                    if (xsElement) {
+                        const dateMatch = xsElement.textContent.match(/(\d{2}\/\d{2}\/\d{4})/);
+                        if (dateMatch) {
+                            dateIso = new Date(dateMatch[1].split('/').reverse().join('-')).toISOString().split('T')[0];
+                        }
+                        const solMatch = xsElement.textContent.match(/Solicitado por:\s*(.+)$/);
+                        if (solMatch) {
+                            solicitante = solMatch[1].trim();
+                        }
+                    }
                     requestedExams.push({
                         nome: nameText,
                         descricao: descText,
-                        dataSolicitacao: new Date().toISOString().split('T')[0]
+                        dataSolicitacao: dateIso,
+                        solicitante: solicitante
                     });
                 }
             });
@@ -1624,25 +3102,27 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/salvar-exames/${currentPatientId}`, {
+                const result = await apiFetch(`${API_URL}/api/salvar-exames/${currentPatientId}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(examData)
                 });
 
-                const result = await response.json();
-
-                if (result.success) {
+                if (result && result.success) {
                     alert('Exames salvos com sucesso!');
+                    // update local pet state so loadExamsData reads the new data without reloading from server
+                    const petIndex = allPets.findIndex(p => p.id == currentPatientId);
+                    if (petIndex !== -1) {
+                        // mirror server merge behavior
+                        allPets[petIndex].exames = { ...(allPets[petIndex].exames || {}), ...examData, dataExames: new Date().toLocaleString('pt-BR') };
+                    }
                     loadExamsData(currentPatientId);
                 } else {
-                    alert(result.message || 'Erro ao salvar exames');
+                    alert((result && result.message) ? result.message : 'Erro ao salvar exames');
                 }
             } catch (error) {
                 console.error('Erro ao salvar exames:', error);
-                alert('Erro de conexão. Tente novamente.');
+                alert(error.message || 'Erro de conexão. Tente novamente.');
             }
         }
 
@@ -1710,6 +3190,269 @@
             const date = new Date(dateString);
             return date.toLocaleDateString('pt-BR');
         }
+
+        function roleToLabel(role) {
+            switch (role) {
+                case 'Medico vet': return 'Veterinário';
+                case 'Vet junior': return 'Veterinário (Junior)';
+                case 'Recepção': return 'Recepção';
+                case 'Internação': return 'Internação';
+                case 'Estagiario': return 'Estagiário';
+                default: return role || '';
+            }
+        }
+    </script>
+    <script>
+        // Profile modal handlers
+        function openProfileModal() {
+            if (!currentUser) return showLoginScreen();
+            // populate fields
+            document.getElementById('profile-id').value = currentUser.id || '';
+            document.getElementById('profile-nome').value = currentUser.nome || '';
+            document.getElementById('profile-login').value = currentUser.login || '';
+            document.getElementById('profile-contato').value = currentUser.contato || '';
+            const roleSelect = document.getElementById('profile-role');
+            // Rebuild options according to allowed transitions for the current role
+            const allRoles = ['Medico vet','Vet junior','Recepção','Internação','Estagiario'];
+            function allowedTargets(from) {
+                // returns array of allowed target roles including the current role
+                if (!from) return allRoles.slice();
+                if (from === 'Medico vet') return ['Medico vet'];
+                if (from === 'Recepção' || from === 'Internação') return [from];
+                if (from === 'Estagiario') return ['Estagiario','Vet junior'];
+                if (from === 'Vet junior') return ['Vet junior','Medico vet'];
+                // default fallback
+                return allRoles.slice();
+            }
+
+            const allowed = allowedTargets(currentUser.role);
+            // clear existing options
+            roleSelect.innerHTML = '';
+            allowed.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r;
+                opt.textContent = r;
+                roleSelect.appendChild(opt);
+            });
+            // Set value to current role (or first allowed)
+            roleSelect.value = allowed.includes(currentUser.role) ? currentUser.role : allowed[0];
+            // Disable select if only one allowed option
+            roleSelect.disabled = allowed.length <= 1;
+            // populate crmv if present and allowed; hide/clear otherwise
+            const crmvInput = document.getElementById('profile-crmv');
+            const profileCrmvGroup = document.getElementById('profile-crmv-group');
+            if (crmvInput && profileCrmvGroup) {
+                if (currentUser.role === 'Vet junior' || currentUser.role === 'Medico vet') {
+                    profileCrmvGroup.classList.remove('hidden');
+                    crmvInput.value = currentUser.crmv || '';
+                } else {
+                    profileCrmvGroup.classList.add('hidden');
+                    crmvInput.value = '';
+                }
+            }
+            document.getElementById('profile-modal').classList.remove('hidden');
+            feather.replace();
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+        }
+
+        async function updateProfile(e) {
+            e.preventDefault();
+            const id = document.getElementById('profile-id').value;
+            const nome = document.getElementById('profile-nome').value.trim();
+            const login = document.getElementById('profile-login').value.trim();
+            const contato = document.getElementById('profile-contato').value.trim();
+            const role = document.getElementById('profile-role').value;
+            const crmvInput = document.getElementById('profile-crmv');
+            const crmvVal = crmvInput ? crmvInput.value.trim() : '';
+
+            // Client-side validation for role transitions to help UX (server enforces rules)
+            if (currentUser.role === 'Estagiario' && !(role === 'Estagiario' || role === 'Vet junior')) {
+                alert('Estagiário só pode mudar para Vet junior.');
+                return;
+            }
+            if (currentUser.role === 'Vet junior' && !(role === 'Vet junior' || role === 'Medico vet')) {
+                alert('Vet junior só pode mudar para Medico vet.');
+                return;
+            }
+
+            try {
+                const body = { nome, login, contato, role };
+                if (crmvVal) body.crmv = crmvVal;
+                const res = await apiFetch(`${API_URL}/api/funcionarios/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (res && res.success) {
+                    // update currentUser in client
+                    currentUser = { ...currentUser, nome, login, contato, role };
+                    // update UI (header/sidebar)
+                    const vetNameEl = document.getElementById('vet-name');
+                    const vetSidebarEl = document.getElementById('vet-sidebar-name');
+                    if (vetNameEl) vetNameEl.textContent = currentUser.nome || '';
+                    if (vetSidebarEl) vetSidebarEl.textContent = currentUser.nome || '';
+                    const roleDescEl2 = document.getElementById('vet-role-desc');
+                    if (roleDescEl2) roleDescEl2.textContent = roleToLabel(currentUser.role || '');
+                    closeProfileModal();
+                    alert('Perfil atualizado com sucesso');
+                    await loadEmployees();
+                } else {
+                    alert('Falha ao atualizar perfil: ' + (res.message || 'erro desconhecido'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao atualizar perfil: ' + err.message);
+            }
+        }
+
+        function confirmDeleteAccount() {
+            if (!confirm('Tem certeza que deseja excluir sua conta? Essa ação é irreversível.')) return;
+            deleteAccount();
+        }
+
+        async function deleteAccount() {
+            const id = currentUser && currentUser.id;
+            if (!id) return alert('Usuário inválido');
+            try {
+                const res = await apiFetch(`${API_URL}/api/funcionarios/${id}`, { method: 'DELETE' });
+                if (res && res.success) {
+                    alert('Conta excluída. Você será deslogado.');
+                    logout();
+                } else {
+                    alert('Falha ao excluir conta: ' + (res.message || 'erro desconhecido'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao excluir conta: ' + err.message);
+            }
+        }
+    </script>
+    <!-- Create Account Modal -->
+    <div id="create-account-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Criar Conta de Funcionário</h3>
+                <button class="text-gray-500 hover:text-gray-700" onclick="closeCreateAccountModal()">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form id="create-account-form" onsubmit="createEmployee(event)">
+                <div class="grid grid-cols-1 gap-3">
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">Nome</label>
+                        <input name="employee-nome" required class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">Login (usuário)</label>
+                        <input name="employee-login" required class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">Contato (telefone)</label>
+                        <input name="employee-contato" required class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">Senha</label>
+                        <input name="employee-senha" type="password" required class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">Função</label>
+                        <select name="employee-role" class="w-full px-3 py-2 border rounded-lg">
+                            <option value="Medico vet">Medico vet</option>
+                            <option value="Vet junior">Vet junior</option>
+                            <option value="Recepção">Recepção</option>
+                            <option value="Internação">Internação</option>
+                            <option value="Estagiario">Estagiario</option>
+                        </select>
+                    </div>
+                    <div id="create-crmv-group" class="hidden">
+                        <label class="block text-sm text-gray-700 mb-1">CRMV</label>
+                        <input name="employee-crmv" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div class="flex justify-end space-x-2 mt-3">
+                        <button type="button" onclick="closeCreateAccountModal()" class="border px-3 py-2 rounded-lg">Cancelar</button>
+                        <button type="submit" class="bg-secondary text-white px-4 py-2 rounded-lg">Criar Conta</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Meu Perfil</h3>
+                <button class="text-gray-500 hover:text-gray-700" onclick="closeProfileModal()"><i data-feather="x"></i></button>
+            </div>
+            <form id="profile-form" onsubmit="updateProfile(event)">
+                <input type="hidden" id="profile-id">
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-700 mb-1">Nome</label>
+                    <input id="profile-nome" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-700 mb-1">Login</label>
+                    <input id="profile-login" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-700 mb-1">Contato</label>
+                    <input id="profile-contato" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-700 mb-1">Função</label>
+                    <select id="profile-role" class="w-full px-3 py-2 border rounded-lg">
+                        <option value="Medico vet">Medico vet</option>
+                        <option value="Vet junior">Vet junior</option>
+                        <option value="Recepção">Recepção</option>
+                        <option value="Internação">Internação</option>
+                        <option value="Estagiario">Estagiario</option>
+                    </select>
+                </div>
+                <div id="profile-crmv-group" class="mb-3 hidden">
+                    <label class="block text-sm text-gray-700 mb-1">CRMV</label>
+                    <input id="profile-crmv" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                    <button type="button" class="text-red-600" onclick="confirmDeleteAccount()">Excluir Conta</button>
+                    <div>
+                        <button type="button" onclick="closeProfileModal()" class="border px-3 py-2 rounded-lg mr-2">Cancelar</button>
+                        <button type="submit" class="bg-secondary text-white px-4 py-2 rounded-lg">Salvar Alterações</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // toggle CRMV visibility in create account modal based on role
+        (function setupCrmvToggle() {
+            const createRoleSelect = document.querySelector('#create-account-modal select[name="employee-role"]');
+            const createCrmvGroup = document.getElementById('create-crmv-group') || document.querySelector('#create-account-modal input[name="employee-crmv"]')?.parentElement;
+            if (createRoleSelect && createCrmvGroup) {
+                function updateCreateCrmv() {
+                    const v = createRoleSelect.value;
+                    // show CRMV for Vet junior and Medico vet
+                    if (v === 'Vet junior' || v === 'Medico vet') createCrmvGroup.classList.remove('hidden');
+                    else createCrmvGroup.classList.add('hidden');
+                }
+                createRoleSelect.addEventListener('change', updateCreateCrmv);
+                updateCreateCrmv();
+            }
+
+            // profile modal
+            const profileRole = document.getElementById('profile-role');
+            const profileCrmvGroup = document.getElementById('profile-crmv-group');
+            if (profileRole && profileCrmvGroup) {
+                function updateProfileCrmv() {
+                    const v = profileRole.value;
+                    if (v === 'Vet junior' || v === 'Medico vet') profileCrmvGroup.classList.remove('hidden');
+                    else profileCrmvGroup.classList.add('hidden');
+                }
+                profileRole.addEventListener('change', updateProfileCrmv);
+                updateProfileCrmv();
+            }
+        })();
     </script>
 </body>
 </html>
