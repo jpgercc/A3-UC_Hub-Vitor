@@ -3,6 +3,9 @@
 Sistema de gestão veterinária com persistência em JSON para gerenciamento de usuários, médicos veterinários e animais.
 
 ## Como rodar o programa pela primeira vez
+- [ ] Check
+- [ ] List
+## Como rodar o programa pela primeira vez
 
 ### Pré-requisitos
 - Node.js instalado (versão 14 ou superior)
