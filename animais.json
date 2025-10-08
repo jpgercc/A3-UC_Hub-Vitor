@@ -1,0 +1,111 @@
+[
+  {
+    "id": 1635789012345,
+    "nome": "Max",
+    "especie": "Cão",
+    "raca": "Labrador",
+    "idade": "3",
+    "peso": "28",
+    "sexo": "Macho",
+    "tutorNome": "João Silva",
+    "tutorCpf": "123.456.789-00",
+    "tutorTelefone": "(11) 99999-9999",
+    "tag": "yellow",
+    "observacoes": "Uee",
+    "dataCadastro": "2023-10-01T10:00:00.000Z",
+    "anamnese": {
+      "queixaPrincipal": "",
+      "desdeQuandoNaFamilia": "",
+      "motivoAquisicao": "",
+      "imunizacao": "V10 feita na nossa clínica Bichinho Feliz.",
+      "dataUltimaDoseVacina": "",
+      "desverminacao": "Ivermectina, 6 meses, 250mg.",
+      "dataUltimaDoseVermifugo": "",
+      "ambiente": "Casa",
+      "frequenciaPasseios": "diarios-2x+",
+      "duracaoPasseio": "ate-15min",
+      "tipoPiso": "",
+      "exposicaoPoeira": "",
+      "exposicaoQuimicos": "",
+      "presencaRatos": "",
+      "presencaPlantas": "",
+      "animaisContactantes": "",
+      "convivenciaOutrosAnimais": "",
+      "tipoConvivencia": "",
+      "alimentacao": "Ração seca, Premier Seniors, 2x ao dia, 3 scoops, aprox. 300g por refeição.",
+      "manutencaoPeso": "",
+      "quantidadeAgua": "",
+      "defecacao": "Cerca de 2x ao dia. Escura e firme, odor caramelizado, tons barrosos. Sem disquesia.",
+      "aspectoVomitos": "",
+      "frequenciaVomitos": "",
+      "frequenciaRegurgitacao": "",
+      "sistemaCardiorrespiratorio": "",
+      "sistemaGeniturinario": "",
+      "sistemaNeurologicoLocomotor": "",
+      "sistemaTegumentar": "",
+      "historicoMedicoMedicamentoso": "",
+      "nivelConsciencia": "",
+      "postura": "Decúbito esternal",
+      "escoreCorporal": "",
+      "avaliacaoCabeca": "",
+      "quaisLinfonodos": "",
+      "auscultaPulmonar": "",
+      "auscultaCardiaca": "",
+      "fr": "24 mpm",
+      "fc": "110 bpm ",
+      "palpacaoAbdominal": "",
+      "pulsoArterial": "",
+      "sistemaReprodutor": "",
+      "temperatura": "38,5 °C",
+      "outrosAchados": "",
+      "suspeitaClinica": "",
+      "examesComplementares": "",
+      "diagnosticoDefinitivo": "",
+      "tratamento": "Anti-inflamatório e analgésico Meloxicam 2x ao dia.",
+      "avaliacaoComportamental": "",
+      "apetite": "diminuido",
+      "ingestaoAgua": "",
+      "mucosas": "",
+      "vomitos": "",
+      "regurgitacao": "",
+      "linfonodos": "",
+      "data": "07/10/2025, 21:13:16"
+    },
+    "consultas": {
+      "passadas": [
+        {
+          "data": "2023-09-15",
+          "motivo": "Consulta de rotina e vacinação",
+          "veterinario": "Dra. Ana Souza",
+          "observacoes": "Animal em bom estado geral"
+        }
+      ],
+      "futuras": [
+        {
+          "data": "2023-12-15",
+          "motivo": "Consulta de retorno",
+          "veterinario": "Dra. Ana Souza",
+          "observacoes": "Acompanhamento pós-vacinação"
+        }
+      ]
+    },
+    "exames": {
+      "solicitados": [
+        {
+          "tipo": "Hemograma completo",
+          "data": "2023-10-01",
+          "veterinario": "Dra. Ana Souza",
+          "status": "Pendente"
+        }
+      ],
+      "resultados": [],
+      "historicoClinico": "Teste",
+      "vacinacao": "V10 aplicada em 15/09/2023. Próxima dose em dezembro.",
+      "dataHistorico": "07/10/2025, 21:33:06",
+      "examesSolicitados": [],
+      "resultadosExames": [],
+      "dataExames": "07/10/2025, 21:36:45"
+    },
+    "dataObservacoes": "07/10/2025, 21:42:08"
+  }
+]

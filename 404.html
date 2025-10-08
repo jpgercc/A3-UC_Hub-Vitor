@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página em Construção - Bicho Feliz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #4caf50, #2196f3, #9c27b0);
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #2196f3;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .logo span {
+            color: #4caf50;
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            color: #f44336;
+            margin: 20px 0;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .error-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        
+        .error-message {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #555;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .animal-icons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+        }
+        
+        .animal-icon {
+            font-size: 50px;
+            color: #4caf50;
+            animation: bounce 2s infinite;
+        }
+        
+        .animal-icon:nth-child(2) {
+            animation-delay: 0.2s;
+            color: #2196f3;
+        }
+        
+        .animal-icon:nth-child(3) {
+            animation-delay: 0.4s;
+            color: #9c27b0;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        .construction {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            border-left: 5px solid #ff9800;
+        }
+        
+        .construction h3 {
+            color: #ff9800;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #4caf50, #2196f3);
+            border-radius: 4px;
+            animation: progress-animation 2s infinite;
+        }
+        
+        @keyframes progress-animation {
+            0% {
+                background-position: -200px 0;
+            }
+            100% {
+                background-position: 200px 0;
+            }
+        }
+        
+        .contact {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .contact a {
+            color: #2196f3;
+            text-decoration: none;
+        }
+        
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .error-code {
+                font-size: 80px;
+            }
+            
+            .error-title {
+                font-size: 24px;
+            }
+            
+            .animal-icons {
+                gap: 20px;
+            }
+            
+            .animal-icon {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1><i class="fas fa-paw"></i> Bicho<span>Feliz</span></h1>
+        </div>
+        
+        <div class="error-code">404</div>
+        
+        <h2 class="error-title">Página em Construção</h2>
+        
+        <p class="error-message">
+            Poxa, que pena! <span class="highlight">Nosso sistema ainda está em construção</span> e em breve teremos novidades para você.
+        </p>
+        
+        <div class="animal-icons">
+            <div class="animal-icon"><i class="fas fa-dog"></i></div>
+            <div class="animal-icon"><i class="fas fa-cat"></i></div>
+            <div class="animal-icon"><i class="fas fa-kiwi-bird"></i></div>
+        </div>
+        
+        <div class="construction">
+            <h3><i class="fas fa-tools"></i> Em Breve Novidades!</h3>
+            <p>Estamos trabalhando para trazer a melhor experiência em gestão de saúde animal.</p>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <p>Progresso do desenvolvimento: 65%</p>
+        </div>
+        
+        <div class="contact">
+            <p>© 2025 Bicho Feliz - Todos os direitos reservados</p>
+        </div>
+    </div>
+</body>
+</html>

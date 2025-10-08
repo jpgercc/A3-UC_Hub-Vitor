@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UC Hub - Login e Cadastro</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #bdd97c 0%, #7caad9 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        padding: 48px;
+        width: 100%;
+        max-width: 480px;
+        position: relative;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .logo h1 {
+        color: #1f2937;
+        font-size: 2.75rem;
+        margin-bottom: 8px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+    }
+
+    .logo p {
+        color: #6b7280;
+        font-size: 1.125rem;
+        font-weight: 500;
+    }
+
+    .tab-buttons {
+        display: flex;
+        margin-bottom: 32px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 4px;
+    }
+
+    .tab-button {
+        flex: 1;
+        padding: 16px 20px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #64748b;
+        border-radius: 8px;
+    }
+
+    .tab-button.active {
+        background: white;
+        color: #667eea;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+    }
+
+    .tab-button:hover:not(.active) {
+        color: #475569;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-container {
+        display: none;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .form-container.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #374151;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 16px;
+        border: 2px solid #f1f5f9;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #f8fafc;
+        color: #1e293b;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .form-group input::placeholder {
+        color: #9ca3af;
+    }
+
+    .user-type {
+        display: flex;
+        gap: 20px;
+        margin: 24px 0;
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        padding: 12px 16px;
+        border: 2px solid #f1f5f9;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        flex: 1;
+        background: #f8fafc;
+    }
+
+    .checkbox-group:hover {
+        border-color: #cbd5e1;
+        background: white;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        border: 2px solid #d1d5db;
+        transition: all 0.2s ease;
+        accent-color: #667eea;
+    }
+
+    .checkbox-group input[type="checkbox"]:checked {
+        background-color: #667eea;
+        border-color: #667eea;
+    }
+
+    .checkbox-group span {
+        color: #374151;
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+
+    .crmv-field {
+        display: none;
+        margin-top: 20px;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .crmv-field.show {
+        display: block;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.125rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    .error-message {
+        color: #dc2626;
+        text-align: center;
+        margin-top: 16px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: none;
+        padding: 12px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+    }
+
+    .success-message {
+        color: #059669;
+        text-align: center;
+        margin-top: 16px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: none;
+        padding: 12px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            padding: 32px 24px;
+            border-radius: 16px;
+        }
+        
+        .user-type {
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .logo h1 {
+            font-size: 2.25rem;
+        }
+        
+        .logo p {
+            font-size: 1rem;
+        }
+        
+        .tab-button {
+            padding: 14px 16px;
+            font-size: 0.875rem;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .container {
+            padding: 24px 20px;
+        }
+        
+        body {
+            padding: 16px;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>Bicho Feliz</h1>
+            <p>Sistema de gerenciamento de saúde animal</p>
+        </div>
+
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="showTab('login')">Login</button>
+            <button class="tab-button" onclick="showTab('register')">Cadastro</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form" class="form-container active">
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-username">Usuário/CPF:</label>
+                    <input type="text" id="login-username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">Senha:</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+
+                <div class="user-type">
+                    <label class="checkbox-group">
+                        <input type="checkbox" name="user-type" value="recepcionista" onchange="handleUserTypeLogin(this)">
+                        <span>Recepcionista</span>
+                    </label>
+                    <label class="checkbox-group">
+                        <input type="checkbox" name="user-type" value="veterinario" onchange="handleUserTypeLogin(this)">
+                        <span>Veterinário</span>
+                    </label>
+                </div>
+
+                <div class="crmv-field" id="login-crmv-field">
+                    <div class="form-group">
+                        <label for="login-crmv">CRMV:</label>
+                        <input type="text" id="login-crmv" name="crmv" placeholder="Ex: CRM-SP 12345">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Entrar</button>
+                <div class="error-message" id="login-error"></div>
+                <div class="success-message" id="login-success"></div>
+            </form>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form" class="form-container">
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="register-name">Nome Completo:</label>
+                    <input type="text" id="register-name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-cpf">CPF:</label>
+                    <input type="text" id="register-cpf" name="cpf" required placeholder="00000000000">
+                </div>
+
+                <div class="form-group">
+                    <label for="register-phone">Telefone:</label>
+                    <input type="text" id="register-phone" name="phone" required placeholder="11999999999">
+                </div>
+
+                <div class="form-group">
+                    <label for="register-address">Endereço:</label>
+                    <input type="text" id="register-address" name="address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-password">Senha:</label>
+                    <input type="password" id="register-password" name="password" required>
+                </div>
+
+                <div class="user-type">
+                    <label class="checkbox-group">
+                        <input type="checkbox" name="register-user-type" value="recepcionista" onchange="handleUserTypeRegister(this)">
+                        <span>Recepcionista</span>
+                    </label>
+                    <label class="checkbox-group">
+                        <input type="checkbox" name="register-user-type" value="veterinario" onchange="handleUserTypeRegister(this)">
+                        <span>Veterinário</span>
+                    </label>
+                </div>
+
+                <div class="crmv-field" id="register-crmv-field">
+                    <div class="form-group">
+                        <label for="register-crmv">CRMV:</label>
+                        <input type="text" id="register-crmv" name="crmv" placeholder="Ex: CRM-SP 12345">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Cadastrar</button>
+                <div class="error-message" id="register-error"></div>
+                <div class="success-message" id="register-success"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Show/Hide tabs
+        function showTab(tabName) {
+            // Hide all forms
+            document.querySelectorAll('.form-container').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected form
+            document.getElementById(tabName + '-form').classList.add('active');
+            
+            // Add active class to the correct button
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                if (btn.textContent.toLowerCase() === tabName.toLowerCase()) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Handle user type selection for login
+        function handleUserTypeLogin(checkbox) {
+            const checkboxes = document.querySelectorAll('input[name="user-type"]');
+            const crmvField = document.getElementById('login-crmv-field');
+            
+            // Uncheck other checkboxes
+            checkboxes.forEach(cb => {
+                if (cb !== checkbox) cb.checked = false;
+            });
+            
+            // Show/hide CRMV field
+            if (checkbox.value === 'veterinario' && checkbox.checked) {
+                crmvField.classList.add('show');
+                document.getElementById('login-crmv').required = true;
+            } else {
+                crmvField.classList.remove('show');
+                document.getElementById('login-crmv').required = false;
+                document.getElementById('login-crmv').value = '';
+            }
+        }
+
+        // Handle user type selection for register
+        function handleUserTypeRegister(checkbox) {
+            const checkboxes = document.querySelectorAll('input[name="register-user-type"]');
+            const crmvField = document.getElementById('register-crmv-field');
+            
+            // Uncheck other checkboxes
+            checkboxes.forEach(cb => {
+                if (cb !== checkbox) cb.checked = false;
+            });
+            
+            // Show/hide CRMV field
+            if (checkbox.value === 'veterinario' && checkbox.checked) {
+                crmvField.classList.add('show');
+                document.getElementById('register-crmv').required = true;
+            } else {
+                crmvField.classList.remove('show');
+                document.getElementById('register-crmv').required = false;
+                document.getElementById('register-crmv').value = '';
+            }
+        }
+
+        // Handle login
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const username = formData.get('username');
+            const password = formData.get('password');
+            const userType = document.querySelector('input[name="user-type"]:checked')?.value;
+            const crmv = formData.get('crmv');
+            
+            const errorDiv = document.getElementById('login-error');
+            const successDiv = document.getElementById('login-success');
+            
+            // Clear previous messages
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            
+            // Validate user type selection
+            if (!userType) {
+                showError('login-error', 'Por favor, selecione o tipo de usuário.');
+                return;
+            }
+            
+            // If recepcionista, redirect to 404
+            if (userType === 'recepcionista') {
+                window.location.href = '404.html';
+                return;
+            }
+            
+            // If veterinario, validate CRMV
+            if (userType === 'veterinario') {
+                if (!crmv) {
+                    showError('login-error', 'CRMV é obrigatório para veterinários.');
+                    return;
+                }
+                
+                try {
+                    // Buscar médicos via API do servidor
+                    const response = await fetch('/api/medicos');
+                    const medicos = await response.json();
+                    
+                    const medico = medicos.find(m => 
+                        m.login === username && 
+                        m.senha === password && 
+                        m.crmv === crmv
+                    );
+                    
+                    if (medico) {
+                        showSuccess('login-success', 'Login realizado! Redirecionando...');
+                        setTimeout(() => {
+                            window.location.href = 'main.html';
+                        }, 1500);
+                    } else {
+                        showError('login-error', 'Login, senha ou CRMV incorretos.');
+                    }
+                } catch (error) {
+                    showError('login-error', 'Erro: Certifique-se de que o servidor está rodando (node server.js)');
+                    console.error('Erro:', error);
+                }
+            }
+        }
+
+        // Handle registration - APENAS MÉDICOS VETERINÁRIOS
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const name = formData.get('name');
+            const cpf = formData.get('cpf');
+            const phone = formData.get('phone');
+            const address = formData.get('address');
+            const password = formData.get('password');
+            const userType = document.querySelector('input[name="register-user-type"]:checked')?.value;
+            const crmv = formData.get('crmv');
+            
+            const errorDiv = document.getElementById('register-error');
+            const successDiv = document.getElementById('register-success');
+            
+            // Clear previous messages
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            
+            // Validate user type selection
+            if (!userType) {
+                showError('register-error', 'Por favor, selecione o tipo de usuário.');
+                return;
+            }
+            
+            // RECEPCIONISTA NÃO SE CADASTRA - FAZ SENTIDO!
+            if (userType === 'recepcionista') {
+                showError('register-error', 'Recepcionistas não precisam se cadastrar no sistema.');
+                return;
+            }
+            
+            // SÓ VETERINÁRIOS SE CADASTRAM
+            if (userType !== 'veterinario') {
+                showError('register-error', 'Apenas veterinários podem se cadastrar.');
+                return;
+            }
+            
+            // Validar CRMV obrigatório
+            if (!crmv) {
+                showError('register-error', 'CRMV é obrigatório para veterinários.');
+                return;
+            }
+            
+            // Validar CPF
+            if (!/^\d{11}$/.test(cpf)) {
+                showError('register-error', 'CPF deve conter 11 dígitos.');
+                return;
+            }
+            
+            // Validar senha
+            if (password.length < 6) {
+                showError('register-error', 'A senha deve ter pelo menos 6 caracteres.');
+                return;
+            }
+            
+            try {
+                // Cadastrar médico veterinário
+                const requestData = {
+                    nome: name,
+                    login: cpf, // CPF como login
+                    crmv: crmv,
+                    contato: phone,
+                    senha: password
+                };
+                
+                const response = await fetch('/api/cadastrar-medico', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccess('register-success', result.message);
+                    
+                    // Reset form após sucesso
+                    setTimeout(() => {
+                        event.target.reset();
+                        document.getElementById('register-crmv-field').classList.remove('show');
+                        successDiv.style.display = 'none';
+                        showTab('login');
+                    }, 2000);
+                } else {
+                    showError('register-error', result.message);
+                }
+                
+            } catch (error) {
+                showError('register-error', 'Erro: Certifique-se de que o servidor está rodando (node server.js)');
+                console.error('Erro:', error);
+            }
+        }
+
+        // Utility functions
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        function showSuccess(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        // Format CPF input
+        document.getElementById('register-cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            e.target.value = value;
+        });
+
+        // Format phone input
+        document.getElementById('register-phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
