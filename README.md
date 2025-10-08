@@ -30,16 +30,18 @@ Sistema de gestão veterinária com persistência em JSON para gerenciamento de 
    node server.js
    ```
 
-   ```bash
-   npm start
-   ```
+
    
    Ou para desenvolvimento com auto-reload:
    ```bash
    npm run dev
    ```
+   Ou
+   ```bash
+   npm start
+   ```
 
-3. **Acesse o sistema:**
+4. **Acesse o sistema:**
    - Abra seu navegador e vá para: `http://localhost:3000`
    - O servidor será executado na porta 3000
 
@@ -68,3 +70,4 @@ Sistema de gestão veterinária com persistência em JSON para gerenciamento de 
 - `usuarios.json` - Dados dos usuários
 - `medicos.json` - Dados dos médicos veterinários
 - `animais.json` - Dados dos animais
+
