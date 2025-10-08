@@ -28,6 +28,12 @@
     flex-shrink: 0;
 }
 
+/* Small status tag dots used across the UI */
+.tag-green, .tag-yellow, .tag-red {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 /* Span text styles within nav items */
 .nav-item span {
     color: inherit;
@@ -60,4 +66,16 @@
 /* Specific hover effects for different nav items */
 .nav-item:not(.nav-item-active):hover i {
     color: #10b981;
+}
+
+/* Patients table tweaks to match layout in screenshots */
+table.min-w-full td, table.min-w-full th {
+    padding-top: 0.65rem; /* slightly smaller vertical padding */
+    padding-bottom: 0.65rem;
+}
+
+/* Avatar cell tuning */
+.min-w-full .h-10.w-10 { /* when using the avatar container */
+    width: 40px;
+    height: 40px;
 }
