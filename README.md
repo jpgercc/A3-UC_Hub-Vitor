@@ -16,6 +16,12 @@ Sistema de gestão veterinária com persistência em JSON para gerenciamento de 
    ```
 
 2. **Inicie o servidor:**
+
+   ```bash
+   node server.js
+   ```
+
+   Ou se tiver lendo foruns de dev e tendo dor de cabeça:
    ```bash
    npm start
    ```
@@ -25,7 +31,7 @@ Sistema de gestão veterinária com persistência em JSON para gerenciamento de 
    npm run dev
    ```
 
-3. **Acesse o sistema:**
+4. **Acesse o sistema:**
    - Abra seu navegador e vá para: `http://localhost:3000`
    - O servidor será executado na porta 3000
 
