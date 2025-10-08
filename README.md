@@ -2,9 +2,10 @@
 
 Sistema de gestão veterinária com persistência em JSON para gerenciamento de usuários, médicos veterinários e animais.
 
-## Como rodar o programa pela primeira vez
-- [ ] Check
-- [ ] List
+## RESOLVER ESTES PROBLEMAS ANTES DE TUDO
+- [ ] Exames não salvam de forma individual
+- [ ] Limpar código inutil, caso tenha e otimizar código atual, sem remover funções usadas
+
 ## Como rodar o programa pela primeira vez
 
 ### Pré-requisitos
